@@ -64,6 +64,12 @@ export default defineSchema({
     ),
     /** Ticker symbols mentioned in this article / 이 기사에 언급된 티커 심볼 */
     mentionedTickers: v.optional(v.array(v.string())),
+    /** Content tags for filtering (Korean financial categories) / 필터링용 콘텐츠 태그 */
+    tags: v.optional(v.array(v.string())),
+    /** Article thumbnail image URL / 기사 썸네일 이미지 URL */
+    imageUrl: v.optional(v.string()),
+    /** Whether article is from official source (false = rumor) / 공식 출처 여부 */
+    isOfficial: v.optional(v.boolean()),
     /** Korean title / 한국어 제목 */
     titleKo: v.optional(v.string()),
     /** Korean summary (의역+요약, investor perspective) / 한국어 요약 (투자자 관점 의역) */
@@ -204,6 +210,8 @@ export default defineSchema({
     chainId: v.id("impactChains"),
     /** Parent node FK (null = root) / 부모 노드 FK (null = 루트) */
     parentNodeId: v.optional(v.id("impactNodes")),
+    /** FK to source NewsArticle / 출처 뉴스 기사 FK */
+    newsArticleId: v.optional(v.id("newsArticles")),
     /** English label / 영문 라벨 */
     label: v.string(),
     /** Korean label / 한국어 라벨 */
@@ -220,5 +228,6 @@ export default defineSchema({
     updatedBy: v.optional(v.string()),
   })
     .index("by_chainId", ["chainId"])
-    .index("by_parentNodeId", ["parentNodeId"]),
+    .index("by_parentNodeId", ["parentNodeId"])
+    .index("by_newsArticleId", ["newsArticleId"]),
 });

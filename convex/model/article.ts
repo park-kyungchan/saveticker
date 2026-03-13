@@ -69,6 +69,55 @@ export async function articlesByTicker(
 }
 
 /**
+ * Articles filtered by category (general/breaking/analysis).
+ * 카테고리별 기사 필터.
+ */
+export async function articlesByCategory(
+  ctx: QueryCtx,
+  category: string,
+): Promise<Doc<"newsArticles">[]> {
+  return await ctx.db
+    .query("newsArticles")
+    .withIndex("by_category", (q) => q.eq("category", category as "general" | "breaking" | "analysis"))
+    .order("desc")
+    .collect();
+}
+
+/**
+ * Articles filtered by source name (collect+filter).
+ * 출처 이름별 기사 필터.
+ */
+export async function articlesBySource(
+  ctx: QueryCtx,
+  sourceName: string,
+): Promise<Doc<"newsArticles">[]> {
+  const all = await ctx.db
+    .query("newsArticles")
+    .withIndex("by_publishedAt")
+    .order("desc")
+    .collect();
+
+  return all.filter((a) => a.sourceName === sourceName);
+}
+
+/**
+ * Articles containing a specific tag (collect+filter).
+ * 특정 태그를 포함하는 기사.
+ */
+export async function articlesByTag(
+  ctx: QueryCtx,
+  tag: string,
+): Promise<Doc<"newsArticles">[]> {
+  const all = await ctx.db
+    .query("newsArticles")
+    .withIndex("by_publishedAt")
+    .order("desc")
+    .collect();
+
+  return all.filter((a) => a.tags?.includes(tag));
+}
+
+/**
  * Title prefix search for article search bar.
  * 기사 검색바용 제목 접두어 검색.
  */

@@ -8,7 +8,6 @@ import type { Doc } from "../../../../convex/_generated/dataModel";
 
 interface KoreanTabProps {
   article: Doc<"newsArticles">;
-  onSwitchTab?: (tab: string) => void;
   className?: string;
 }
 
@@ -18,7 +17,7 @@ const categoryBadgeKo: Record<string, { label: string; style: string }> = {
   analysis: { label: "분석", style: "bg-info/15 text-info" },
 };
 
-export function KoreanTab({ article, onSwitchTab, className }: KoreanTabProps) {
+export function KoreanTab({ article, className }: KoreanTabProps) {
   const badge = categoryBadgeKo[article.category] ?? categoryBadgeKo.general;
 
   if (!article.summaryKo && !article.bodyKo) {
@@ -57,21 +56,6 @@ export function KoreanTab({ article, onSwitchTab, className }: KoreanTabProps) {
         <section data-label="korean.tab.summary" className="space-y-3">
           <h2 className="text-xs font-medium uppercase tracking-wide text-ink-muted">핵심 요약</h2>
           <p className="text-sm leading-relaxed text-ink/90">{article.summaryKo}</p>
-
-          {/* StoryTelling CTA */}
-          {onSwitchTab && (
-            <button
-              type="button"
-              data-label="korean.tab.cta"
-              onClick={() => onSwitchTab("storytelling")}
-              className="flex w-full items-center justify-between rounded-xl border border-accent-1/30 glass-panel p-4 text-left transition-colors hover:border-accent-1/50 active:bg-white/5 min-h-[44px]"
-            >
-              <span className="text-sm font-medium text-ink">더 깊이 알아보기</span>
-              <svg className="size-4 text-accent-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="m9 5 7 7-7 7" />
-              </svg>
-            </button>
-          )}
         </section>
       )}
 

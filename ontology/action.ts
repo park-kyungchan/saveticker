@@ -172,13 +172,14 @@ export const mutations = [
     parameters: [
       { name: "chainId", type: "string", required: true, description: { en: "ImpactChain FK", ko: "영향 체인 FK" } },
       { name: "parentNodeId", type: "string", required: false, description: { en: "Parent node FK (null = root)", ko: "부모 노드 FK (null = 루트)" } },
+      { name: "newsArticleId", type: "string", required: false, description: { en: "NewsArticle FK (links node to source article)", ko: "뉴스 기사 FK (노드를 출처 기사에 연결)" } },
       { name: "label", type: "string", required: true, description: { en: "English node label", ko: "영문 노드 라벨" } },
       { name: "labelKo", type: "string", required: true, description: { en: "Korean node label", ko: "한국어 노드 라벨" } },
       { name: "description", type: "string", required: false, description: { en: "English description", ko: "영문 설명" } },
       { name: "descriptionKo", type: "string", required: false, description: { en: "Korean description", ko: "한국어 설명" } },
       { name: "ordinal", type: "integer", required: true, description: { en: "Sibling ordering", ko: "형제 노드 간 정렬 순서" } },
     ],
-    edits: [{ type: "create", target: "ImpactNode", properties: ["chainId", "parentNodeId", "label", "labelKo", "description", "descriptionKo", "ordinal", "updatedAt", "updatedBy"] }],
+    edits: [{ type: "create", target: "ImpactNode", properties: ["chainId", "parentNodeId", "newsArticleId", "label", "labelKo", "description", "descriptionKo", "ordinal", "updatedAt", "updatedBy"] }],
     // ImpactChain must exist; parentNodeId must reference existing node if provided
   },
 

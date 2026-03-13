@@ -125,6 +125,33 @@ export const objectTypes = [
         // Replaces NewsStockLink join entity — PM demo doesn't need full M:N
       },
       {
+        apiName: "tags",
+        type: "string",
+        baseType: "string",
+        required: false,
+        readonly: false,
+        description: { en: "Content tags for filtering (Korean financial categories)", ko: "필터링용 콘텐츠 태그 (한국 금융 카테고리)" },
+        isArray: true,
+        constraints: [{ kind: "enum", values: ["에너지", "기업분석", "암호화폐", "경제지표", "헤드라인", "정보", "사모신용", "지정학"] }],
+        indexCandidate: true,
+      },
+      {
+        apiName: "imageUrl",
+        type: "string",
+        baseType: "string",
+        required: false,
+        readonly: false,
+        description: { en: "Article thumbnail image URL", ko: "기사 썸네일 이미지 URL" },
+      },
+      {
+        apiName: "isOfficial",
+        type: "boolean",
+        baseType: "boolean",
+        required: false,
+        readonly: false,
+        description: { en: "Whether article is from official source (false = rumor/카더라)", ko: "공식 출처 여부 (false = 카더라)" },
+      },
+      {
         apiName: "publishedAt",
         type: "timestamp",
         baseType: "timestamp",
@@ -169,7 +196,7 @@ export const objectTypes = [
       },
     ],
     implements: ["Auditable"],
-    indexCandidates: ["title", "category", "publishedAt", "storyThreadId"],
+    indexCandidates: ["title", "category", "publishedAt", "storyThreadId", "tags"],
   },
 
   // -------------------------------------------------------------------------
@@ -614,6 +641,16 @@ export const objectTypes = [
         indexCandidate: true,
       },
       {
+        apiName: "newsArticleId",
+        type: "NewsArticle",
+        baseType: "FK",
+        required: false,
+        readonly: false,
+        description: { en: "FK to source NewsArticle (connects node to its evidence)", ko: "출처 뉴스 기사 FK (노드를 근거 기사에 연결)" },
+        targetEntity: "NewsArticle",
+        indexCandidate: true,
+      },
+      {
         apiName: "label",
         type: "string",
         baseType: "string",
@@ -671,7 +708,7 @@ export const objectTypes = [
       },
     ],
     implements: ["Auditable"],
-    indexCandidates: ["chainId", "parentNodeId"],
+    indexCandidates: ["chainId", "parentNodeId", "newsArticleId"],
   },
 ] as const;
 

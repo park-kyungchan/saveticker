@@ -1,13 +1,11 @@
 /**
- * StoryTelling 탭 — 관련 스토리, 영향 체인, 해설.
- * StoryTelling tab — related story, impact chains, explainer.
+ * StoryTelling 탭 — 영향 체인 + 해설.
+ * StoryTelling tab — impact chains + explainer.
  */
-import { useNavigate } from "react-router";
 import { cn } from "../../../lib/cn";
 import { recipes } from "../../../theme/recipes";
 import { Badge } from "../../../components/ui/Badge";
 import { Spinner } from "../../../components/ui/Spinner";
-import { useThreadById } from "../../story-thread/hooks/useThreadById";
 import { useChainsByThread } from "../../impact-chain/hooks/useChainsByThread";
 import { useChainNodes } from "../../impact-chain/hooks/useChainNodes";
 import { ImpactNodeTree } from "../../impact-chain/components/ImpactNodeTree";
@@ -26,36 +24,16 @@ const difficultyBadge: Record<string, { label: string; variant: "success" | "war
 };
 
 export function StoryTellingTab({ article, explainer, className }: StoryTellingTabProps) {
-  const navigate = useNavigate();
-  const thread = useThreadById(article.storyThreadId);
   const chains = useChainsByThread(article.storyThreadId);
 
   return (
     <div data-label="storytelling.tab" className={cn("space-y-4 animate-in", className)}>
-      {/* Section A: 관련 스토리 */}
-      {article.storyThreadId && thread && (
-        <button
-          type="button"
-          data-label="storytelling.tab.thread"
-          onClick={() => navigate(`/threads/${article.storyThreadId}`)}
-          className={cn(recipes.card.base, recipes.card.hover, "flex w-full items-center justify-between text-left")}
-        >
-          <div className="min-w-0 flex-1">
-            <p className="text-xs font-medium uppercase tracking-wide text-ink-muted">관련 스토리</p>
-            <p className="mt-1 text-sm font-medium text-ink truncate">{thread.titleKo}</p>
-          </div>
-          <svg className="ml-2 size-4 shrink-0 text-ink-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="m9 5 7 7-7 7" />
-          </svg>
-        </button>
-      )}
-
-      {/* Section B: 영향 체인 */}
+      {/* Section B: 영향 체인 — pass currentArticleId for highlighting */}
       {chains && chains.length > 0 && (
         <section data-label="storytelling.tab.chains" className="space-y-3">
           <h2 className="text-xs font-medium uppercase tracking-wide text-ink-muted">영향 체인 (Impact Chain)</h2>
           {chains.map((chain) => (
-            <ChainSection key={chain._id} chain={chain} />
+            <ChainSection key={chain._id} chain={chain} currentArticleId={article._id} />
           ))}
         </section>
       )}
@@ -76,7 +54,7 @@ export function StoryTellingTab({ article, explainer, className }: StoryTellingT
   );
 }
 
-function ChainSection({ chain }: { chain: Doc<"impactChains"> }) {
+function ChainSection({ chain, currentArticleId }: { chain: Doc<"impactChains">; currentArticleId: string }) {
   const nodes = useChainNodes(chain._id);
 
   return (
@@ -89,7 +67,7 @@ function ChainSection({ chain }: { chain: Doc<"impactChains"> }) {
       {chain.descriptionKo && (
         <p className="text-xs text-ink-muted">{chain.descriptionKo}</p>
       )}
-      {nodes && <ImpactNodeTree nodes={nodes} />}
+      {nodes && <ImpactNodeTree nodes={nodes} currentArticleId={currentArticleId} />}
     </div>
   );
 }

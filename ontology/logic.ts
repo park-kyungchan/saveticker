@@ -1,7 +1,7 @@
 /**
  * SaveTicker — Ontology LOGIC Domain (Redesign)
  *
- * 8 link types, 1 interface, 12 queries, 1 derived property, 2 functions.
+ * 9 link types, 1 interface, 15 queries, 1 derived property, 2 functions.
  * Source of truth: research/saveticker-deep-dive.md, research/pm-portfolio-save-app.md
  * Reads from DATA domain (data.ts). Downstream: ACTION domain (action.ts).
  *
@@ -167,6 +167,23 @@ export const linkTypes = [
     fkProperty: "newsArticleId",
     fkSide: "target",
     reverseApiName: "explainerArticle",
+  },
+  // -------------------------------------------------------------------------
+  // R-9: ImpactNode → NewsArticle (M:1)
+  // -------------------------------------------------------------------------
+  /** nodeArticle: Impact node linked to its source article. / 영향 노드가 출처 기사에 연결. */
+  {
+    apiName: "nodeArticle",
+    description: {
+      en: "Impact node linked to the news article that evidences it",
+      ko: "영향 노드가 근거가 되는 뉴스 기사에 연결",
+    },
+    sourceEntity: "ImpactNode",
+    targetEntity: "NewsArticle",
+    cardinality: "M:1",
+    fkProperty: "newsArticleId",
+    fkSide: "source",
+    reverseApiName: "articleNodes",
   },
 ] as const satisfies readonly LinkType[];
 // == END: links ==
@@ -408,6 +425,61 @@ export const queries = [
     queryType: "getById",
     parameters: [
       { name: "userId", type: "string", description: { en: "User ID", ko: "사용자 ID" }, required: true },
+    ],
+  },
+
+  // =========================================================================
+  // Feed Filtering (News Tab)
+  // =========================================================================
+
+  /** Q-13: articlesByCategory — Filter by category enum. / 카테고리 enum 필터. */
+  {
+    apiName: "articlesByCategory",
+    description: {
+      en: "Articles filtered by category (general/breaking/analysis)",
+      ko: "카테고리별 기사 필터 (일반/속보/분석)",
+    },
+    entityApiName: "NewsArticle",
+    queryType: "filter",
+    filterFields: [
+      { propertyApiName: "category", operators: ["eq"] },
+    ],
+    parameters: [
+      { name: "category", type: "string", description: { en: "Category to filter by", ko: "필터링할 카테고리" }, required: true },
+    ],
+  },
+
+  /** Q-14: articlesBySource — Filter by sourceName. / 출처 이름 필터. */
+  {
+    apiName: "articlesBySource",
+    description: {
+      en: "Articles filtered by source name",
+      ko: "출처 이름별 기사 필터",
+    },
+    entityApiName: "NewsArticle",
+    queryType: "filter",
+    filterFields: [
+      { propertyApiName: "sourceName", operators: ["eq"] },
+    ],
+    parameters: [
+      { name: "sourceName", type: "string", description: { en: "Source name to filter by", ko: "필터링할 출처 이름" }, required: true },
+    ],
+  },
+
+  /** Q-15: articlesByTag — Filter by tags array contains. / 태그 배열 포함 필터. */
+  {
+    apiName: "articlesByTag",
+    description: {
+      en: "Articles containing a specific tag in their tags array",
+      ko: "태그 배열에 특정 태그를 포함하는 기사",
+    },
+    entityApiName: "NewsArticle",
+    queryType: "filter",
+    filterFields: [
+      { propertyApiName: "tags", operators: ["contains"] },
+    ],
+    parameters: [
+      { name: "tag", type: "string", description: { en: "Tag to search for", ko: "검색할 태그" }, required: true },
     ],
   },
 ] as const satisfies readonly OntologyQuery[];

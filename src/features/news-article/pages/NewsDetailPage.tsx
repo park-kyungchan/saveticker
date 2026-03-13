@@ -48,7 +48,7 @@ export function NewsDetailPage() {
       <Tabs items={TAB_ITEMS} value={activeTab} onChange={setActiveTab} />
 
       {activeTab === "original" && <NewsDetail article={article} />}
-      {activeTab === "korean" && <KoreanTab article={article} onSwitchTab={setActiveTab} />}
+      {activeTab === "korean" && <KoreanTab article={article} />}
       {activeTab === "storytelling" && <StoryTellingTab article={article} explainer={explainer ?? null} />}
     </div>
   );

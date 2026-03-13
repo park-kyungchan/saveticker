@@ -9,7 +9,7 @@
 import { query } from "./_generated/server";
 import { v } from "convex/values";
 
-import { recentArticles, articleById, articleExplainer, articlesByTicker, searchArticles } from "./model/article";
+import { recentArticles, articleById, articleExplainer, articlesByTicker, searchArticles, articlesByCategory, articlesBySource, articlesByTag } from "./model/article";
 import { stockById, stockByTicker } from "./model/stock";
 import { threadsByStatus, threadArticlesList, threadById, allThreads } from "./model/thread";
 import { userById, allUsers } from "./model/user";
@@ -52,6 +52,39 @@ export const getSearchArticles = query({
   },
   handler: async (ctx, args) => {
     return await searchArticles(ctx, args.query, args.limit ?? 10);
+  },
+});
+
+/**
+ * Articles filtered by category.
+ * 카테고리별 기사 필터.
+ */
+export const getArticlesByCategory = query({
+  args: { category: v.string() },
+  handler: async (ctx, args) => {
+    return await articlesByCategory(ctx, args.category);
+  },
+});
+
+/**
+ * Articles filtered by source name.
+ * 출처 이름별 기사 필터.
+ */
+export const getArticlesBySource = query({
+  args: { sourceName: v.string() },
+  handler: async (ctx, args) => {
+    return await articlesBySource(ctx, args.sourceName);
+  },
+});
+
+/**
+ * Articles containing a specific tag.
+ * 특정 태그를 포함하는 기사 필터.
+ */
+export const getArticlesByTag = query({
+  args: { tag: v.string() },
+  handler: async (ctx, args) => {
+    return await articlesByTag(ctx, args.tag);
   },
 });
 

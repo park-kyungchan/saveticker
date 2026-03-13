@@ -203,6 +203,7 @@ export const addImpactNode = mutation({
   args: {
     chainId: v.id("impactChains"),
     parentNodeId: v.optional(v.id("impactNodes")),
+    newsArticleId: v.optional(v.id("newsArticles")),
     label: v.string(),
     labelKo: v.string(),
     description: v.optional(v.string()),
