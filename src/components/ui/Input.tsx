@@ -35,3 +35,6 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     );
   },
 );
+
+// Fix: React DevTools에서 "ForwardRef" 대신 "Input"으로 표시
+Input.displayName = "Input";

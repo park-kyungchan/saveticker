@@ -2,9 +2,15 @@
  * NewsArticle model helpers — read helpers.
  *
  * Covers: Q: recentArticles, articleById, articleExplainer, articlesByTicker, searchArticles.
+ *
+ * Fix: Added take() guards to prevent unbounded full-table scans.
+ * Fix: articlesByTicker/Source/Tag now accept limit parameter.
  */
 import type { QueryCtx } from "../_generated/server";
 import type { Doc, Id } from "../_generated/dataModel";
+
+/** Maximum articles to scan in full-table patterns / 전체 테이블 스캔 시 최대 기사 수 */
+const MAX_SCAN_LIMIT = 200;
 
 /**
  * Latest news feed, newest first.
@@ -18,7 +24,7 @@ export async function recentArticles(
     .query("newsArticles")
     .withIndex("by_publishedAt")
     .order("desc")
-    .take(limit);
+    .take(Math.min(limit, MAX_SCAN_LIMIT));
 }
 
 /**
@@ -49,23 +55,26 @@ export async function articleExplainer(
 }
 
 /**
- * Articles mentioning a specific ticker symbol (collect+filter).
- * 특정 티커 심볼을 언급하는 기사 (collect+filter).
+ * Articles mentioning a specific ticker symbol.
+ * 특정 티커 심볼을 언급하는 기사.
  *
- * Convex cannot index into arrays, so this scans all articles.
- * PM demo scale (15 articles) — no performance concern.
+ * Convex cannot index into arrays, so this scans articles.
+ * Fix: Added take() guard to prevent unbounded scan.
  */
 export async function articlesByTicker(
   ctx: QueryCtx,
   ticker: string,
+  limit: number = 50,
 ): Promise<Doc<"newsArticles">[]> {
   const all = await ctx.db
     .query("newsArticles")
     .withIndex("by_publishedAt")
     .order("desc")
-    .collect();
+    .take(MAX_SCAN_LIMIT);
 
-  return all.filter((a) => a.mentionedTickers?.includes(ticker));
+  return all
+    .filter((a) => a.mentionedTickers?.includes(ticker))
+    .slice(0, limit);
 }
 
 /**
@@ -75,46 +84,55 @@ export async function articlesByTicker(
 export async function articlesByCategory(
   ctx: QueryCtx,
   category: string,
+  limit: number = 50,
 ): Promise<Doc<"newsArticles">[]> {
   return await ctx.db
     .query("newsArticles")
     .withIndex("by_category", (q) => q.eq("category", category as "general" | "breaking" | "analysis"))
     .order("desc")
-    .collect();
+    .take(limit);
 }
 
 /**
- * Articles filtered by source name (collect+filter).
+ * Articles filtered by source name.
  * 출처 이름별 기사 필터.
+ * Fix: Added take() guard.
  */
 export async function articlesBySource(
   ctx: QueryCtx,
   sourceName: string,
+  limit: number = 50,
 ): Promise<Doc<"newsArticles">[]> {
   const all = await ctx.db
     .query("newsArticles")
     .withIndex("by_publishedAt")
     .order("desc")
-    .collect();
+    .take(MAX_SCAN_LIMIT);
 
-  return all.filter((a) => a.sourceName === sourceName);
+  return all
+    .filter((a) => a.sourceName === sourceName)
+    .slice(0, limit);
 }
 
 /**
- * Articles containing a specific tag (collect+filter).
+ * Articles containing a specific tag.
  * 특정 태그를 포함하는 기사.
+ * Fix: Added take() guard.
  */
 export async function articlesByTag(
   ctx: QueryCtx,
   tag: string,
+  limit: number = 50,
 ): Promise<Doc<"newsArticles">[]> {
   const all = await ctx.db
     .query("newsArticles")
     .withIndex("by_publishedAt")
     .order("desc")
-    .collect();
+    .take(MAX_SCAN_LIMIT);
 
-  return all.filter((a) => a.tags?.includes(tag));
+  return all
+    .filter((a) => a.tags?.includes(tag))
+    .slice(0, limit);
 }
 
 /**
@@ -129,5 +147,5 @@ export async function searchArticles(
   return await ctx.db
     .query("newsArticles")
     .withSearchIndex("search_title", (q) => q.search("title", query))
-    .take(limit);
+    .take(Math.min(limit, 50));
 }

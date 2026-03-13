@@ -8,6 +8,7 @@
  * Run via Convex dashboard or: bunx convex run seed:seedAll
  */
 import { internalMutation } from "./_generated/server";
+import { v } from "convex/values";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -21,8 +22,17 @@ const now = Date.now();
 // ---------------------------------------------------------------------------
 
 export const seedAll = internalMutation({
-  args: {},
-  handler: async (ctx) => {
+  args: { force: v.optional(v.boolean()) },
+  handler: async (ctx, args) => {
+    // Idempotency guard — prevent duplicate seeding
+    if (!args.force) {
+      const existing = await ctx.db.query("stocks").first();
+      if (existing) {
+        console.log("Database already seeded. Pass { force: true } to re-seed.");
+        return { skipped: true, reason: "already_seeded" };
+      }
+    }
+
     // =====================================================================
     // 1. STOCKS (12) — lean: ticker, name, sector only
     // =====================================================================

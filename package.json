@@ -25,6 +25,7 @@
     "@capacitor/core": "^8",
     "@capacitor/haptics": "^8.0.1",
     "@capacitor/keyboard": "^8.0.1",
+    "@capacitor/preferences": "^8.0.1",
     "@capacitor/status-bar": "^8.0.1",
     "@capgo/transitions": "^0.0.6",
     "clsx": "^2.1.1",
