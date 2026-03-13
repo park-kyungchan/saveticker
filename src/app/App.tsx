@@ -5,8 +5,11 @@ import { NewsPage } from "./pages/NewsPage";
 import { PlaceholderPage } from "./pages/PlaceholderPage";
 import { MorePage } from "../features/user/pages/MorePage";
 import { NewsDetailPage } from "../features/news-article/pages/NewsDetailPage";
+import { useAndroidBackButton } from "../hooks/useAndroidBackButton";
 
 export function App() {
+  useAndroidBackButton();
+
   return (
     <ErrorBoundary>
       <Routes>
