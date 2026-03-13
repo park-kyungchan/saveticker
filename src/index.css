@@ -1,0 +1,382 @@
+@import "tailwindcss";
+
+/*
+ * GLASSMORPHIC (Dark) — Design Tokens
+ *
+ * Layered transparency, frosted glass, luminous depth.
+ * All colors in OKLCH color space.
+ * Token namespace follows the shared contract for cross-template compatibility.
+ */
+
+@theme {
+  /* ─── Fonts ─── */
+  --font-ui: "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-display: "Wanted Sans Variable", "Wanted Sans", "Pretendard Variable", system-ui, sans-serif;
+  --font-mono: "Fira Code", "JetBrains Mono", ui-monospace, monospace;
+
+  /* ─── Core Colors ─── */
+  --color-ink: oklch(0.95 0.01 260);             /* near-white text on dark bg */
+  --color-ink-muted: oklch(0.65 0.02 260);       /* muted text for secondary content */
+  --color-surface: oklch(0.18 0.025 265);         /* deep navy-charcoal background */
+  --color-surface-card: oklch(0.95 0.005 260 / 0.08); /* white at 8% opacity — glass panel */
+
+  /* ─── Brand ─── */
+  --color-brand: oklch(0.70 0.20 290);            /* luminous purple */
+  --color-brand-hover: oklch(0.75 0.22 290);      /* brighter on hover */
+
+  /* ─── Accent Palette (vibrant neons, muted by context) ─── */
+  --color-accent-1: oklch(0.78 0.18 180);         /* neon cyan */
+  --color-accent-2: oklch(0.72 0.20 330);         /* neon magenta */
+  --color-accent-3: oklch(0.80 0.16 145);         /* neon green */
+  --color-accent-4: oklch(0.76 0.18 60);          /* neon amber */
+  --color-accent-5: oklch(0.68 0.22 265);         /* electric indigo */
+
+  /* ─── Status Colors ─── */
+  --color-success: oklch(0.78 0.18 150);   /* bright green */
+  --color-warning: oklch(0.82 0.16 75);    /* warm amber */
+  --color-danger: oklch(0.68 0.22 25);     /* vivid red */
+  --color-info: oklch(0.75 0.15 240);      /* clear blue */
+
+  /* ─── Shape: Radius ─── */
+  --radius-none: 0px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;        /* canonical glass panel radius */
+  --radius-full: 9999px;    /* pills / avatars */
+
+  /* ─── Shape: Shadows (soft, diffused, optional color glow) ─── */
+  --shadow-sm: 0 2px 8px oklch(0 0 0 / 0.2);
+  --shadow-md: 0 4px 16px oklch(0 0 0 / 0.25);
+  --shadow-lg: 0 8px 32px oklch(0 0 0 / 0.3);
+  --shadow-glow-brand: 0 0 20px oklch(0.70 0.20 290 / 0.3);     /* brand purple glow */
+  --shadow-glow-accent: 0 0 16px oklch(0.78 0.18 180 / 0.25);   /* cyan glow */
+  --shadow-inner: inset 0 1px 2px oklch(0 0 0 / 0.15);          /* inner depth */
+  --shadow-none: none;
+
+  /* ─── Glass-specific tokens ─── */
+  --glass-bg: oklch(0.95 0.005 260 / 0.07);       /* white at ~7% for default panels */
+  --glass-bg-elevated: oklch(0.95 0.005 260 / 0.12); /* slightly more opaque for raised panels */
+  --glass-border: oklch(0.95 0.005 260 / 0.15);   /* white at 15% for borders */
+  --glass-border-bright: oklch(0.95 0.005 260 / 0.25); /* brighter border on hover/focus */
+  --glass-blur: 16px;                              /* standard backdrop blur */
+  --glass-blur-heavy: 24px;                        /* elevated panels, modals */
+
+  /* ─── Motion ─── */
+  --animate-duration: 300ms;
+  --animate-duration-fast: 200ms;
+  --animate-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);   /* gentle ease-out */
+  --animate-float: cubic-bezier(0.34, 0, 0.15, 1);      /* floating entrance feel */
+
+  /* ─── Border ─── */
+  --border-width: 1px;
+  --border-width-glow: 1px;  /* thin borders — glass relies on blur, not edge weight */
+}
+
+/*
+ * GLASSMORPHIC — Base Styles
+ *
+ * @layer base resets and global aesthetics.
+ * References tokens from @theme.
+ */
+
+@layer base {
+  /* ─── Universal border color default ───
+     Translucent white borders by default — the glass edge. */
+  *,
+  *::before,
+  *::after {
+    border-color: var(--glass-border);
+  }
+
+  /* ─── Touch: enable native scroll/zoom gestures ─── */
+  html, body {
+    touch-action: manipulation;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ─── Body: dark background ─── */
+  body {
+    background: var(--color-surface);
+    color: var(--color-ink);
+    font-family: var(--font-ui);
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100vh;
+    min-height: 100dvh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* ─── Body gradient: fixed pseudo-element avoids background-attachment:fixed
+       which breaks touch scrolling in Android WebView (Chromium #36908439) ─── */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 10%, oklch(0.25 0.06 290 / 0.4), transparent),
+      radial-gradient(ellipse 60% 50% at 80% 90%, oklch(0.22 0.05 200 / 0.3), transparent);
+    pointer-events: none;
+  }
+
+  /* ─── Headings: display font, light weight ─── */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 350;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  /* Large headings get slightly brighter text */
+  h1, h2 {
+    color: oklch(0.98 0.005 260);
+  }
+
+  /* ─── Code / Pre: mono font on glass ─── */
+  code, pre, kbd, samp {
+    font-family: var(--font-mono);
+  }
+
+  pre {
+    background: var(--glass-bg-elevated);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: var(--border-width) solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.25rem;
+    overflow-x: auto;
+  }
+
+  code:not(pre code) {
+    background: var(--glass-bg-elevated);
+    padding: 0.15em 0.4em;
+    border-radius: var(--radius-sm);
+    font-size: 0.9em;
+    border: var(--border-width) solid var(--glass-border);
+  }
+
+  /* ─── Text selection: brand with alpha ─── */
+  ::selection {
+    background-color: oklch(0.70 0.20 290 / 0.4);
+    color: oklch(0.98 0.005 260);
+  }
+
+  /* ─── Focus ring: colored glow ───
+     Visible on keyboard navigation. Glow instead of hard outline. */
+  :focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 2px var(--color-surface),
+      0 0 0 4px var(--color-brand),
+      var(--shadow-glow-brand);
+  }
+
+  /* ─── Links ─── */
+  a {
+    color: var(--color-accent-1);
+    text-decoration: none;
+    transition: color var(--animate-duration-fast) var(--animate-smooth);
+  }
+
+  a:hover {
+    color: oklch(0.85 0.18 180);
+    text-shadow: 0 0 8px oklch(0.78 0.18 180 / 0.3);
+  }
+
+  /* ─── Images ─── */
+  img, svg, video {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* ─── Tables ─── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  th, td {
+    border: var(--border-width) solid var(--glass-border);
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+  }
+
+  th {
+    font-family: var(--font-display);
+    font-weight: 500;
+    background: var(--glass-bg-elevated);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+  }
+
+  /* ─── Horizontal rule: translucent divider ─── */
+  hr {
+    border: none;
+    border-top: var(--border-width) solid var(--glass-border-bright);
+    margin: 2rem 0;
+  }
+
+  /* ─── Scrollbar: translucent ─── */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: oklch(0.95 0.005 260 / 0.2);
+    border-radius: var(--radius-full);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: oklch(0.95 0.005 260 / 0.35);
+  }
+
+  /* Firefox scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: oklch(0.95 0.005 260 / 0.2) transparent;
+  }
+}
+
+/* ─── Custom Utilities ─── */
+
+@utility glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+@utility glass-panel-heavy {
+  background: var(--glass-bg-elevated);
+  backdrop-filter: blur(var(--glass-blur-heavy));
+  -webkit-backdrop-filter: blur(var(--glass-blur-heavy));
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+@utility safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@utility safe-area-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* ─── Keyframe Animations ─── */
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer-pulse {
+  0%, 100% { opacity: 0.04; }
+  50% { opacity: 0.12; }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ─── Animation Utilities ─── */
+
+@utility animate-in {
+  animation: fade-in-up 0.45s var(--animate-smooth) both;
+}
+
+@utility animate-slide {
+  animation: slide-in-right 0.4s var(--animate-smooth) both;
+}
+
+@utility animate-scale {
+  animation: scale-in 0.35s var(--animate-smooth) both;
+}
+
+@utility skeleton {
+  animation: shimmer-pulse 2s ease-in-out infinite;
+  background: var(--glass-bg-elevated);
+  border-radius: var(--radius-sm);
+}
+
+/* ─── Card Lift Hover ─── */
+
+@utility card-lift {
+  transition: transform 0.25s var(--animate-smooth), box-shadow 0.25s var(--animate-smooth), border-color 0.25s var(--animate-smooth);
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+/* ─── Reduced Motion (WCAG 2.3.3) ─── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* === Dev Label Overlay === */
+html.show-labels [data-label] {
+  position: relative;
+  outline: 1px dashed rgba(124, 58, 237, 0.5);
+}
+
+html.show-labels [data-label]::after {
+  content: attr(data-label);
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 8px;
+  line-height: 1;
+  background: rgba(0, 0, 0, 0.85);
+  color: #4ade80;
+  padding: 2px 4px;
+  border-radius: 2px;
+  z-index: 10000;
+  pointer-events: none;
+  white-space: nowrap;
+  font-family: ui-monospace, monospace;
+}
