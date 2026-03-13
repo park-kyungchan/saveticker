@@ -3,7 +3,6 @@ import { ErrorBoundary } from "../components/ui/ErrorBoundary";
 import { RootLayout } from "./layouts/RootLayout";
 import { NewsPage } from "./pages/NewsPage";
 import { PlaceholderPage } from "./pages/PlaceholderPage";
-import { ThreadDetailPage } from "../features/story-thread/pages/ThreadDetailPage";
 import { MorePage } from "../features/user/pages/MorePage";
 import { NewsDetailPage } from "../features/news-article/pages/NewsDetailPage";
 
@@ -21,7 +20,6 @@ export function App() {
 
           {/* Detail routes */}
           <Route path="news/:id" element={<ErrorBoundary><NewsDetailPage /></ErrorBoundary>} />
-          <Route path="threads/:id" element={<ErrorBoundary><ThreadDetailPage /></ErrorBoundary>} />
         </Route>
       </Routes>
     </ErrorBoundary>

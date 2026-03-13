@@ -39,6 +39,7 @@ export function HeroNewsCard({ article, onClick, className }: HeroNewsCardProps)
     <motion.button
       type="button"
       data-label="news.heroCard"
+      aria-label={`${article.titleKo || article.title} — ${meta.label} 기사 읽기`}
       onClick={onClick}
       whileTap={{ scale: 0.985 }}
       className={cn(
@@ -124,21 +125,6 @@ export function HeroNewsCard({ article, onClick, className }: HeroNewsCardProps)
           )}
         </div>
 
-        {/* Story thread indicator */}
-        {article.storyThreadId && (
-          <div className="flex items-center gap-1.5 pt-0.5">
-            <svg viewBox="0 0 16 16" className="size-3 text-brand/70" fill="currentColor">
-              <path d="M4.715 6.542L3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1 1 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4 4 0 0 1-.128-1.287z" />
-              <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z" />
-            </svg>
-            <span className="text-[10px] font-medium text-brand/60 tracking-wide">
-              스토리 스레드
-            </span>
-            <svg viewBox="0 0 16 16" className="size-3 text-ink-muted/30" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <path d="M6 4l4 4-4 4" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </div>
-        )}
       </div>
     </motion.button>
   );

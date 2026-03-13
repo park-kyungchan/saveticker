@@ -46,7 +46,12 @@ export function BreakingTicker({ articles, onArticleClick, className }: Breaking
       </div>
 
       {/* Horizontal scroll */}
-      <div className="flex gap-2.5 overflow-x-auto scrollbar-none pb-1 -mx-4 px-4 snap-x snap-mandatory">
+      <div
+        role="region"
+        aria-roledescription="carousel"
+        aria-label="속보 뉴스"
+        className="flex gap-2.5 overflow-x-auto scrollbar-none pb-1 -mx-4 px-4 snap-x snap-mandatory"
+      >
         {articles.map((article, i) => (
           <motion.button
             key={article._id}

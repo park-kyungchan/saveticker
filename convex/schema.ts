@@ -1,6 +1,6 @@
 // convex/schema.ts
 // Generated from ontology/data.ts + ontology/logic.ts
-// 7 entities → 7 tables (redesigned from 10)
+// 4 entities → 4 tables (stocks, newsArticles, users, explainers)
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
@@ -76,10 +76,6 @@ export default defineSchema({
     summaryKo: v.optional(v.string()),
     /** Korean body (직역, faithful translation) / 한국어 본문 (직역) */
     bodyKo: v.optional(v.string()),
-    /** FK to StoryThread (nullable) / 스토리 스레드 FK (nullable) */
-    storyThreadId: v.optional(v.id("storyThreads")),
-    /** Position within StoryThread timeline / 스토리 스레드 내 순서 */
-    orderInThread: v.optional(v.number()),
     /** Last update timestamp / 최종 수정 시각 */
     updatedAt: v.number(),
     /** User who last updated this record / 최종 수정자 */
@@ -87,7 +83,7 @@ export default defineSchema({
   })
     .index("by_publishedAt", ["publishedAt"])
     .index("by_category", ["category"])
-    .index("by_storyThreadId", ["storyThreadId"])
+    .index("by_sourceName", ["sourceName"])
     .searchIndex("search_title", { searchField: "title", filterFields: ["category"] }),
 
   // ===========================================================================
@@ -109,32 +105,6 @@ export default defineSchema({
     updatedBy: v.optional(v.string()),
   })
     .index("by_email", ["email"]),
-
-  // ===========================================================================
-  // 4. storyThreads — Chronological narrative grouping (PM Feature 1)
-  // ===========================================================================
-
-  /**
-   * Chronological narrative grouping. Connects disconnected breaking news.
-   * 시간순 내러티브 그룹. 단편 속보를 스토리 타임라인으로 연결.
-   */
-  storyThreads: defineTable({
-    /** English title / 영문 제목 */
-    title: v.string(),
-    /** Korean title / 한국어 제목 */
-    titleKo: v.string(),
-    /** English description / 영문 설명 */
-    description: v.optional(v.string()),
-    /** Korean description / 한국어 설명 */
-    descriptionKo: v.optional(v.string()),
-    /** Thread status / 스레드 상태 */
-    status: v.union(v.literal("active"), v.literal("completed")),
-    /** Last update timestamp / 최종 수정 시각 */
-    updatedAt: v.number(),
-    /** User who last updated this record / 최종 수정자 */
-    updatedBy: v.optional(v.string()),
-  })
-    .index("by_status", ["status"]),
 
   // ===========================================================================
   // 5. explainers — Plain language card (PM Feature 2, was articleExplainers)
@@ -171,63 +141,4 @@ export default defineSchema({
     .index("by_newsArticleId", ["newsArticleId"])
     .index("by_difficultyLevel", ["difficultyLevel"]),
 
-  // ===========================================================================
-  // 6. impactChains — Cause-effect container (PM Feature 3)
-  // ===========================================================================
-
-  /**
-   * Cause-effect chain container, linked to a story thread.
-   * 인과관계 체인 컨테이너, 스토리 스레드에 연결.
-   */
-  impactChains: defineTable({
-    /** FK to StoryThread / 스토리 스레드 FK */
-    storyThreadId: v.id("storyThreads"),
-    /** English title / 영문 제목 */
-    title: v.string(),
-    /** Korean title / 한국어 제목 */
-    titleKo: v.string(),
-    /** English description / 영문 설명 */
-    description: v.optional(v.string()),
-    /** Korean description / 한국어 설명 */
-    descriptionKo: v.optional(v.string()),
-    /** Last update timestamp / 최종 수정 시각 */
-    updatedAt: v.number(),
-    /** User who last updated this record / 최종 수정자 */
-    updatedBy: v.optional(v.string()),
-  })
-    .index("by_storyThreadId", ["storyThreadId"]),
-
-  // ===========================================================================
-  // 7. impactNodes — Individual chain node (PM Feature 3)
-  // ===========================================================================
-
-  /**
-   * Individual node in an impact chain. Self-referential tree structure.
-   * 임팩트 체인의 개별 노드. 자기참조 트리 구조.
-   */
-  impactNodes: defineTable({
-    /** FK to ImpactChain / 임팩트 체인 FK */
-    chainId: v.id("impactChains"),
-    /** Parent node FK (null = root) / 부모 노드 FK (null = 루트) */
-    parentNodeId: v.optional(v.id("impactNodes")),
-    /** FK to source NewsArticle / 출처 뉴스 기사 FK */
-    newsArticleId: v.optional(v.id("newsArticles")),
-    /** English label / 영문 라벨 */
-    label: v.string(),
-    /** Korean label / 한국어 라벨 */
-    labelKo: v.string(),
-    /** English description / 영문 설명 */
-    description: v.optional(v.string()),
-    /** Korean description / 한국어 설명 */
-    descriptionKo: v.optional(v.string()),
-    /** Display order among siblings / 형제 노드 간 표시 순서 */
-    ordinal: v.number(),
-    /** Last update timestamp / 최종 수정 시각 */
-    updatedAt: v.number(),
-    /** User who last updated this record / 최종 수정자 */
-    updatedBy: v.optional(v.string()),
-  })
-    .index("by_chainId", ["chainId"])
-    .index("by_parentNodeId", ["parentNodeId"])
-    .index("by_newsArticleId", ["newsArticleId"]),
 });

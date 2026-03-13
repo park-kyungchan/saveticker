@@ -58,8 +58,8 @@ export async function articleExplainer(
  * Articles mentioning a specific ticker symbol.
  * 특정 티커 심볼을 언급하는 기사.
  *
- * Convex cannot index into arrays, so this scans articles.
- * Fix: Added take() guard to prevent unbounded scan.
+ * NOTE: Convex cannot index into arrays — full-table scan + filter is expected
+ * at prototype scale. For production, consider a separate junction table.
  */
 export async function articlesByTicker(
   ctx: QueryCtx,
@@ -94,30 +94,27 @@ export async function articlesByCategory(
 }
 
 /**
- * Articles filtered by source name.
- * 출처 이름별 기사 필터.
- * Fix: Added take() guard.
+ * Articles filtered by source name using by_sourceName index.
+ * 출처 이름별 기사 필터 (인덱스 사용).
  */
 export async function articlesBySource(
   ctx: QueryCtx,
   sourceName: string,
   limit: number = 50,
 ): Promise<Doc<"newsArticles">[]> {
-  const all = await ctx.db
+  return await ctx.db
     .query("newsArticles")
-    .withIndex("by_publishedAt")
+    .withIndex("by_sourceName", (q) => q.eq("sourceName", sourceName))
     .order("desc")
-    .take(MAX_SCAN_LIMIT);
-
-  return all
-    .filter((a) => a.sourceName === sourceName)
-    .slice(0, limit);
+    .take(limit);
 }
 
 /**
  * Articles containing a specific tag.
  * 특정 태그를 포함하는 기사.
- * Fix: Added take() guard.
+ *
+ * NOTE: Convex cannot index into arrays — full-table scan + filter is expected
+ * at prototype scale. For production, consider a separate junction table.
  */
 export async function articlesByTag(
   ctx: QueryCtx,

@@ -64,6 +64,22 @@ export function SwipeableRow({
       >
         {children}
       </motion.div>
+
+      {/* Keyboard/screen-reader fallback for swipe action */}
+      <button
+        type="button"
+        className="sr-only focus:not-sr-only focus:absolute focus:right-2 focus:top-1/2 focus:-translate-y-1/2 focus:z-20 focus:rounded-lg focus:bg-danger focus:px-3 focus:py-1.5 focus:text-sm focus:font-medium focus:text-white"
+        onClick={() => {
+          if (confirmRequired) {
+            const confirmed = window.confirm(`${actionLabel}하시겠습니까?`);
+            if (!confirmed) return;
+          }
+          haptic(hapticStyle);
+          onSwipeAction();
+        }}
+      >
+        {actionLabel}
+      </button>
     </div>
   );
 }

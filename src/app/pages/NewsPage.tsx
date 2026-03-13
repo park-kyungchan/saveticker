@@ -1,17 +1,14 @@
 /**
- * 뉴스 피드 페이지 v2 — Hero + Breaking Ticker + Tag Filter + Thread Banners.
+ * 뉴스 피드 페이지 v2 — Hero + Breaking Ticker + Tag Filter.
  * Dramatically redesigned news feed with layered visual hierarchy.
  */
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router";
 import { useRecentArticles } from "../../features/news-article/hooks/useRecentArticles";
-import { useThreadsByStatus } from "../../features/story-thread/hooks/useThreadsByStatus";
-import { useThreadArticlesList } from "../../features/news-article/hooks/useThreadArticlesList";
 import { HeroNewsCard } from "../../features/news-article/components/HeroNewsCard";
 import { NewsCard } from "../../features/news-article/components/NewsCard";
 import { BreakingTicker } from "../../features/news-article/components/BreakingTicker";
 import { TagFilterStrip } from "../../features/news-article/components/TagFilterStrip";
-import { StoryThreadBanner } from "../../features/news-article/components/StoryThreadBanner";
 import { FeedSettings } from "../../features/news-article/components/FeedSettings";
 import { AnimatedList } from "../../components/ui/AnimatedList";
 import { FeedSkeleton } from "../../components/ui/Skeleton";
@@ -29,7 +26,6 @@ const TABS: { value: FilterTab; label: string; icon?: string }[] = [
 export function NewsPage() {
   const navigate = useNavigate();
   const recentArticles = useRecentArticles(20);
-  const activeThreads = useThreadsByStatus("active");
   const { keywords } = useFeedStore();
   const [activeTab, setActiveTab] = useState<FilterTab>("all");
   const [activeTag, setActiveTag] = useState<string | null>(null);
@@ -103,11 +99,13 @@ export function NewsPage() {
 
       {/* Tab strip */}
       <div data-label="news.tabs" className="flex items-center gap-1.5">
-        <div className="flex gap-1 flex-1 overflow-x-auto scrollbar-none">
+        <div role="tablist" aria-label="뉴스 필터" className="flex gap-1 flex-1 overflow-x-auto scrollbar-none">
           {TABS.map((tab) => (
             <button
               key={tab.value}
               type="button"
+              role="tab"
+              aria-selected={activeTab === tab.value}
               data-label={`news.tab.${tab.value}`}
               onClick={() => {
                 setActiveTab(tab.value);
@@ -147,19 +145,6 @@ export function NewsPage() {
           activeTag={activeTag}
           onTagChange={setActiveTag}
         />
-      )}
-
-      {/* Story thread banners — only on "all" tab */}
-      {activeTab === "all" && activeThreads && activeThreads.length > 0 && !activeTag && (
-        <div className="space-y-2">
-          {activeThreads.map((thread) => (
-            <ThreadBannerWithCount
-              key={thread._id}
-              thread={thread}
-              onClick={() => navigate(`/threads/${thread._id}`)}
-            />
-          ))}
-        </div>
       )}
 
       {/* Breaking ticker — only on "all" tab */}
@@ -254,16 +239,3 @@ function NewsHeader() {
   );
 }
 
-/** Thread banner with article count from hook */
-import type { Doc } from "../../../convex/_generated/dataModel";
-
-function ThreadBannerWithCount({ thread, onClick }: { thread: Doc<"storyThreads">; onClick: () => void }) {
-  const articles = useThreadArticlesList(thread._id);
-  return (
-    <StoryThreadBanner
-      thread={thread}
-      articleCount={articles?.length}
-      onClick={onClick}
-    />
-  );
-}

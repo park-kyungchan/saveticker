@@ -35,6 +35,7 @@ export function TagFilterStrip({ tags, activeTag, onTagChange, className }: TagF
       {/* "All" chip */}
       <button
         type="button"
+        aria-pressed={activeTag === null}
         onClick={() => onTagChange(null)}
         className={cn(
           "shrink-0 rounded-full border px-3 py-1 text-[11px] font-medium transition-all min-h-[34px]",
@@ -54,6 +55,7 @@ export function TagFilterStrip({ tags, activeTag, onTagChange, className }: TagF
           <button
             key={tag}
             type="button"
+            aria-pressed={isActive}
             onClick={() => onTagChange(isActive ? null : tag)}
             className={cn(
               "shrink-0 rounded-full border px-3 py-1 text-[11px] font-medium transition-all min-h-[34px]",

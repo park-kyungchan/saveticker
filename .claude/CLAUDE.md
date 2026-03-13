@@ -19,7 +19,7 @@ Financial news literacy prototype for PM portfolio. Korean UI, dark glassmorphic
 ## Project Structure
 ```
 ontology/        — schema.ts, data.ts, logic.ts, action.ts, security.ts
-convex/          — schema.ts, mutations.ts (9), queries.ts (14), model/
+convex/          — schema.ts, mutations.ts (3), queries.ts (8), model/
 src/app/         — main.tsx, App.tsx, layouts/, pages/
 src/components/  — shared UI (ui/, auth/, forms/, security/)
 src/features/    — per-entity folders (hooks/, components/, pages/)
@@ -33,14 +33,14 @@ src-ontology/    — archived generated ontology types (not in tsconfig)
 ## Conventions
 - Bilingual JSDoc: `/** English / 한국어 */`
 - Convex tables: camelCase plural (stocks, newsArticles, users, ...)
-- Feature folders: kebab-case (news-article, story-thread, ...)
+- Feature folders: kebab-case (news-article, explainer, ...)
 - Hooks: `use` prefix, one per file
 - All Convex queries prefixed with `get` (getStockById, getRecentArticles, ...)
 - Theme: glassmorphic dark via OKLCH tokens, glass-panel utilities
 - data-label attributes on all interactive/semantic elements
 
-## Entities (7)
-Stock, NewsArticle, User, StoryThread, Explainer, ImpactChain, ImpactNode
+## Entities (4)
+Stock, NewsArticle, User, Explainer
 
 ## Tab Navigation (5 tabs)
 뉴스 (/) | 리포트 (/reports) | 커뮤니티 (/community) | 캘린더 (/calendar) | 내 정보 (/profile)

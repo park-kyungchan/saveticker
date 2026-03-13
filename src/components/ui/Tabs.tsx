@@ -14,9 +14,11 @@ interface TabsProps {
   value: string;
   onChange: (value: string) => void;
   className?: string;
+  /** Accessible label for the tablist / 탭리스트 접근성 라벨 */
+  ariaLabel?: string;
 }
 
-export function Tabs({ items, value, onChange, className }: TabsProps) {
+export function Tabs({ items, value, onChange, className, ariaLabel }: TabsProps) {
   const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
     let nextIndex: number | null = null;
     if (e.key === "ArrowRight" || e.key === "ArrowDown") {
@@ -37,7 +39,7 @@ export function Tabs({ items, value, onChange, className }: TabsProps) {
   };
 
   return (
-    <div data-label="shared.tabs" role="tablist" className={cn("flex gap-1 rounded-lg border glass-panel p-1", className)}>
+    <div data-label="shared.tabs" role="tablist" aria-label={ariaLabel} className={cn("flex gap-1 rounded-lg border glass-panel p-1", className)}>
       {items.map((item, index) => (
         <button
           key={item.value}

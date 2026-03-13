@@ -1,14 +1,11 @@
 /**
- * StoryTelling 탭 — 영향 체인 + 해설.
- * StoryTelling tab — impact chains + explainer.
+ * StoryTelling 탭 — 쉬운 해설 카드.
+ * StoryTelling tab — explainer card.
  */
 import { cn } from "../../../lib/cn";
 import { recipes } from "../../../theme/recipes";
 import { Badge } from "../../../components/ui/Badge";
 import { Spinner } from "../../../components/ui/Spinner";
-import { useChainsByThread } from "../../impact-chain/hooks/useChainsByThread";
-import { useChainNodes } from "../../impact-chain/hooks/useChainNodes";
-import { ImpactNodeTree } from "../../impact-chain/components/ImpactNodeTree";
 import type { Doc } from "../../../../convex/_generated/dataModel";
 
 interface StoryTellingTabProps {
@@ -23,22 +20,9 @@ const difficultyBadge: Record<string, { label: string; variant: "success" | "war
   advanced: { label: "심화", variant: "danger" },
 };
 
-export function StoryTellingTab({ article, explainer, className }: StoryTellingTabProps) {
-  const chains = useChainsByThread(article.storyThreadId);
-
+export function StoryTellingTab({ article: _article, explainer, className }: StoryTellingTabProps) {
   return (
     <div data-label="storytelling.tab" className={cn("space-y-4 animate-in", className)}>
-      {/* Section B: 영향 체인 — pass currentArticleId for highlighting */}
-      {chains && chains.length > 0 && (
-        <section data-label="storytelling.tab.chains" className="space-y-3">
-          <h2 className="text-xs font-medium uppercase tracking-wide text-ink-muted">영향 체인 (Impact Chain)</h2>
-          {chains.map((chain) => (
-            <ChainSection key={chain._id} chain={chain} currentArticleId={article._id} />
-          ))}
-        </section>
-      )}
-
-      {/* Section C: StoryTelling (explainer) */}
       {explainer === undefined ? (
         <div data-label="storytelling.tab.loading" className="flex items-center justify-center py-12">
           <Spinner size="md" />
@@ -50,24 +34,6 @@ export function StoryTellingTab({ article, explainer, className }: StoryTellingT
       ) : (
         <ExplainerSection explainer={explainer} />
       )}
-    </div>
-  );
-}
-
-function ChainSection({ chain, currentArticleId }: { chain: Doc<"impactChains">; currentArticleId: string }) {
-  const nodes = useChainNodes(chain._id);
-
-  return (
-    <div data-label="storytelling.tab.chain" className={cn(recipes.card.base, "glass-panel space-y-3")}>
-      <div className="flex items-center gap-2">
-        <Badge variant="default">영향 체인</Badge>
-        {nodes && <span className="text-xs text-ink-muted">노드 {nodes.length}개</span>}
-      </div>
-      <h3 className="text-sm font-medium text-ink">{chain.titleKo}</h3>
-      {chain.descriptionKo && (
-        <p className="text-xs text-ink-muted">{chain.descriptionKo}</p>
-      )}
-      {nodes && <ImpactNodeTree nodes={nodes} currentArticleId={currentArticleId} />}
     </div>
   );
 }

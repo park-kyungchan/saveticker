@@ -1,9 +1,8 @@
 /**
- * SaveTicker — Seed Data Script (7-entity ontology)
+ * SaveTicker — Seed Data Script (4-entity ontology)
  *
  * Populates the database with prototype data for PM demo.
- * Two story threads: Hormuz Strait Crisis + Private Credit Reckoning.
- * 8 articles (4 Hormuz, 4 Credit), 8 Korean explainers, 2 chains, ~10 nodes.
+ * 8 articles (4 Hormuz, 4 Credit), 8 Korean explainers.
  *
  * Run via Convex dashboard or: bunx convex run seed:seedAll
  */
@@ -87,25 +86,7 @@ export const seedAll = internalMutation({
     });
 
     // =====================================================================
-    // 3. STORY THREADS (2)
-    // =====================================================================
-    const threadHormuz = await ctx.db.insert("storyThreads", {
-      title: "Hormuz Crisis: From Strait Closure to Stagflation Risk",
-      titleKo: "호르무즈 위기: 해협 봉쇄에서 스태그플레이션 위험까지",
-      description: "A 14-day arc (Feb 28 — Mar 12) tracking how US-Iran strikes escalated to a full Strait of Hormuz blockade, triggering cross-domain shockwaves: geopolitical → energy → financial.",
-      descriptionKo: "14일간의 위기 전개(2월 28일 — 3월 12일): 미-이란 공습이 호르무즈 해협 완전 봉쇄로 확대되며 지정학 → 에너지 → 금융으로 이어지는 교차 도메인 충격파 추적.",
-      status: "active", updatedAt: now,
-    });
-    const threadCredit = await ctx.db.insert("storyThreads", {
-      title: "Private Credit Reckoning: The $2 Trillion Question",
-      titleKo: "사모신용의 심판: 2조 달러의 질문",
-      description: "Institution cascade: Blackstone → BlackRock → Blue Owl → Morgan Stanley → JPMorgan. The $2T private credit market faces its first real stress test.",
-      descriptionKo: "기관 연쇄: Blackstone → BlackRock → Blue Owl → Morgan Stanley → JPMorgan. 2조 달러 사모신용 시장이 첫 번째 진짜 스트레스 테스트에 직면.",
-      status: "active", updatedAt: now,
-    });
-
-    // =====================================================================
-    // 4. NEWS ARTICLES (8) — with tags, only articles that have explainers
+    // 3. NEWS ARTICLES (8) — with tags, only articles that have explainers
     // =====================================================================
 
     // --- Thread A: Hormuz (4 articles) ---
@@ -132,7 +113,7 @@ The US military's Central Command (CENTCOM) has disputed Iran's claim of full cl
       mentionedTickers: ["XOM", "CVX", "LMT", "010140", "329180"],
       tags: ["에너지", "지정학", "헤드라인"],
       isOfficial: true,
-      storyThreadId: threadHormuz, orderInThread: 1,
+
       updatedAt: now,
     });
 
@@ -158,7 +139,7 @@ Argus Media에 따르면 전 세계 해상 원유 교역량의 약 1/3이 호르
       mentionedTickers: ["XOM", "010140", "329180"],
       tags: ["에너지", "헤드라인"],
       isOfficial: true,
-      storyThreadId: threadHormuz, orderInThread: 2,
+
       updatedAt: now,
     });
 
@@ -184,7 +165,7 @@ Bernstein analysts outlined a worst-case scenario of $150 per barrel if the conf
       mentionedTickers: ["XOM", "CVX", "036460", "096770"],
       tags: ["에너지", "경제지표"],
       isOfficial: true,
-      storyThreadId: threadHormuz, orderInThread: 3,
+
       updatedAt: now,
     });
 
@@ -208,7 +189,7 @@ Iraq, a key supplier to Korea, has already cut daily production by approximately
       mentionedTickers: ["036460", "096770", "010140"],
       tags: ["에너지", "경제지표"],
       isOfficial: true,
-      storyThreadId: threadHormuz, orderInThread: 4,
+
       updatedAt: now,
     });
 
@@ -234,7 +215,7 @@ The 5% cap is designed to prevent a "structural mismatch between investor capita
       mentionedTickers: ["BLK", "APO", "OWL"],
       tags: ["사모신용", "기업분석"],
       isOfficial: true,
-      storyThreadId: threadCredit, orderInThread: 1,
+
       updatedAt: now,
     });
 
@@ -260,7 +241,7 @@ Unlike publicly traded corporate bonds, private credit loans are not traded on e
       mentionedTickers: ["BLK", "APO", "OWL"],
       tags: ["사모신용", "기업분석"],
       isOfficial: true,
-      storyThreadId: threadCredit, orderInThread: 2,
+
       updatedAt: now,
     });
 
@@ -284,7 +265,7 @@ JPMorgan Chase CEO Jamie Dimon separately expressed concern: "All of our main co
       mentionedTickers: ["BLK", "APO"],
       tags: ["사모신용", "기업분석"],
       isOfficial: true,
-      storyThreadId: threadCredit, orderInThread: 3,
+
       updatedAt: now,
     });
 
@@ -308,7 +289,7 @@ The concern extends beyond individual funds. If private credit defaults rise sha
       mentionedTickers: ["BLK"],
       tags: ["사모신용", "기업분석"],
       isOfficial: true,
-      storyThreadId: threadCredit, orderInThread: 4,
+
       updatedAt: now,
     });
 
@@ -503,153 +484,11 @@ The concern extends beyond individual funds. If private credit defaults rise sha
       updatedAt: now,
     });
 
-    // =====================================================================
-    // 6. IMPACT CHAINS (2) + IMPACT NODES (~10) — with newsArticleId FK
-    // =====================================================================
-
-    // Chain 1: Hormuz → Energy → Inflation cascade
-    const chainHormuz = await ctx.db.insert("impactChains", {
-      storyThreadId: threadHormuz,
-      title: "Hormuz Crisis Impact Cascade",
-      titleKo: "호르무즈 위기 영향 체인",
-      description: "How the Strait of Hormuz closure cascades from geopolitics through energy markets to consumer prices.",
-      descriptionKo: "호르무즈 해협 봉쇄가 지정학에서 에너지 시장을 거쳐 소비자 물가로 이어지는 연쇄 영향.",
-      updatedAt: now,
-    });
-
-    // Root: Strait closure → art1
-    const nodeRoot = await ctx.db.insert("impactNodes", {
-      chainId: chainHormuz,
-      newsArticleId: art1,
-      label: "Strait of Hormuz Blocked",
-      labelKo: "호르무즈 해협 봉쇄",
-      description: "Iran blocks the strait; tanker traffic drops to zero.",
-      descriptionKo: "이란이 해협을 봉쇄; 유조선 통행이 0으로 감소.",
-      ordinal: 1,
-      updatedAt: now,
-    });
-
-    // Level 1: War risk insurance cancelled → art2
-    await ctx.db.insert("impactNodes", {
-      chainId: chainHormuz,
-      parentNodeId: nodeRoot,
-      newsArticleId: art2,
-      label: "War Risk Insurance Cancelled",
-      labelKo: "전쟁위험보험 취소",
-      description: "5 major insurers cancel coverage; commercial shipping halts.",
-      descriptionKo: "5개 주요 보험사가 보장을 취소; 상업 운항 중단.",
-      ordinal: 1,
-      updatedAt: now,
-    });
-
-    // Level 1: Oil supply cut → art3
-    const nodeOil = await ctx.db.insert("impactNodes", {
-      chainId: chainHormuz,
-      parentNodeId: nodeRoot,
-      newsArticleId: art3,
-      label: "Brent Crude +20% → $86/bbl",
-      labelKo: "브렌트유 +20% → $86/배럴",
-      description: "Goldman warns $100 if Hormuz flows don't resume.",
-      descriptionKo: "골드만삭스, 호르무즈 통행 재개 안 되면 $100 경고.",
-      ordinal: 2,
-      updatedAt: now,
-    });
-
-    // Level 2: VLCC rates → art2
-    await ctx.db.insert("impactNodes", {
-      chainId: chainHormuz,
-      parentNodeId: nodeOil,
-      newsArticleId: art2,
-      label: "VLCC Rates +94%",
-      labelKo: "VLCC 운임 +94%",
-      description: "Supertanker rates hit all-time high of $423,736/day.",
-      descriptionKo: "초대형유조선 운임 사상 최고치 일일 $423,736.",
-      ordinal: 1,
-      updatedAt: now,
-    });
-
-    // Level 2: Korea 69% dependency → art4
-    await ctx.db.insert("impactNodes", {
-      chainId: chainHormuz,
-      parentNodeId: nodeOil,
-      newsArticleId: art4,
-      label: "Korea 69% Crude Dependency",
-      labelKo: "한국 69% 원유 의존",
-      description: "Korea imports 69.3% of crude from Middle East, mostly through Hormuz.",
-      descriptionKo: "한국 원유 수입의 69.3%가 중동산, 대부분 호르무즈 경유.",
-      ordinal: 2,
-      updatedAt: now,
-    });
-
-    // Chain 2: Private Credit Contagion
-    const chainCredit = await ctx.db.insert("impactChains", {
-      storyThreadId: threadCredit,
-      title: "Private Credit Contagion Chain",
-      titleKo: "사모신용 전염 체인",
-      description: "How redemption pressure at one fund cascades across the $2T private credit market.",
-      descriptionKo: "한 펀드의 환매 압력이 2조 달러 사모신용 시장 전체로 확산되는 연쇄 반응.",
-      updatedAt: now,
-    });
-
-    // Root: Fund redemption pressure → art13
-    const nodeCreditRoot = await ctx.db.insert("impactNodes", {
-      chainId: chainCredit,
-      newsArticleId: art13,
-      label: "Fund Redemption Pressure",
-      labelKo: "펀드 환매 압력",
-      description: "Investors request more withdrawals than funds can honor.",
-      descriptionKo: "투자자들이 펀드가 충당할 수 있는 것보다 더 많은 환매를 요청.",
-      ordinal: 1,
-      updatedAt: now,
-    });
-
-    // Level 1: Gates activated → art11
-    await ctx.db.insert("impactNodes", {
-      chainId: chainCredit,
-      parentNodeId: nodeCreditRoot,
-      newsArticleId: art11,
-      label: "Redemption Gates Activated (5% cap)",
-      labelKo: "환매 제한 발동 (5% 상한)",
-      description: "BlackRock, Blackstone, Blue Owl, Morgan Stanley all gate.",
-      descriptionKo: "블랙록, 블랙스톤, 블루아울, 모건스탠리 모두 제한 발동.",
-      ordinal: 1,
-      updatedAt: now,
-    });
-
-    // Level 1: Contagion → art12
-    await ctx.db.insert("impactNodes", {
-      chainId: chainCredit,
-      parentNodeId: nodeCreditRoot,
-      newsArticleId: art12,
-      label: "Contagion: Gate → Peer Fund Panic",
-      labelKo: "전염: 제한 → 동종 펀드 패닉",
-      description: "Each gate triggers preemptive redemptions at other funds.",
-      descriptionKo: "각 제한 발동이 다른 펀드에서의 선제적 환매를 유발.",
-      ordinal: 2,
-      updatedAt: now,
-    });
-
-    // Level 1: Bank exposure → art14
-    await ctx.db.insert("impactNodes", {
-      chainId: chainCredit,
-      parentNodeId: nodeCreditRoot,
-      newsArticleId: art14,
-      label: "Bank Exposure Revealed ($133B JPM)",
-      labelKo: "은행 익스포저 노출 ($133B)",
-      description: "Banks lend to the very firms now facing outflows — feedback loop.",
-      descriptionKo: "은행들이 바로 그 유출에 직면한 기업들에 대출 — 피드백 루프.",
-      ordinal: 3,
-      updatedAt: now,
-    });
-
     return {
       stocks: 12,
       users: 3,
-      storyThreads: 2,
       newsArticles: 8,
       explainers: 8,
-      impactChains: 2,
-      impactNodes: 10,
     };
   },
 });

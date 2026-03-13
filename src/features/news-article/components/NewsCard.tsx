@@ -42,6 +42,21 @@ const categoryConfig: Record<string, {
   },
 };
 
+/** Hash source name to accent color / 출처 이름을 색상으로 해시 */
+const sourceColors = [
+  "bg-accent-1", "bg-accent-2", "bg-accent-3", "bg-accent-4", "bg-accent-5",
+  "bg-brand", "bg-info", "bg-warning",
+];
+
+function sourceColor(name: string): string {
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = ((hash << 5) - hash) + name.charCodeAt(i);
+    hash |= 0;
+  }
+  return sourceColors[Math.abs(hash) % sourceColors.length];
+}
+
 /** Category icon SVGs / 카테고리 아이콘 */
 const CategoryIcon = ({ category }: { category: string }) => {
   if (category === "breaking") {
@@ -68,7 +83,6 @@ const CategoryIcon = ({ category }: { category: string }) => {
 export function NewsCard({ article, onClick, className, style, compact = false }: NewsCardProps) {
   const config = categoryConfig[article.category] ?? categoryConfig.general;
   const isBreaking = article.category === "breaking";
-  const hasThread = !!article.storyThreadId;
   const recencyMs = Date.now() - article.publishedAt;
 
   return (
@@ -103,17 +117,30 @@ export function NewsCard({ article, onClick, className, style, compact = false }
       )}
 
       <div className="flex gap-3">
-        {/* Left: category icon capsule */}
-        <div
-          className={cn(
-            "flex shrink-0 items-center justify-center rounded-lg",
-            config.iconBg,
-            config.labelColor,
-            compact ? "size-8" : "size-9",
-          )}
-        >
-          <CategoryIcon category={article.category} />
-        </div>
+        {/* Left: source avatar or category icon capsule */}
+        {article.sourceName ? (
+          <div
+            data-label="news.card.sourceAvatar"
+            className={cn(
+              "flex shrink-0 items-center justify-center rounded-lg text-white font-bold",
+              sourceColor(article.sourceName),
+              compact ? "size-8 text-[11px]" : "size-9 text-xs",
+            )}
+          >
+            {article.sourceName[0].toUpperCase()}
+          </div>
+        ) : (
+          <div
+            className={cn(
+              "flex shrink-0 items-center justify-center rounded-lg",
+              config.iconBg,
+              config.labelColor,
+              compact ? "size-8" : "size-9",
+            )}
+          >
+            <CategoryIcon category={article.category} />
+          </div>
+        )}
 
         {/* Right: content */}
         <div className="min-w-0 flex-1 space-y-1.5">
@@ -181,13 +208,6 @@ export function NewsCard({ article, onClick, className, style, compact = false }
               </div>
             )}
 
-            {/* Thread link */}
-            {hasThread && (
-              <div className="ml-auto flex items-center gap-1">
-                <div className="size-1 rounded-full bg-brand/50" />
-                <span className="text-[9px] font-medium text-brand/50">스레드</span>
-              </div>
-            )}
           </div>
         </div>
       </div>

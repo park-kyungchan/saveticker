@@ -9,14 +9,23 @@ import { create } from "zustand";
 import { persist, createJSONStorage, type StateStorage } from "zustand/middleware";
 import { Capacitor } from "@capacitor/core";
 
+/** Cached Preferences module to avoid repeated dynamic imports */
+var _prefsModule: typeof import("@capacitor/preferences") | null = null;
+
+async function getPreferences() {
+  if (!_prefsModule) {
+    _prefsModule = await import("@capacitor/preferences");
+  }
+  return _prefsModule.Preferences;
+}
+
 /**
  * Capacitor-safe storage adapter.
- * Native: @capacitor/preferences (안전)
+ * Native: @capacitor/preferences (안전, module cached)
  * Web: localStorage (기존 동작 유지)
  */
 const createCapacitorStorage = (): StateStorage => {
   if (!Capacitor.isNativePlatform()) {
-    // Web fallback — localStorage
     return {
       getItem: (name) => localStorage.getItem(name),
       setItem: (name, value) => localStorage.setItem(name, value),
@@ -24,19 +33,18 @@ const createCapacitorStorage = (): StateStorage => {
     };
   }
 
-  // Native — use dynamic import to avoid bundling issue when not available
   return {
     getItem: async (name) => {
-      const { Preferences } = await import("@capacitor/preferences");
+      const Preferences = await getPreferences();
       const { value } = await Preferences.get({ key: name });
       return value;
     },
     setItem: async (name, value) => {
-      const { Preferences } = await import("@capacitor/preferences");
+      const Preferences = await getPreferences();
       await Preferences.set({ key: name, value });
     },
     removeItem: async (name) => {
-      const { Preferences } = await import("@capacitor/preferences");
+      const Preferences = await getPreferences();
       await Preferences.remove({ key: name });
     },
   };

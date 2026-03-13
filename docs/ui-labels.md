@@ -1,11 +1,11 @@
 # UI Labels Registry
 
 > Auto-generated inventory of all `data-label` attributes in the SaveTicker frontend.
-> Last updated: 2026-03-12
+> Last updated: 2026-03-13
 
 ## Summary
-- Total labels: 206 (178 static, 28 dynamic)
-- Files with labels: 33
+- Total labels: ~195 (thread/impact-chain labels removed, explainer labels updated)
+- Files with labels: 30
 
 ## Duplicate Check
 No duplicate static labels found.
@@ -49,13 +49,12 @@ No duplicate static labels found.
 ### explainer
 | Label | File | Element |
 |-------|------|---------|
-| `explainer.tab` | features/explainer/components/ExplainerTab.tsx | div |
-| `explainer.tab.analogy` | features/explainer/components/ExplainerTab.tsx | div |
-| `explainer.tab.body` | features/explainer/components/ExplainerTab.tsx | div |
-| `explainer.tab.contextAfter` | features/explainer/components/ExplainerTab.tsx | section |
-| `explainer.tab.contextBefore` | features/explainer/components/ExplainerTab.tsx | section |
+| `explainer.accordion` | features/explainer/components/ExplainerAccordion.tsx | div |
+| `explainer.statCards` | features/explainer/components/ExplainerStatCards.tsx | div |
+| `explainer.statCards.item[${i}]` | features/explainer/components/ExplainerStatCards.tsx | div (dynamic) |
+| `explainer.tab` | features/explainer/components/ExplainerTab.tsx | article |
 | `explainer.tab.header` | features/explainer/components/ExplainerTab.tsx | div |
-| `explainer.tab.takeaways` | features/explainer/components/ExplainerTab.tsx | ul |
+| `explainer.tab.personalImpact` | features/explainer/components/ExplainerTab.tsx | p |
 | `explainer.tab.title` | features/explainer/components/ExplainerTab.tsx | h3 |
 
 ### glossary
@@ -124,15 +123,9 @@ No duplicate static labels found.
 ### news
 | Label | File | Element |
 |-------|------|---------|
-| `news.card` | features/news-article/components/NewsCard.tsx | div |
+| `news.card` | features/news-article/components/NewsCard.tsx | button |
+| `news.card.sourceAvatar` | features/news-article/components/NewsCard.tsx | div |
 | `news.card.category` | features/news-article/components/NewsCard.tsx | span |
-| `news.card.content` | features/news-article/components/NewsCard.tsx | div |
-| `news.card.footer` | features/news-article/components/NewsCard.tsx | div |
-| `news.card.source` | features/news-article/components/NewsCard.tsx | span |
-| `news.card.summary` | features/news-article/components/NewsCard.tsx | p |
-| `news.card.thumbnail` | features/news-article/components/NewsCard.tsx | div |
-| `news.card.time` | features/news-article/components/NewsCard.tsx | time |
-| `news.card.title` | features/news-article/components/NewsCard.tsx | h3 |
 | `news.detail` | features/news-article/components/NewsDetail.tsx | article |
 | `news.detail.body` | features/news-article/components/NewsDetail.tsx | div |
 | `news.detail.category` | features/news-article/components/NewsDetail.tsx | span |
@@ -241,33 +234,6 @@ No duplicate static labels found.
 | `stocks.loading` | features/stock/pages/StocksPage.tsx | div |
 | `stocks.results` | features/stock/pages/StocksPage.tsx | div |
 | `stocks.search` | features/stock/pages/StocksPage.tsx | input |
-
-### storyThread
-| Label | File | Element |
-|-------|------|---------|
-| `storyThread.card` | features/story-thread/components/ThreadCard.tsx | div |
-| `storyThread.card.description` | features/story-thread/components/ThreadCard.tsx | p |
-| `storyThread.card.header` | features/story-thread/components/ThreadCard.tsx | div |
-| `storyThread.card.statusDot` | features/story-thread/components/ThreadCard.tsx | span |
-| `storyThread.card.title` | features/story-thread/components/ThreadCard.tsx | h3 |
-| `storyThread.timeline` | features/story-thread/components/ThreadTimeline.tsx | div |
-| `storyThread.timeline.dot` | features/story-thread/components/ThreadTimeline.tsx | div |
-| `storyThread.timeline.item` | features/story-thread/components/ThreadTimeline.tsx | div |
-| `storyThread.timeline.time` | features/story-thread/components/ThreadTimeline.tsx | time |
-| `storyThread.timeline.title` | features/story-thread/components/ThreadTimeline.tsx | p |
-
-### threadDetail
-| Label | File | Element |
-|-------|------|---------|
-| `threadDetail.page` | features/story-thread/pages/ThreadDetailPage.tsx | div |
-| `threadDetail.page.loading` | features/story-thread/pages/ThreadDetailPage.tsx | div |
-
-### threads
-| Label | File | Element |
-|-------|------|---------|
-| `threads.page` | features/story-thread/pages/ThreadsPage.tsx | div |
-| `threads.page.list` | features/story-thread/pages/ThreadsPage.tsx | div |
-| `threads.page.loading` | features/story-thread/pages/ThreadsPage.tsx | div |
 
 ### user
 | Label | File | Element |

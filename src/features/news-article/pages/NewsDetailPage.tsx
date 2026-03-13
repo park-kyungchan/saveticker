@@ -45,11 +45,11 @@ export function NewsDetailPage() {
     <div data-label="newsDetail" className="space-y-4 animate-in">
       <PageHeader title={article.titleKo || article.title} showBack />
 
-      <Tabs items={TAB_ITEMS} value={activeTab} onChange={setActiveTab} />
+      <Tabs items={TAB_ITEMS} value={activeTab} onChange={setActiveTab} ariaLabel="기사 보기 모드" />
 
       {activeTab === "original" && <NewsDetail article={article} />}
       {activeTab === "korean" && <KoreanTab article={article} />}
-      {activeTab === "storytelling" && <StoryTellingTab article={article} explainer={explainer ?? null} />}
+      {activeTab === "storytelling" && <StoryTellingTab article={article} explainer={explainer} />}
     </div>
   );
 }
