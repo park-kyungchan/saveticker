@@ -225,8 +225,8 @@ const html = `<!DOCTYPE html>
       <li><strong>배포:</strong> Google Play Store 내부 테스트 트랙 배포 완료 (v3.5.0)</li>
     </ul>
     <div class="project-links">
-      GitHub: <a href="https://github.com/park-kyungchan/saveticker">https://github.com/park-kyungchan/saveticker</a> ·
-      Play Store: 내부 테스트 배포 (io.saveticker.prototype)
+      GitHub: <a href="https://github.com/park-kyungchan/saveticker">https://github.com/park-kyungchan/saveticker</a><br/>
+      Play Store: <a href="https://play.google.com/apps/internaltest/4700569589550437120" style="color:#3b82f6;text-decoration:none;">내부 테스트 배포 (io.saveticker.prototype)</a>
     </div>
   </div>
 </div>
@@ -319,14 +319,14 @@ const html = `<!DOCTYPE html>
 
 <div class="section why-save">
   <div class="section-title">지원 동기 · Why SAVE</div>
-  <p>아래의 생각들은 <strong>아직 매우 초기 단계의 PM 관점</strong>입니다. 확정된 방향이 아니라, SAVE 서비스를 사용하고 프로토타입을 만들면서 느낀 가능성을 정리한 것입니다.</p>
+  <p>SaveTicker 프로토타입에 관한 저의 생각들은, 이번에 포트폴리오를 준비하면서 방향을 고민해 본 <strong>매우 초기 단계의 PM 관점</strong>입니다. 확정된 방향이 아니라, SAVE 서비스를 사용하고 프로토타입을 만들면서 느낀 가능성을 정리한 것입니다.</p>
   <p>수학을 가르치면서 깨달은 것이 있습니다: <strong>복잡한 것을 사용자 수준에 맞게 재구성하는 능력</strong>이 가장 어렵고, 가장 가치 있다는 것입니다. 한국에서 금융 교육은 사실상 전무하고, 대부분의 한국인은 해외 금융 뉴스를 접해도 맥락을 이해하지 못합니다. SAVE가 이 간극을 메우고 있다고 생각하며, 저는 SaveTicker 프로토타입에서 3단계 콘텐츠 파이프라인(원본 → 한국어 → StoryTelling)을 설계하며 가능성을 탐색했습니다.</p>
   <p><strong>PM으로서의 관점:</strong> 금융 문맹을 위한 상세하고 쉬운 맥락 제공이 강화되면, 현재 20~40대 중심의 사용자층이 50~70대 시니어까지 확장될 수 있다고 봅니다. 한국의 50대 이상 인구는 2,000만 명을 넘고 퇴직 후 자산 운용 수요는 급증하지만, 접근 가능한 금융 정보 서비스는 제한적입니다. 이것이 제가 StoryTelling 탭을 '금융 초보자/노인용'으로 설계한 이유입니다.</p>
   <p>다만 이런 방향성은 SAVE 팀의 비전, 기술적 우선순위, 시장 상황에 따라 달라질 수 있습니다. <strong>SAVE 관계자분들과 지속적으로 소통하면서</strong>, 서비스의 현재 방향을 깊이 이해하고, 제 관점을 조율해가며, 팀이 가장 필요로 하는 곳에서 기여하겠습니다.</p>
 </div>
 
 
-<!-- ════════════════ PAGE 3: English ════════════════ -->
+<!-- ════════════════ PAGE 3: English (synced with KO) ════════════════ -->
 <div class="page-break en-section">
   <div class="header">
     <img src="${photoDataUrl}" class="photo" alt="Kyungchan Park" />
@@ -344,85 +344,11 @@ const html = `<!DOCTYPE html>
     </div>
   </div>
 
-  <div class="section">
-    <div class="section-title">Portfolio Project</div>
-    <div class="project-card">
-      <div class="project-title">SaveTicker — Financial News Literacy Prototype</div>
-      <div class="project-subtitle">Personal Project · Jun 2025 — Present · PM-perspective feature proposals for SAVE service</div>
-      <div class="project-tech">
-        <span class="tech-tag">React 19</span>
-        <span class="tech-tag">TypeScript</span>
-        <span class="tech-tag">Convex</span>
-        <span class="tech-tag">Capacitor (Android)</span>
-        <span class="tech-tag">Claude Code</span>
-      </div>
-      <ul class="project-features">
-        <li><strong>Story Threads:</strong> Groups breaking news into chronological timelines with user-personalized tag filtering</li>
-        <li><strong>3-Tab News Detail:</strong> Original (EN) → Korean (faithful + adapted) → StoryTelling (beginner-friendly)</li>
-        <li><strong>Translation QA Pipeline:</strong> AI → PM Review → Approved — 3-stage quality assurance with block-level comparison</li>
-        <li><strong>Impact Chain:</strong> Domino-effect cause-to-result tree for connected news events</li>
-        <li><strong>Deployed:</strong> Google Play Store internal testing (v3.5.0, versionCode 26)</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">Experience</div>
-    <div class="exp-item">
-      <div class="exp-header">
-        <span class="exp-company">FirstHabit — Content Planning / QA</span>
-        <span class="exp-period">Dec 2024 — May 2025</span>
-      </div>
-      <ul class="exp-desc">
-        <li><strong>Planned and filmed</strong> math education content directly; <strong>coordinated editing and QA with the media team</strong> through structured briefs and feedback documents</li>
-        <li>Translated complex curricula into <strong>filming guides and editing directives</strong> so non-specialist editors could faithfully execute planning intent</li>
-        <li>Analyzed learner progress data to reprioritize content and redesign underperforming modules</li>
-        <li>Output: <a href="https://drive.google.com/file/d/1TGw-NGtOovYrqPEjugCYKOOhXi7cko4B/view?usp=drive_link" style="color:#3b82f6;text-decoration:none;">Education media production sample (Google Drive)</a></li>
-      </ul>
-    </div>
-    <div class="exp-item">
-      <div class="exp-header">
-        <span class="exp-company">MFA Math Academy — Education Service Planning</span>
-        <span class="exp-period">Mar 2024 — Dec 2024</span>
-      </div>
-      <ul class="exp-desc">
-        <li>Designed personalized learning paths: diagnosis → custom curriculum → weekly feedback loop</li>
-        <li>Developed and QA'd educational materials with version-controlled revision process</li>
-        <li>Managed stakeholder communication through structured parent progress reports</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">Self-Directed Learning</div>
-    <div class="exp-item">
-      <div class="exp-header">
-        <span class="exp-company">AI-Powered Product Development</span>
-        <span class="exp-period">Jun 2025 — Present</span>
-      </div>
-      <ul class="exp-desc">
-        <li>Built fintech prototype solo using Claude Code (AI Native Runtime) — ontology modeling to Play Store deployment (12 iterative releases, versionCode 15→26)</li>
-        <li>Wrote structured Blueprints (data models, API schemas, screen flows) before code — simulating PM→Dev handoff as a solo operator</li>
-        <li>Designed 3-tier content pipeline: Original → Korean → StoryTelling (beginners/elderly) — applying education pedagogy to finance</li>
-        <li><strong>Independently researching Palantir Ontology architecture</strong> — 4-fold domain model (DATA/LOGIC/ACTION/SECURITY), SENSE→DECIDE→ACT→LEARN digital twin loop, tribal knowledge encoding as typed constants. Built 742-test schema validation system (5,208 assertions)</li>
-        <li><strong>TypeScript + Bun single-stack policy:</strong> all code (schemas, tests, build tools, deploy scripts, PDF generation) unified under TS/Bun. Non-TS dependencies invoked through Bun wrapper functions when unavoidable</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">Education</div>
-    <div class="edu-line">
-      <span class="edu-school">Chonnam National University — Mathematics Education</span>
-      <span class="exp-period">2012 — 2019</span>
-    </div>
-    <div class="edu-detail">Bachelor's Degree · GPA 3.5 / 4.5</div>
-  </div>
-
+  <!-- Technical Communication — synced with KO p1 -->
   <div class="section">
     <div class="section-title">Technical Communication Level</div>
     <div style="font-size: 8.5px; color: #334155; line-height: 1.55; margin-bottom: 6px; padding: 6px 8px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 5px;">
-      <strong>Developer communication capability is currently at a foundational level.</strong> Can read TypeScript code structure and flow in the Claude Code environment, and write data schema definitions and API design docs for dev handoff. Understanding of other languages (Python, Go, Java) is still limited. <strong>Plan:</strong> Starting systematic TypeScript learning as a first language to progressively improve dev communication quality. Focused on PM-side skills: translating planning intent into dev-readable specs and verifying implementation results.
+      <strong>Currently at a foundational level.</strong> Can read TypeScript code structure in the Claude Code environment, and write data schema definitions and API design docs for dev handoff. Understanding of other languages (Python, Go, Java) is still limited. <strong>Plan:</strong> Starting systematic TypeScript learning as a first language to progressively improve dev communication quality.
     </div>
     <div class="skills-grid">
       <div>
@@ -432,15 +358,16 @@ const html = `<!DOCTYPE html>
           <span class="skill-tag">Data Schema Design</span>
           <span class="skill-tag">Screen Flows</span>
           <span class="skill-tag">QA Checklists</span>
+          <span class="skill-tag">Blueprint Docs</span>
         </div>
       </div>
       <div>
-        <div class="skill-group-title">Dev Understanding (Read/Communicate)</div>
+        <div class="skill-group-title">Dev Understanding (Foundational)</div>
         <div class="skill-tags">
-          <span class="skill-tag">TypeScript (read)</span>
+          <span class="skill-tag">TypeScript (learning)</span>
           <span class="skill-tag">React structure</span>
+          <span class="skill-tag">REST API design</span>
           <span class="skill-tag">Git PR review</span>
-          <span class="skill-tag">REST API</span>
         </div>
       </div>
       <div>
@@ -459,6 +386,120 @@ const html = `<!DOCTYPE html>
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- Portfolio — synced with KO -->
+  <div class="section">
+    <div class="section-title">Portfolio Project</div>
+    <div class="project-card">
+      <div class="project-title">SaveTicker — Financial News Literacy Prototype</div>
+      <div class="project-subtitle">Personal Project · Jun 2025 — Present · PM-perspective feature proposals for SAVE service</div>
+      <div class="project-tech">
+        <span class="tech-tag">React 19</span>
+        <span class="tech-tag">TypeScript</span>
+        <span class="tech-tag">Convex (serverless)</span>
+        <span class="tech-tag">Capacitor 8 (Android)</span>
+        <span class="tech-tag">Tailwind CSS v4</span>
+        <span class="tech-tag">Zustand</span>
+        <span class="tech-tag">Claude Code</span>
+      </div>
+      <ul class="project-features">
+        <li><strong>Story Threads:</strong> Groups breaking news (Hormuz/Private Credit) into chronological timelines with tag-based auto-filtering</li>
+        <li><strong>3-Tab News Detail:</strong> Original (EN) → Korean (faithful + adapted) → StoryTelling (beginner-friendly). Target-separated content</li>
+        <li><strong>Translation QA Pipeline:</strong> AI → PM Review → Approved — 3-stage quality assurance with block-level comparison</li>
+        <li><strong>Impact Chain:</strong> Domino-effect cause-to-result tree for connected news events</li>
+        <li><strong>Data Model:</strong> 4 entities + 7 tables, ontology-based DATA/LOGIC/ACTION separation</li>
+        <li><strong>Deployed:</strong> Google Play Store internal testing (v3.5.0)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Experience — synced with KO (3 companies) -->
+  <div class="section">
+    <div class="section-title">Experience</div>
+    <div class="exp-item">
+      <div class="exp-header">
+        <span class="exp-company">FirstHabit — Content Planning / QA</span>
+        <span class="exp-period">Dec 2024 — May 2025</span>
+      </div>
+      <ul class="exp-desc">
+        <li><strong>Planned and filmed</strong> content directly; <strong>coordinated editing/QA with media team</strong> through structured briefs</li>
+        <li>Translated curricula into <strong>filming guides and editing directives</strong> for non-specialist editors</li>
+        <li>Analyzed learner data to reprioritize content and redesign underperforming modules</li>
+        <li>Output: <a href="https://drive.google.com/file/d/1TGw-NGtOovYrqPEjugCYKOOhXi7cko4B/view?usp=drive_link" style="color:#3b82f6;text-decoration:none;">Education media sample (Google Drive)</a></li>
+      </ul>
+    </div>
+    <div class="exp-item">
+      <div class="exp-header">
+        <span class="exp-company">MFA Math Academy — Education Service Planning</span>
+        <span class="exp-period">Mar 2024 — Dec 2024</span>
+      </div>
+      <ul class="exp-desc">
+        <li>Personalized learning paths: diagnosis → custom curriculum → weekly feedback loop</li>
+        <li>Content development and QA with version-controlled revision process</li>
+        <li>Stakeholder communication through structured parent progress reports</li>
+      </ul>
+    </div>
+    <div class="exp-item">
+      <div class="exp-header">
+        <span class="exp-company">AllMighty Campus / Mathssabu Academy</span>
+        <span class="exp-period">Jun 2023 — Mar 2024</span>
+      </div>
+      <ul class="exp-desc">
+        <li>Exam strategy and student-specific <strong>roadmap design</strong> — goal-backward scheduling</li>
+        <li>Self-produced teaching materials with internal QA process</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Self-Directed Learning — synced with KO -->
+  <div class="section">
+    <div class="section-title">Self-Directed Learning</div>
+    <div class="exp-item">
+      <div class="exp-header">
+        <span class="exp-company">AI-Powered Product Development</span>
+        <span class="exp-period">Jun 2025 — Present</span>
+      </div>
+      <ul class="exp-desc">
+        <li>Built fintech prototype solo using Claude Code — "planning → ontology modeling → implementation → QA → deployment" end-to-end</li>
+        <li>Wrote structured Blueprints before code — simulating PM→Dev handoff as a solo operator</li>
+        <li>SAVE-applicable domain work: entity relationships, EN→KO translation pipeline, user-personalized filtering</li>
+        <li>12 iterative Play Store releases (versionCode 15→26) — validating planning intent on real Android devices</li>
+        <li>Applied education pedagogy to finance: Original (investors) → Korean (general) → StoryTelling (beginners/elderly) 3-tier pipeline</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Ontology Research — synced with KO (separate section) -->
+  <div class="section">
+    <div class="section-title">Ontology Research (Ongoing)</div>
+    <div style="font-size: 8.5px; color: #334155; line-height: 1.55; margin-bottom: 5px; padding: 6px 8px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 5px;">
+      <strong>Independently researching Palantir Ontology architecture.</strong> The ontology is not a database schema — it is a <strong>decision-centric operating system</strong>: DATA (state of reality), LOGIC (how to reason), ACTION (levers to change reality), governed by a SENSE→DECIDE→ACT→LEARN feedback loop.
+    </div>
+    <ul class="exp-desc">
+      <li><strong>4-Fold Domain Model:</strong> semantic classification of DATA/LOGIC/ACTION/SECURITY, validated by 742 tests (5,208 assertions)</li>
+      <li><strong>Tribal Knowledge Encoding:</strong> expert decision patterns formalized as DecisionHeuristic/HardConstraint constants — K-LLM consensus mechanism</li>
+      <li><strong>Digital Twin Loop:</strong> the iterative "plan → model → build → verify → improve" process itself implements SENSE→DECIDE→ACT→LEARN</li>
+      <li><strong>TypeScript + Bun single-stack:</strong> all code (schemas, tests, build tools, deploy scripts, PDF generation) unified under TS/Bun</li>
+    </ul>
+  </div>
+
+  <!-- Education — synced with KO -->
+  <div class="section">
+    <div class="section-title">Education</div>
+    <div class="edu-line">
+      <span class="edu-school">Chonnam National University — Mathematics Education</span>
+      <span class="exp-period">2012 — 2019</span>
+    </div>
+    <div class="edu-detail">Bachelor's Degree · GPA 3.5 / 4.5</div>
+  </div>
+
+  <!-- Why SAVE — synced with KO -->
+  <div class="section why-save">
+    <div class="section-title">Why SAVE</div>
+    <p>My thoughts on the SaveTicker prototype are at a <strong>very early PM stage</strong>, shaped while preparing this portfolio. They are not fixed directions but possibilities explored through building and using the SAVE service.</p>
+    <p><strong>As a PM:</strong> If detailed, easy-to-understand context is strengthened for financial beginners, the current 20–40 user base could expand to 50–70 senior investors. Korea's 50+ population exceeds 20 million, and post-retirement investment demand is surging — yet accessible financial information services remain scarce.</p>
+    <p>These directions may evolve with the SAVE team's vision, technical priorities, and market context. I aim to <strong>continuously communicate with the SAVE team</strong>, deeply understand the current direction, calibrate my perspective, and contribute where the team needs me most.</p>
   </div>
 </div>
 
