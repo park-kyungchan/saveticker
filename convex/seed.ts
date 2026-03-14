@@ -126,6 +126,7 @@ export const seedAll = internalMutation({
       titleKo: "미-이스라엘 연합군 이란 타격; 호르무즈 해협 운항 전면 중단",
       summary: "US and Israeli forces launched strikes on Iran. Iran's IRGC declared Strait of Hormuz closed. Tanker traffic dropped from 50/day to zero within days.",
       summaryKo: "미국과 이스라엘이 이란 군사시설을 공습하자 혁명수비대가 호르무즈 해협 봉쇄를 선언했습니다. 유조선 통행이 수일 내 50척에서 0으로 급감하며, 전 세계 원유 공급의 20%가 차단 위기에 놓였습니다.",
+      viewCount: 42,
       body: `US and Israeli forces launched coordinated strikes on Iranian military targets on February 28, marking a significant escalation in Middle East tensions. In response, Iran's Islamic Revolutionary Guard Corps (IRGC) declared the Strait of Hormuz effectively closed to shipping traffic, warning that any vessel attempting passage would be targeted.
 
 Data from the UK Maritime Trade Operations (UKMTO), citing Joint Maritime Information Centre (JMIC) analysis, showed tanker traffic through the strait collapsed from approximately 50 vessels per day on February 28 to just 3 on March 1, and zero by March 3.
@@ -195,6 +196,7 @@ Argus Media에 따르면 전 세계 해상 원유 교역량의 약 1/3이 호르
       titleKo: "유가 20% 급등; 골드만삭스, 브렌트유 전망 상향·$100 경고",
       summary: "Oil prices hit highest since July 2022. Goldman Sachs raised Q2 Brent forecast by $10 to $76/bbl. If Hormuz flows don't resume, Brent could reach $100.",
       summaryKo: "유가가 2022년 7월 이후 최고치로 급등했습니다. 골드만삭스는 2분기 브렌트유 전망을 $10 상향하고, 호르무즈 통행 미재개 시 $100 도달을 경고했습니다. 스태그플레이션 우려가 고조됩니다.",
+      viewCount: 87,
       body: `Oil prices surged approximately 20% in early trading on Monday, hitting their highest level since July 2022, as the expanding US-Israeli military campaign against Iran continued to disrupt energy flows through the Strait of Hormuz.
 
 Goldman Sachs raised its second-quarter 2026 Brent crude forecast by $10 to $76 per barrel, citing the disruption. The investment bank warned that if traffic through the Strait of Hormuz does not resume in the near term, Brent could reach $100 per barrel.
@@ -295,6 +297,7 @@ The 5% cap is designed to prevent a "structural mismatch between investor capita
       titleKo: "사모신용 시장에 균열: 2008년 버블과의 비교, $2조 규모",
       summary: "Private credit approaching $3T. BlackRock marked a private loan from 100 to zero. Mohamed El-Erian calls it 'canary in the coal mine.'",
       summaryKo: "사모신용 시장이 약 $3조에 근접한 가운데, 블랙록이 사모대출 가치를 100에서 0으로 평가절하했습니다. 모하메드 엘-에리안은 '탄광 속 카나리아'라고 경고합니다.",
+      viewCount: 63,
       body: `The private credit market — estimated by Morgan Stanley at approaching $3 trillion in total assets, larger than both the public high-yield bond market and the syndicated loan market — is facing its first major stress test.
 
 Bloomberg News reported that BlackRock slashed the value of a private loan to zero at the end of 2025, just three months after valuing it at 100 cents on the dollar. Mohamed El-Erian warned that private credit may be facing a "canary in the coal mine" moment.
@@ -361,6 +364,7 @@ JPMorgan Chase CEO Jamie Dimon separately expressed concern: "All of our main co
       titleKo: "JPMorgan, 사모신용 포트폴리오 우려 표명",
       summary: "JPMorgan flagged loan downgrades in private credit. The bank has $133B in opaque exposure. Dimon: 'I see a couple of people doing some dumb things.'",
       summaryKo: "JPMorgan이 사모신용 대출 등급 하향을 경고했습니다. 은행의 불투명한 $1,330억 익스포저가 드러나며, 다이먼 CEO는 '몇몇이 어리석은 일을 하고 있다'고 발언했습니다.",
+      viewCount: 31,
       body: `JPMorgan Chase has flagged new concerns in its private credit portfolio analysis, identifying an increasing number of loan downgrades among borrowers in the sector.
 
 JPMorgan committed an additional $50 billion of its balance sheet to private credit last year. When regulators asked major banks to disclose their exposure to non-bank financial institutions, JPMorgan reported roughly $133 billion in a broadly labeled "other" category — declining to provide the detailed breakdown.

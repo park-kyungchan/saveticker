@@ -145,18 +145,19 @@ export function NewsCard({ article, onClick, className, style, compact = false }
         {/* Right: content */}
         <div className="min-w-0 flex-1 space-y-1.5">
           {/* Category label + time */}
-          <div className="flex items-center gap-2">
+          <div data-label="news.card.meta" className="flex items-center gap-2">
             {isBreaking && (
               <span className="relative flex size-1.5">
                 <span className="absolute inline-flex size-full animate-live-dot rounded-full bg-danger" />
                 <span className="relative inline-flex size-1.5 rounded-full bg-danger" />
               </span>
             )}
-            <span className={cn("text-[10px] font-semibold uppercase tracking-[0.06em]", config.labelColor)}>
+            <span data-label="news.card.category" className={cn("text-[10px] font-semibold uppercase tracking-[0.06em]", config.labelColor)}>
               {config.label}
             </span>
             <span className="text-white/15">·</span>
             <time
+              data-label="news.card.time"
               className="text-[10px] text-ink-muted/60"
               dateTime={new Date(article.publishedAt).toISOString()}
             >
@@ -165,7 +166,7 @@ export function NewsCard({ article, onClick, className, style, compact = false }
             {article.sourceName && (
               <>
                 <span className="text-white/15">·</span>
-                <span className="text-[10px] text-ink-muted/50 truncate">
+                <span data-label="news.card.sourceName" className="text-[10px] text-ink-muted/50 truncate">
                   {article.sourceName}
                 </span>
               </>
@@ -174,6 +175,7 @@ export function NewsCard({ article, onClick, className, style, compact = false }
 
           {/* Title */}
           <p
+            data-label="news.card.title"
             className={cn(
               "font-medium text-ink leading-snug group-hover:text-white transition-colors duration-200",
               compact ? "text-[13px] line-clamp-2" : "text-sm line-clamp-2",
@@ -185,16 +187,16 @@ export function NewsCard({ article, onClick, className, style, compact = false }
 
           {/* Summary — hidden in compact */}
           {!compact && (
-            <p className="text-[12px] leading-relaxed text-ink-muted/70 line-clamp-2">
+            <p data-label="news.card.summary" className="text-[12px] leading-relaxed text-ink-muted/70 line-clamp-2">
               {article.summaryKo || article.summary}
             </p>
           )}
 
           {/* Bottom: tickers + thread indicator */}
-          <div className="flex items-center gap-2 pt-0.5">
+          <div data-label="news.card.footer" className="flex items-center gap-2 pt-0.5">
             {/* Thread indicator */}
             {article.storyThreadId && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-brand/10 border border-brand/20 px-2 py-px text-[9px] font-medium text-brand/80">
+              <span data-label="news.card.threadBadge" className="inline-flex items-center gap-1 rounded-full bg-brand/10 border border-brand/20 px-2 py-px text-[9px] font-medium text-brand/80">
                 <svg className="size-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m9.86-2.81a4.5 4.5 0 0 0-1.242-7.244l4.5-4.5a4.5 4.5 0 1 1 6.364 6.364l-1.757 1.757" />
                 </svg>
@@ -204,7 +206,7 @@ export function NewsCard({ article, onClick, className, style, compact = false }
 
             {/* Tickers */}
             {article.mentionedTickers && article.mentionedTickers.length > 0 && (
-              <div className="flex items-center gap-1">
+              <div data-label="news.card.tickers" className="flex items-center gap-1">
                 {article.mentionedTickers.slice(0, 3).map((ticker) => (
                   <span
                     key={ticker}

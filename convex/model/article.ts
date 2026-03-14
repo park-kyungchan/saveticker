@@ -133,6 +133,41 @@ export async function articlesByTag(
 }
 
 /**
+ * Most viewed article in last 24 hours — hero card candidate.
+ * Falls back to most recent article if no views exist.
+ * 24시간 내 최다 조회 기사 — hero 카드 후보. 조회수 없으면 최신 기사로 폴백.
+ *
+ * NOTE: `since` is passed from the client (bucketed to the nearest hour)
+ * to avoid Date.now() in queries — Convex best practice for determinism
+ * and cache efficiency.
+ */
+export async function todayMostViewed(
+  ctx: QueryCtx,
+  since: number,
+): Promise<Doc<"newsArticles"> | null> {
+  // Scan recent articles and find the one with highest viewCount
+  const recent = await ctx.db
+    .query("newsArticles")
+    .withIndex("by_publishedAt")
+    .order("desc")
+    .take(MAX_SCAN_LIMIT);
+
+  const todayArticles = recent.filter((a) => a.publishedAt >= since);
+
+  // Find article with highest viewCount among today's articles
+  const hero = todayArticles.reduce<Doc<"newsArticles"> | null>((best, a) => {
+    const count = a.viewCount ?? 0;
+    if (count > 0 && (best === null || count > (best.viewCount ?? 0))) {
+      return a;
+    }
+    return best;
+  }, null);
+
+  // Fallback: most recent article if no views
+  return hero ?? recent[0] ?? null;
+}
+
+/**
  * Title prefix search for article search bar.
  * 기사 검색바용 제목 접두어 검색.
  */

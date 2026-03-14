@@ -255,6 +255,26 @@ export const mutations = [
     reviewLevel: "monitor" as AutonomyLevel,
     // DH-ACTION-01: simple status update, no complex validation needed
   },
+  // =========================================================================
+  // View Count (Hero Card)
+  // =========================================================================
+
+  /** M-11: incrementViewCount — Increment article view count by 1. / 기사 조회수 1 증가. */
+  {
+    apiName: "incrementViewCount",
+    description: {
+      en: "Increment the view count of a news article by 1",
+      ko: "뉴스 기사 조회수를 1 증가",
+    },
+    mutationType: "modify",
+    entityApiName: "NewsArticle",
+    parameters: [
+      { name: "articleId", type: "string", required: true, description: { en: "NewsArticle ID", ko: "뉴스 기사 ID" } },
+    ],
+    edits: [{ type: "modify", target: "NewsArticle", properties: ["viewCount"] }],
+    reviewLevel: "monitor" as AutonomyLevel,
+    // DH-ACTION-01: simple counter increment, no complex validation
+  },
 ] as const satisfies readonly OntologyMutation[];
 // == END: mutations ==
 

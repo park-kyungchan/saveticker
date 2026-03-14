@@ -11,6 +11,7 @@ import { v } from "convex/values";
 
 import { validateExplainerCreate } from "./model/explainer";
 import { collectDescendantIds } from "./model/impactChain";
+import { requireRole } from "./model/requireRole";
 
 // ===========================================================================
 // M-1: createStoryThread — Insert StoryThread (PM Feature 1)
@@ -29,9 +30,11 @@ export const createStoryThread = mutation({
     status: v.union(v.literal("active"), v.literal("completed")),
   },
   handler: async (ctx, args) => {
+    const role = await requireRole(ctx, "StoryThread", "create");
     return await ctx.db.insert("storyThreads", {
       ...args,
       updatedAt: Date.now(),
+      updatedBy: role,
     });
   },
 });
@@ -51,6 +54,7 @@ export const assignArticleToThread = mutation({
     orderInThread: v.number(),
   },
   handler: async (ctx, args) => {
+    const role = await requireRole(ctx, "NewsArticle", "update");
     const article = await ctx.db.get(args.articleId);
     if (!article) throw new Error("Article not found");
 
@@ -58,6 +62,7 @@ export const assignArticleToThread = mutation({
       storyThreadId: args.threadId,
       orderInThread: args.orderInThread,
       updatedAt: Date.now(),
+      updatedBy: role,
     });
   },
 });
@@ -85,12 +90,14 @@ export const createExplainer = mutation({
     ),
   },
   handler: async (ctx, args) => {
+    const role = await requireRole(ctx, "Explainer", "create");
     const canCreate = await validateExplainerCreate(ctx, args.newsArticleId);
     if (!canCreate) throw new Error("Explainer already exists for this article");
 
     return await ctx.db.insert("explainers", {
       ...args,
       updatedAt: Date.now(),
+      updatedBy: role,
     });
   },
 });
@@ -120,11 +127,12 @@ export const updateExplainer = mutation({
     ),
   },
   handler: async (ctx, args) => {
+    const role = await requireRole(ctx, "Explainer", "update");
     const { explainerId, ...updates } = args;
     const explainer = await ctx.db.get(explainerId);
     if (!explainer) throw new Error("Explainer not found");
 
-    const patch: Record<string, unknown> = { updatedAt: Date.now() };
+    const patch: Record<string, unknown> = { updatedAt: Date.now(), updatedBy: role };
     for (const [key, value] of Object.entries(updates)) {
       if (value !== undefined) patch[key] = value;
     }
@@ -146,11 +154,12 @@ export const updateUserProfile = mutation({
     displayName: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
+    const role = await requireRole(ctx, "User", "update");
     const { userId, ...updates } = args;
     const user = await ctx.db.get(userId);
     if (!user) throw new Error("User not found");
 
-    const patch: Record<string, unknown> = { updatedAt: Date.now() };
+    const patch: Record<string, unknown> = { updatedAt: Date.now(), updatedBy: role };
     if (updates.displayName !== undefined) patch.displayName = updates.displayName;
 
     await ctx.db.patch(userId, patch);
@@ -175,11 +184,12 @@ export const updateStoryThread = mutation({
     status: v.optional(v.union(v.literal("active"), v.literal("completed"))),
   },
   handler: async (ctx, args) => {
+    const role = await requireRole(ctx, "StoryThread", "update");
     const { threadId, ...updates } = args;
     const thread = await ctx.db.get(threadId);
     if (!thread) throw new Error("StoryThread not found");
 
-    const patch: Record<string, unknown> = { updatedAt: Date.now() };
+    const patch: Record<string, unknown> = { updatedAt: Date.now(), updatedBy: role };
     for (const [key, value] of Object.entries(updates)) {
       if (value !== undefined) patch[key] = value;
     }
@@ -206,12 +216,14 @@ export const updateTranslationStatus = mutation({
     translationNote: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
+    const role = await requireRole(ctx, "NewsArticle", "update");
     const article = await ctx.db.get(args.articleId);
     if (!article) throw new Error("Article not found");
 
     const patch: Record<string, unknown> = {
       translationStatus: args.translationStatus,
       updatedAt: Date.now(),
+      updatedBy: role,
     };
 
     if (args.translationNote !== undefined) {
@@ -220,6 +232,24 @@ export const updateTranslationStatus = mutation({
     }
 
     await ctx.db.patch(args.articleId, patch);
+  },
+});
+
+// ===========================================================================
+// M-11: incrementViewCount — Hero Card view counter
+// ===========================================================================
+
+/**
+ * Increment article view count by 1.
+ * 기사 조회수 1 증가.
+ */
+export const incrementViewCount = mutation({
+  args: { articleId: v.id("newsArticles") },
+  handler: async (ctx, { articleId }) => {
+    await requireRole(ctx, "NewsArticle", "update");
+    const article = await ctx.db.get(articleId);
+    if (!article) throw new Error("Article not found");
+    await ctx.db.patch(articleId, { viewCount: (article.viewCount ?? 0) + 1 });
   },
 });
 
@@ -240,9 +270,11 @@ export const createImpactChain = mutation({
     descriptionKo: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
+    const role = await requireRole(ctx, "ImpactChain", "create");
     return await ctx.db.insert("impactChains", {
       ...args,
       updatedAt: Date.now(),
+      updatedBy: role,
     });
   },
 });
@@ -267,9 +299,11 @@ export const addImpactNode = mutation({
     ordinal: v.number(),
   },
   handler: async (ctx, args) => {
+    const role = await requireRole(ctx, "ImpactNode", "create");
     return await ctx.db.insert("impactNodes", {
       ...args,
       updatedAt: Date.now(),
+      updatedBy: role,
     });
   },
 });
@@ -287,6 +321,7 @@ export const removeImpactNode = mutation({
     impactNodeId: v.id("impactNodes"),
   },
   handler: async (ctx, args) => {
+    await requireRole(ctx, "ImpactNode", "delete");
     const node = await ctx.db.get(args.impactNodeId);
     if (!node) throw new Error("ImpactNode not found");
 

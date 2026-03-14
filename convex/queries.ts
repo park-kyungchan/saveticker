@@ -9,7 +9,7 @@
 import { query } from "./_generated/server";
 import { v } from "convex/values";
 
-import { recentArticles, articleById, articleExplainer, articlesByTicker, searchArticles, articlesByCategory, articlesBySource, articlesByTag } from "./model/article";
+import { recentArticles, articleById, articleExplainer, articlesByTicker, searchArticles, articlesByCategory, articlesBySource, articlesByTag, todayMostViewed } from "./model/article";
 import { allThreads, threadById, threadArticles, threadsByStatus } from "./model/storyThread";
 import { chainsByThread, chainNodes, chainById } from "./model/impactChain";
 import { stockById, stockByTicker } from "./model/stock";
@@ -85,6 +85,18 @@ export const getArticlesByTag = query({
   args: { tag: v.string() },
   handler: async (ctx, args) => {
     return await articlesByTag(ctx, args.tag);
+  },
+});
+
+/**
+ * Most viewed article in last 24h for hero card.
+ * Client passes `since` (bucketed timestamp) to avoid Date.now() in query.
+ * 24시간 내 최다 조회 기사 (hero 카드용). 클라이언트가 since를 전달.
+ */
+export const getTodayHero = query({
+  args: { since: v.number() },
+  handler: async (ctx, { since }) => {
+    return await todayMostViewed(ctx, since);
   },
 });
 

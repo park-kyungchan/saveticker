@@ -2,7 +2,10 @@
  * 뉴스 기사 상세 페이지 — 원본(EN) / 한국어 / StoryTelling 3탭.
  * News article detail page — 3-tab: Original, Korean, StoryTelling.
  */
+import { useEffect, useRef } from "react";
 import { useParams, useSearchParams } from "react-router";
+import { useMutation } from "convex/react";
+import { api } from "../../../../convex/_generated/api";
 import { useArticleById } from "../hooks/useArticleById";
 import { useArticleExplainer } from "../../explainer/hooks/useArticleExplainer";
 import { NewsDetail } from "../components/NewsDetail";
@@ -22,11 +25,21 @@ export function NewsDetailPage() {
   const { id } = useParams<{ id: string }>();
   const article = useArticleById(id);
   const explainer = useArticleExplainer(id);
+  const incrementView = useMutation(api.mutations.incrementViewCount);
+  const viewedRef = useRef<string | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const activeTab = searchParams.get("view") || "original";
   const setActiveTab = (tab: string) => {
     setSearchParams((p) => { p.set("view", tab); return p; }, { replace: true });
   };
+
+  // Increment view count once per article visit
+  useEffect(() => {
+    if (article && article._id && viewedRef.current !== article._id) {
+      viewedRef.current = article._id;
+      incrementView({ articleId: article._id });
+    }
+  }, [article, incrementView]);
 
   if (article === undefined) {
     return (

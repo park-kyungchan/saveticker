@@ -1,14 +1,14 @@
 /**
- * 뉴스 피드 페이지 v2 — Hero + Breaking Ticker + Tag Filter.
+ * 뉴스 피드 페이지 v2 — Hero + Breaking Ticker + Tab Filter.
  * Dramatically redesigned news feed with layered visual hierarchy.
  */
 import { useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { useRecentArticles } from "../../features/news-article/hooks/useRecentArticles";
+import { useTodayHero } from "../../features/news-article/hooks/useTodayHero";
 import { HeroNewsCard } from "../../features/news-article/components/HeroNewsCard";
 import { NewsCard } from "../../features/news-article/components/NewsCard";
 import { BreakingTicker } from "../../features/news-article/components/BreakingTicker";
-import { TagFilterStrip } from "../../features/news-article/components/TagFilterStrip";
 import { FeedSettings } from "../../features/news-article/components/FeedSettings";
 import { AnimatedList } from "../../components/ui/AnimatedList";
 import { FeedSkeleton } from "../../components/ui/Skeleton";
@@ -28,30 +28,19 @@ const TABS: { value: FilterTab; label: string; icon?: string }[] = [
 export function NewsPage() {
   const navigate = useNavigate();
   const recentArticles = useRecentArticles(20);
+  const todayHero = useTodayHero();
   const threads = useAllThreads();
   const { keywords } = useFeedStore();
   const [searchParams, setSearchParams] = useSearchParams();
   const activeTab = (searchParams.get("tab") as FilterTab) || "all";
-  const activeTag = searchParams.get("tag");
   const feedSettingsOpen = searchParams.get("settings") === "1";
 
   const setActiveTab = (tab: FilterTab) => {
-    setSearchParams((p) => { p.set("tab", tab); p.delete("tag"); return p; }, { replace: true });
-  };
-  const setActiveTag = (tag: string | null) => {
-    setSearchParams((p) => { if (tag) p.set("tag", tag); else p.delete("tag"); return p; }, { replace: true });
+    setSearchParams((p) => { p.set("tab", tab); return p; }, { replace: true });
   };
   const setFeedSettingsOpen = (open: boolean) => {
     setSearchParams((p) => { if (open) p.set("settings", "1"); else p.delete("settings"); return p; }, { replace: true });
   };
-
-  // Extract unique tags from articles
-  const allTags = useMemo(() => {
-    if (!recentArticles) return [];
-    const tagSet = new Set<string>();
-    recentArticles.forEach((a) => a.tags?.forEach((t) => tagSet.add(t)));
-    return Array.from(tagSet);
-  }, [recentArticles]);
 
   // Filter articles
   const { heroArticle, breakingArticles, feedArticles } = useMemo(() => {
@@ -79,22 +68,21 @@ export function NewsPage() {
       }
     }
 
-    // Tag filter
-    if (activeTag) {
-      filtered = filtered.filter((a) => a.tags?.includes(activeTag));
-    }
+    // Hero: use view-count-based hero from query, fallback to first filtered
+    const hero = (todayHero && filtered.some((a) => a._id === todayHero._id))
+      ? todayHero
+      : filtered[0] ?? null;
 
-    // Separate hero (first item), breaking, and rest
+    // Separate breaking and rest — exclude hero from feed
     const breaking = filtered.filter((a) => a.category === "breaking");
-    const hero = filtered[0] ?? null;
-    const rest = filtered.slice(1);
+    const rest = filtered.filter((a) => a._id !== hero?._id);
 
     return {
       heroArticle: hero,
       breakingArticles: activeTab === "all" ? breaking.slice(0, 5) : [],
       feedArticles: rest,
     };
-  }, [recentArticles, activeTab, activeTag, keywords]);
+  }, [recentArticles, todayHero, activeTab, keywords]);
 
   // Loading state
   if (recentArticles === undefined) {
@@ -121,10 +109,7 @@ export function NewsPage() {
               role="tab"
               aria-selected={activeTab === tab.value}
               data-label={`news.tab.${tab.value}`}
-              onClick={() => {
-                setActiveTab(tab.value);
-                setActiveTag(null);
-              }}
+              onClick={() => setActiveTab(tab.value)}
               className={`shrink-0 rounded-full px-4 py-1.5 text-[12px] font-semibold transition-all min-h-[44px] ${
                 activeTab === tab.value
                   ? "bg-white/12 text-ink border border-white/15 shadow-sm"
@@ -152,22 +137,13 @@ export function NewsPage() {
         )}
       </div>
 
-      {/* Tag filter strip */}
-      {allTags.length > 0 && activeTab !== "feed" && (
-        <TagFilterStrip
-          tags={allTags}
-          activeTag={activeTag}
-          onTagChange={setActiveTag}
-        />
-      )}
-
-      {/* Story threads — only on "all" tab, no tag filter */}
-      {activeTab === "all" && !activeTag && threads && threads.length > 0 && (
+      {/* Story threads — only on "all" tab */}
+      {activeTab === "all" && threads && threads.length > 0 && (
         <StoryThreadSection threads={threads} />
       )}
 
       {/* Breaking ticker — only on "all" tab */}
-      {activeTab === "all" && breakingArticles.length > 0 && !activeTag && (
+      {activeTab === "all" && breakingArticles.length > 0 && (
         <BreakingTicker
           articles={breakingArticles}
           onArticleClick={(id) => navigate(`/news/${id}`)}

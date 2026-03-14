@@ -86,6 +86,8 @@ export default defineSchema({
     ),
     /** PM review notes on translation quality / PM 번역 검수 노트 */
     translationNotes: v.optional(v.array(v.string())),
+    /** Number of times this article has been viewed / 기사 조회수 */
+    viewCount: v.optional(v.number()),
     /** Last update timestamp / 최종 수정 시각 */
     updatedAt: v.number(),
     /** User who last updated this record / 최종 수정자 */
@@ -95,6 +97,7 @@ export default defineSchema({
     .index("by_category", ["category"])
     .index("by_sourceName", ["sourceName"])
     .index("by_storyThreadId", ["storyThreadId"])
+    .index("by_viewCount", ["viewCount"])
     .searchIndex("search_title", { searchField: "title", filterFields: ["category"] }),
 
   // ===========================================================================

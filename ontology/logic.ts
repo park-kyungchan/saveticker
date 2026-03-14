@@ -502,6 +502,25 @@ export const queries = [
       { name: "tag", type: "string", description: { en: "Tag to search for", ko: "검색할 태그" }, required: true },
     ],
   },
+  // =========================================================================
+  // Hero Card (View Count)
+  // =========================================================================
+
+  /** Q-16: todayMostViewed — Most viewed article in last 24 hours. / 24시간 내 최다 조회 기사. */
+  {
+    apiName: "todayMostViewed",
+    description: {
+      en: "Most viewed article in the last 24 hours — used for hero card selection. Falls back to most recent if no views.",
+      ko: "최근 24시간 내 최다 조회 기사 — hero 카드 선택에 사용. 조회수 없으면 최신 기사로 폴백.",
+    },
+    entityApiName: "NewsArticle",
+    queryType: "filter",
+    filterFields: [
+      { propertyApiName: "publishedAt", operators: ["gte"] },
+      { propertyApiName: "viewCount", operators: ["desc"] },
+    ],
+    parameters: [],
+  },
 ] as const satisfies readonly OntologyQuery[];
 // == END: queries ==
 

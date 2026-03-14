@@ -38,33 +38,55 @@ export function StoryTellingTab({ article: _article, explainer, className }: Sto
   );
 }
 
+/** Extract one-line summary from storyBody (first sentence) */
+function extractOneLine(body: string): string {
+  const match = body.match(/^[^.!?]+[.!?]/);
+  return match ? match[0].trim() : body.split("\n")[0].slice(0, 80);
+}
+
+/** Estimate reading time in minutes */
+function readingTime(text: string): number {
+  return Math.max(1, Math.ceil(text.length / 500));
+}
+
 function ExplainerSection({ explainer }: { explainer: Doc<"explainers"> }) {
   const difficulty = difficultyBadge[explainer.difficultyLevel] ?? {
     label: explainer.difficultyLevel,
     variant: "success" as const,
   };
+  const oneLine = extractOneLine(explainer.storyBody);
+  const minutes = readingTime(explainer.storyBody);
 
   return (
     <article data-label="storytelling.tab.explainer" className={cn(recipes.card.base, "glass-panel space-y-4")}>
+      {/* Header: difficulty + reading time */}
       <div className="flex items-center gap-2">
         <Badge variant={difficulty.variant}>{difficulty.label}</Badge>
+        <span className="text-xs text-ink-muted/60">약 {minutes}분 읽기</span>
       </div>
 
-      <h3 data-label="storytelling.tab.explainer.title" className="text-base font-medium text-ink">
+      {/* One-line summary — prominent for elderly readability */}
+      <div data-label="storytelling.tab.explainer.oneLine" className="rounded-xl glass-panel-heavy border border-brand/15 p-3.5">
+        <p className="text-lg font-medium text-ink leading-snug">
+          {oneLine}
+        </p>
+      </div>
+
+      <h3 data-label="storytelling.tab.explainer.title" className="text-lg font-medium text-ink">
         {explainer.simplifiedTitle}
       </h3>
 
-      <p data-label="storytelling.tab.explainer.body" className="whitespace-pre-wrap text-sm leading-relaxed text-ink/90">
+      <p data-label="storytelling.tab.explainer.body" className="whitespace-pre-wrap text-base leading-[1.75] text-ink/90">
         {explainer.storyBody}
       </p>
 
       {explainer.keyTakeaways.length > 0 && (
-        <section data-label="storytelling.tab.explainer.takeaways" className="space-y-2">
-          <h4 className="text-xs font-medium uppercase tracking-wide text-ink-muted">핵심 정리</h4>
-          <ul className="space-y-2">
+        <section data-label="storytelling.tab.explainer.takeaways" className="space-y-2.5">
+          <h4 className="text-sm font-medium uppercase tracking-wide text-ink-muted">핵심 정리</h4>
+          <ul className="space-y-2.5">
             {explainer.keyTakeaways.map((t, i) => (
-              <li key={i} className="flex items-start gap-2 text-sm text-ink/90">
-                <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-accent-1" />
+              <li key={i} className="flex items-start gap-2.5 text-base text-ink/90 leading-relaxed">
+                <span className="mt-2 size-1.5 shrink-0 rounded-full bg-accent-1" />
                 {t}
               </li>
             ))}
@@ -74,18 +96,18 @@ function ExplainerSection({ explainer }: { explainer: Doc<"explainers"> }) {
 
       {explainer.analogy && (
         <section data-label="storytelling.tab.explainer.analogy">
-          <h4 className="mb-1 text-xs font-medium uppercase tracking-wide text-ink-muted">쉽게 비유하자면</h4>
-          <div className="rounded-xl border glass-panel p-3">
-            <p className="text-sm italic text-ink/80">{explainer.analogy}</p>
+          <h4 className="mb-1.5 text-sm font-medium uppercase tracking-wide text-ink-muted">쉽게 비유하자면</h4>
+          <div className="rounded-xl border glass-panel p-4">
+            <p className="text-[15px] italic text-ink/80 leading-relaxed">{explainer.analogy}</p>
           </div>
         </section>
       )}
 
       {explainer.personalImpact && (
         <section data-label="storytelling.tab.explainer.impact">
-          <h4 className="mb-1 text-xs font-medium uppercase tracking-wide text-ink-muted">나에게 어떤 영향이 있을까?</h4>
-          <div className="rounded-xl border glass-panel p-3">
-            <p className="text-sm text-ink/85">{explainer.personalImpact}</p>
+          <h4 className="mb-1.5 text-sm font-medium uppercase tracking-wide text-ink-muted">나에게 어떤 영향이 있을까?</h4>
+          <div className="rounded-xl border glass-panel p-4">
+            <p className="text-[15px] text-ink/85 leading-relaxed">{explainer.personalImpact}</p>
           </div>
         </section>
       )}

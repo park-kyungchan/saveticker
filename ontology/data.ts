@@ -201,6 +201,16 @@ export const objectTypes = [
         description: { en: "Position within StoryThread timeline", ko: "스토리 스레드 내 순서" },
       },
       {
+        apiName: "viewCount",
+        type: "integer",
+        baseType: "integer",
+        required: false,
+        readonly: false,
+        description: { en: "Number of times this article has been viewed", ko: "기사 조회수" },
+        indexCandidate: true,
+        // DH-DATA-01: viewCount is a fact about reality — how many times viewed
+      },
+      {
         apiName: "updatedAt",
         type: "timestamp",
         baseType: "timestamp",
@@ -218,7 +228,7 @@ export const objectTypes = [
       },
     ],
     implements: ["Auditable"],
-    indexCandidates: ["title", "category", "publishedAt", "storyThreadId", "tags", "translationStatus"],
+    indexCandidates: ["title", "category", "publishedAt", "storyThreadId", "tags", "translationStatus", "viewCount"],
   },
 
   // -------------------------------------------------------------------------

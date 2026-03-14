@@ -7,6 +7,10 @@
  *
  * Usage: `as const satisfies OntologyData` pattern for compile-time validation.
  * 사용법: 컴파일 타임 검증을 위해 `as const satisfies OntologyData` 패턴 사용.
+ *
+ * Immutability: All interface fields are `readonly` — matching upstream
+ * schemas/ontology/types.ts contract. The `as const satisfies` pattern
+ * enforces this at value level; `readonly` enforces at type level.
  */
 
 // ============================================================================
@@ -53,9 +57,9 @@ export type BasePropertyType =
  */
 export interface BilingualDesc {
   /** English description / 영어 설명 */
-  en: string;
+  readonly en: string;
   /** Korean description / 한국어 설명 */
-  ko: string;
+  readonly ko: string;
 }
 
 // ============================================================================
@@ -68,11 +72,11 @@ export interface BilingualDesc {
  * 값 타입에 적용되는 제약 조건.
  */
 export type ValueConstraint =
-  | { kind: "regex"; pattern: string; message?: string }
-  | { kind: "range"; min?: number; max?: number; message?: string }
-  | { kind: "enum"; values: readonly string[]; message?: string }
-  | { kind: "uuid"; version?: 4 | 7; message?: string }
-  | { kind: "arrayUnique"; message?: string };
+  | { readonly kind: "regex"; readonly pattern: string; readonly message?: string }
+  | { readonly kind: "range"; readonly min?: number; readonly max?: number; readonly message?: string }
+  | { readonly kind: "enum"; readonly values: readonly string[]; readonly message?: string }
+  | { readonly kind: "uuid"; readonly version?: 4 | 7; readonly message?: string }
+  | { readonly kind: "arrayUnique"; readonly message?: string };
 
 /**
  * A semantic wrapper around a base type.
@@ -80,18 +84,18 @@ export type ValueConstraint =
  */
 export interface ValueType {
   /** API name (PascalCase). e.g., "Email", "Currency" / API 이름 (파스칼케이스) */
-  apiName: string;
+  readonly apiName: string;
   /** Base type this wraps / 감싸는 기본 타입 */
-  baseType: BasePropertyType;
+  readonly baseType: BasePropertyType;
   /** Bilingual description / 영한 설명 */
-  description: BilingualDesc;
+  readonly description: BilingualDesc;
   /** Validation constraints / 검증 제약 조건 */
-  constraints: ValueConstraint[];
+  readonly constraints: readonly ValueConstraint[];
   /**
    * TypeScript validator function name. e.g., "toEmail"
    * 타입스크립트 검증 함수 이름. 예: "toEmail"
    */
-  validatorFn: string;
+  readonly validatorFn: string;
 }
 
 // ============================================================================
@@ -105,29 +109,29 @@ export interface ValueType {
  */
 export interface Property {
   /** API name (camelCase). e.g., "fullName", "startDate" / API 이름 (카멜케이스) */
-  apiName: string;
+  readonly apiName: string;
   /** TypeScript type string. For branded types, use the ValueType apiName. */
-  type: string;
+  readonly type: string;
   /** Underlying base type / 기반 기본 타입 */
-  baseType: BasePropertyType;
+  readonly baseType: BasePropertyType;
   /** Whether this field is required / 필수 필드 여부 */
-  required: boolean;
+  readonly required: boolean;
   /** Whether this field is immutable after creation / 생성 후 불변 여부 */
-  readonly: boolean;
+  readonly readonly: boolean;
   /** Bilingual description / 영한 설명 */
-  description: BilingualDesc;
+  readonly description: BilingualDesc;
   /** Constraints (from ValueType or inline) / 제약 조건 */
-  constraints?: ValueConstraint[];
+  readonly constraints?: readonly ValueConstraint[];
   /** Reference to a ValueType apiName if this uses a branded type / 브랜디드 타입 참조 */
-  valueType?: string;
+  readonly valueType?: string;
   /** Target entity for FK references / FK 참조 대상 엔티티 */
-  targetEntity?: string;
+  readonly targetEntity?: string;
   /** Whether this property is an array / 배열 여부 */
-  isArray?: boolean;
+  readonly isArray?: boolean;
   /** Default value expression (TypeScript) / 기본값 표현식 */
-  defaultValue?: string;
+  readonly defaultValue?: string;
   /** Whether this property should be indexed for query performance / 쿼리 성능을 위한 인덱싱 여부 */
-  indexCandidate?: boolean;
+  readonly indexCandidate?: boolean;
 }
 
 // ============================================================================
@@ -141,11 +145,11 @@ export interface Property {
  */
 export interface StructType {
   /** API name (PascalCase). e.g., "Address", "PhoneNumber" / API 이름 (파스칼케이스) */
-  apiName: string;
+  readonly apiName: string;
   /** Bilingual description / 영한 설명 */
-  description: BilingualDesc;
+  readonly description: BilingualDesc;
   /** Fields within this struct / 구조체 내 필드 */
-  fields: Property[];
+  readonly fields: readonly Property[];
 }
 
 // ============================================================================
@@ -154,23 +158,23 @@ export interface StructType {
 // ============================================================================
 
 export interface GeoPointProperty {
-  apiName: string;
-  description: BilingualDesc;
-  crs: "WGS84";
+  readonly apiName: string;
+  readonly description: BilingualDesc;
+  readonly crs: "WGS84";
 }
 
 export interface GeoShapeProperty {
-  apiName: string;
-  description: BilingualDesc;
-  geometryTypes: readonly ("Point" | "LineString" | "Polygon" | "MultiPoint" | "MultiLineString" | "MultiPolygon")[];
-  indexed: boolean;
+  readonly apiName: string;
+  readonly description: BilingualDesc;
+  readonly geometryTypes: readonly ("Point" | "LineString" | "Polygon" | "MultiPoint" | "MultiLineString" | "MultiPolygon")[];
+  readonly indexed: boolean;
 }
 
 export interface GeoTemporalProperty {
-  apiName: string;
-  description: BilingualDesc;
-  timestampType: "timestamp";
-  includesAltitude?: boolean;
+  readonly apiName: string;
+  readonly description: BilingualDesc;
+  readonly timestampType: "timestamp";
+  readonly includesAltitude?: boolean;
 }
 
 // ============================================================================
@@ -179,12 +183,12 @@ export interface GeoTemporalProperty {
 // ============================================================================
 
 export interface TimeSeriesProperty {
-  apiName: string;
-  description: BilingualDesc;
-  valueType: "number" | "string" | "boolean";
-  regularity: "regular" | "irregular";
-  partitioning?: string;
-  retentionDays?: number;
+  readonly apiName: string;
+  readonly description: BilingualDesc;
+  readonly valueType: "number" | "string" | "boolean";
+  readonly regularity: "regular" | "irregular";
+  readonly partitioning?: string;
+  readonly retentionDays?: number;
 }
 
 // ============================================================================
@@ -193,11 +197,11 @@ export interface TimeSeriesProperty {
 // ============================================================================
 
 export interface AttachmentProperty {
-  apiName: string;
-  description: BilingualDesc;
-  kind: "attachment" | "mediaReference";
-  mimeTypes: string[];
-  maxSizeMB?: number;
+  readonly apiName: string;
+  readonly description: BilingualDesc;
+  readonly kind: "attachment" | "mediaReference";
+  readonly mimeTypes: readonly string[];
+  readonly maxSizeMB?: number;
 }
 
 // ============================================================================
@@ -206,10 +210,10 @@ export interface AttachmentProperty {
 // ============================================================================
 
 export interface VectorProperty {
-  apiName: string;
-  description: BilingualDesc;
-  dimensions: number;
-  similarity: "cosine" | "euclidean" | "dotProduct";
+  readonly apiName: string;
+  readonly description: BilingualDesc;
+  readonly dimensions: number;
+  readonly similarity: "cosine" | "euclidean" | "dotProduct";
 }
 
 // ============================================================================
@@ -218,9 +222,9 @@ export interface VectorProperty {
 // ============================================================================
 
 export interface CipherProperty {
-  apiName: string;
-  description: BilingualDesc;
-  encryption: "aes256" | "rsa" | "applicationLevel";
+  readonly apiName: string;
+  readonly description: BilingualDesc;
+  readonly encryption: "aes256" | "rsa" | "applicationLevel";
 }
 
 // ============================================================================
@@ -229,10 +233,10 @@ export interface CipherProperty {
 // ============================================================================
 
 export interface SharedPropertyType {
-  apiName: string;
-  description: BilingualDesc;
-  properties: Property[];
-  usedBy: string[];
+  readonly apiName: string;
+  readonly description: BilingualDesc;
+  readonly properties: readonly Property[];
+  readonly usedBy: readonly string[];
 }
 
 // ============================================================================
@@ -241,13 +245,13 @@ export interface SharedPropertyType {
 // ============================================================================
 
 export interface DerivedProperty {
-  apiName: string;
-  entityApiName: string;
-  description: BilingualDesc;
-  mode: "onRead" | "cached";
-  returnType: string;
-  sourceProperties: string[];
-  computeFn: string;
+  readonly apiName: string;
+  readonly entityApiName: string;
+  readonly description: BilingualDesc;
+  readonly mode: "onRead" | "cached";
+  readonly returnType: string;
+  readonly sourceProperties: readonly string[];
+  readonly computeFn: string;
 }
 
 // ============================================================================
@@ -256,22 +260,22 @@ export interface DerivedProperty {
 // ============================================================================
 
 export interface ObjectType {
-  apiName: string;
-  displayName: string;
-  pluralName: string;
-  primaryKey: string;
-  titleKey: string;
-  description?: BilingualDesc;
-  properties: Property[];
-  structs?: string[];
-  geoProperties?: (GeoPointProperty | GeoShapeProperty | GeoTemporalProperty)[];
-  timeSeriesProperties?: TimeSeriesProperty[];
-  attachments?: AttachmentProperty[];
-  vectors?: VectorProperty[];
-  ciphers?: CipherProperty[];
-  derivedProperties?: DerivedProperty[];
-  implements?: string[];
-  indexCandidates?: string[];
+  readonly apiName: string;
+  readonly displayName: string;
+  readonly pluralName: string;
+  readonly primaryKey: string;
+  readonly titleKey: string;
+  readonly description?: BilingualDesc;
+  readonly properties: readonly Property[];
+  readonly structs?: readonly string[];
+  readonly geoProperties?: readonly (GeoPointProperty | GeoShapeProperty | GeoTemporalProperty)[];
+  readonly timeSeriesProperties?: readonly TimeSeriesProperty[];
+  readonly attachments?: readonly AttachmentProperty[];
+  readonly vectors?: readonly VectorProperty[];
+  readonly ciphers?: readonly CipherProperty[];
+  readonly derivedProperties?: readonly DerivedProperty[];
+  readonly implements?: readonly string[];
+  readonly indexCandidates?: readonly string[];
 }
 
 // ============================================================================
@@ -280,15 +284,15 @@ export interface ObjectType {
 // ============================================================================
 
 export interface LinkType {
-  apiName: string;
-  description: BilingualDesc;
-  sourceEntity: string;
-  targetEntity: string;
-  cardinality: "1:1" | "M:1" | "1:M" | "M:N";
-  fkProperty?: string;
-  fkSide?: "source" | "target";
-  joinEntity?: string;
-  reverseApiName?: string;
+  readonly apiName: string;
+  readonly description: BilingualDesc;
+  readonly sourceEntity: string;
+  readonly targetEntity: string;
+  readonly cardinality: "1:1" | "M:1" | "1:M" | "M:N";
+  readonly fkProperty?: string;
+  readonly fkSide?: "source" | "target";
+  readonly joinEntity?: string;
+  readonly reverseApiName?: string;
 }
 
 // ============================================================================
@@ -297,18 +301,18 @@ export interface LinkType {
 // ============================================================================
 
 export interface InterfaceLinkConstraint {
-  linkApiName: string;
-  targetType: string;
-  cardinality: "ONE" | "MANY";
-  required: boolean;
+  readonly linkApiName: string;
+  readonly targetType: string;
+  readonly cardinality: "ONE" | "MANY";
+  readonly required: boolean;
 }
 
 export interface OntologyInterface {
-  apiName: string;
-  description: BilingualDesc;
-  properties: string[];
-  linkConstraints?: InterfaceLinkConstraint[];
-  implementedBy: string[];
+  readonly apiName: string;
+  readonly description: BilingualDesc;
+  readonly properties: readonly string[];
+  readonly linkConstraints?: readonly InterfaceLinkConstraint[];
+  readonly implementedBy: readonly string[];
 }
 
 // ============================================================================
@@ -317,19 +321,19 @@ export interface OntologyInterface {
 // ============================================================================
 
 export interface QueryFilterField {
-  propertyApiName: string;
-  operators: string[];
+  readonly propertyApiName: string;
+  readonly operators: readonly string[];
 }
 
 export interface OntologyQuery {
-  apiName: string;
-  description: BilingualDesc;
-  entityApiName: string;
-  queryType: "list" | "getById" | "filter" | "search" | "paginated" | "aggregation" | "searchAround";
-  filterFields?: QueryFilterField[];
-  parameters?: { name: string; type: string; description?: BilingualDesc; required?: boolean }[];
-  returnType?: string;
-  traversalPath?: string[];
+  readonly apiName: string;
+  readonly description: BilingualDesc;
+  readonly entityApiName: string;
+  readonly queryType: "list" | "getById" | "filter" | "search" | "paginated" | "aggregation" | "searchAround";
+  readonly filterFields?: readonly QueryFilterField[];
+  readonly parameters?: readonly { readonly name: string; readonly type: string; readonly description?: BilingualDesc; readonly required?: boolean }[];
+  readonly returnType?: string;
+  readonly traversalPath?: readonly string[];
 }
 
 // ============================================================================
@@ -338,15 +342,15 @@ export interface OntologyQuery {
 // ============================================================================
 
 export interface OntologyFunction {
-  apiName: string;
-  description: BilingualDesc;
-  category: "readHelper" | "pureLogic" | "computedField";
-  parameters: { name: string; type: string; description?: BilingualDesc; required?: boolean }[];
-  returnType: string;
-  pureLogic: string;
-  operatesOn?: string;
+  readonly apiName: string;
+  readonly description: BilingualDesc;
+  readonly category: "readHelper" | "pureLogic" | "computedField";
+  readonly parameters: readonly { readonly name: string; readonly type: string; readonly description?: BilingualDesc; readonly required?: boolean }[];
+  readonly returnType: string;
+  readonly pureLogic: string;
+  readonly operatesOn?: string;
   /** Whether this function is exposed as an LLM-callable tool (Pattern 2: Logic Tool Handoff). */
-  toolExposure?: boolean;
+  readonly toolExposure?: boolean;
 }
 
 // ============================================================================
@@ -371,27 +375,27 @@ export type AutonomyLevel =
 // ============================================================================
 
 export interface MutationEdit {
-  type: "create" | "modify" | "delete" | "addLink" | "removeLink";
-  target: string;
-  properties?: string[];
+  readonly type: "create" | "modify" | "delete" | "addLink" | "removeLink";
+  readonly target: string;
+  readonly properties?: readonly string[];
 }
 
 export interface MutationSideEffect {
-  kind: "webhook" | "notification" | "log" | "external";
-  target: string;
+  readonly kind: "webhook" | "notification" | "log" | "external";
+  readonly target: string;
 }
 
 export interface OntologyMutation {
-  apiName: string;
-  description: BilingualDesc;
-  mutationType: "create" | "modify" | "delete" | "batch" | "custom";
-  entityApiName: string;
-  parameters: { name: string; type: string; required: boolean; description?: BilingualDesc }[];
-  validationFns?: string[];
-  edits: MutationEdit[];
-  sideEffects?: MutationSideEffect[];
+  readonly apiName: string;
+  readonly description: BilingualDesc;
+  readonly mutationType: "create" | "modify" | "delete" | "batch" | "custom";
+  readonly entityApiName: string;
+  readonly parameters: readonly { readonly name: string; readonly type: string; readonly required: boolean; readonly description?: BilingualDesc }[];
+  readonly validationFns?: readonly string[];
+  readonly edits: readonly MutationEdit[];
+  readonly sideEffects?: readonly MutationSideEffect[];
   /** AI action review tier — gates AI-proposed actions through human review. Source: ontology-ultimate-vision.md §6 */
-  reviewLevel?: AutonomyLevel;
+  readonly reviewLevel?: AutonomyLevel;
 }
 
 // ============================================================================
@@ -400,13 +404,13 @@ export interface OntologyMutation {
 // ============================================================================
 
 export interface Webhook {
-  apiName: string;
-  description: BilingualDesc;
-  kind: "transactional" | "sideEffect";
-  transactional: boolean;
-  triggeredBy: string[];
-  endpoint: string;
-  payload?: string[];
+  readonly apiName: string;
+  readonly description: BilingualDesc;
+  readonly kind: "transactional" | "sideEffect";
+  readonly transactional: boolean;
+  readonly triggeredBy: readonly string[];
+  readonly endpoint: string;
+  readonly payload?: readonly string[];
 }
 
 // ============================================================================
@@ -415,15 +419,15 @@ export interface Webhook {
 // ============================================================================
 
 export interface Automation {
-  apiName: string;
-  description: BilingualDesc;
-  kind: "cron" | "eventDriven";
-  schedule?: string;
-  triggerEvent?: string;
-  targetMutation: string;
-  idempotent: boolean;
+  readonly apiName: string;
+  readonly description: BilingualDesc;
+  readonly kind: "cron" | "eventDriven";
+  readonly schedule?: string;
+  readonly triggerEvent?: string;
+  readonly targetMutation: string;
+  readonly idempotent: boolean;
   /** Progressive autonomy tier for this automation. Source: ontology-ultimate-vision.md §6 */
-  autonomyLevel?: AutonomyLevel;
+  readonly autonomyLevel?: AutonomyLevel;
 }
 
 // ============================================================================
@@ -432,42 +436,42 @@ export interface Automation {
 // ============================================================================
 
 export interface Marking {
-  apiName: string;
-  description: BilingualDesc;
-  markingType: "mandatory" | "cbac";
-  levels?: string[];
-  appliedTo: string[];
+  readonly apiName: string;
+  readonly description: BilingualDesc;
+  readonly markingType: "mandatory" | "cbac";
+  readonly levels?: readonly string[];
+  readonly appliedTo: readonly string[];
 }
 
 export interface RLSPolicy {
-  userAttribute: string;
-  objectProperty: string;
-  operator: "equals" | "contains" | "in";
+  readonly userAttribute: string;
+  readonly objectProperty: string;
+  readonly operator: "equals" | "contains" | "in";
 }
 
 export interface CLSPolicy {
-  propertyApiName: string;
-  readableBy: string[];
-  writableBy: string[];
+  readonly propertyApiName: string;
+  readonly readableBy: readonly string[];
+  readonly writableBy: readonly string[];
 }
 
 export interface ObjectSecurityPolicy {
-  entityApiName: string;
-  description: BilingualDesc;
-  rls?: RLSPolicy;
-  cls?: CLSPolicy[];
+  readonly entityApiName: string;
+  readonly description: BilingualDesc;
+  readonly rls?: RLSPolicy;
+  readonly cls?: readonly CLSPolicy[];
 }
 
 export interface Role {
-  apiName: string;
-  displayName: BilingualDesc;
-  hierarchy?: number;
+  readonly apiName: string;
+  readonly displayName: BilingualDesc;
+  readonly hierarchy?: number;
 }
 
 export interface PermissionEntry {
-  entityApiName: string;
-  roleApiName: string;
-  operations: ("create" | "read" | "update" | "delete")[];
+  readonly entityApiName: string;
+  readonly roleApiName: string;
+  readonly operations: readonly ("create" | "read" | "update" | "delete")[];
 }
 
 // ============================================================================
@@ -476,29 +480,29 @@ export interface PermissionEntry {
 // ============================================================================
 
 export interface OntologyData {
-  objectTypes: ObjectType[];
-  valueTypes: ValueType[];
-  structTypes: StructType[];
-  sharedPropertyTypes: SharedPropertyType[];
+  readonly objectTypes: readonly ObjectType[];
+  readonly valueTypes: readonly ValueType[];
+  readonly structTypes: readonly StructType[];
+  readonly sharedPropertyTypes: readonly SharedPropertyType[];
 }
 
 export interface OntologyLogic {
-  linkTypes: LinkType[];
-  interfaces: OntologyInterface[];
-  queries: OntologyQuery[];
-  derivedProperties: DerivedProperty[];
-  functions: OntologyFunction[];
+  readonly linkTypes: readonly LinkType[];
+  readonly interfaces: readonly OntologyInterface[];
+  readonly queries: readonly OntologyQuery[];
+  readonly derivedProperties: readonly DerivedProperty[];
+  readonly functions: readonly OntologyFunction[];
 }
 
 export interface OntologyAction {
-  mutations: OntologyMutation[];
-  webhooks: Webhook[];
-  automations: Automation[];
+  readonly mutations: readonly OntologyMutation[];
+  readonly webhooks: readonly Webhook[];
+  readonly automations: readonly Automation[];
 }
 
 export interface OntologySecurity {
-  roles: Role[];
-  permissionMatrix: PermissionEntry[];
-  markings: Marking[];
-  objectPolicies: ObjectSecurityPolicy[];
+  readonly roles: readonly Role[];
+  readonly permissionMatrix: readonly PermissionEntry[];
+  readonly markings: readonly Marking[];
+  readonly objectPolicies: readonly ObjectSecurityPolicy[];
 }

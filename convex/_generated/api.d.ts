@@ -13,6 +13,7 @@ import type * as model_article from "../model/article.js";
 import type * as model_auth from "../model/auth.js";
 import type * as model_explainer from "../model/explainer.js";
 import type * as model_impactChain from "../model/impactChain.js";
+import type * as model_requireRole from "../model/requireRole.js";
 import type * as model_security from "../model/security.js";
 import type * as model_stock from "../model/stock.js";
 import type * as model_storyThread from "../model/storyThread.js";
@@ -33,6 +34,7 @@ declare const fullApi: ApiFromModules<{
   "model/auth": typeof model_auth;
   "model/explainer": typeof model_explainer;
   "model/impactChain": typeof model_impactChain;
+  "model/requireRole": typeof model_requireRole;
   "model/security": typeof model_security;
   "model/stock": typeof model_stock;
   "model/storyThread": typeof model_storyThread;
