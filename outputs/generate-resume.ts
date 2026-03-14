@@ -140,7 +140,7 @@ const html = `<!DOCTYPE html>
     <div class="header-contact">
       <span>010-2313-4835</span>
       <span>packr0723@gmail.com</span>
-      <a href="https://github.com/park-kyungchan/saveticker">github.com/park-kyungchan/saveticker</a>
+      <a href="https://github.com/park-kyungchan/saveticker">https://github.com/park-kyungchan/saveticker</a>
     </div>
     <div class="header-summary">
       수학교육 콘텐츠 기획자에서 AI 기반 프로덕트 빌더로 전환 중입니다. 복잡한 금융 뉴스를 구조화하고, 사용자 관점에서 정보 흐름을 설계하며, 실제 동작하는 프로토타입으로 기획 의도를 검증하는 PM을 지향합니다.
@@ -156,6 +156,49 @@ const html = `<!DOCTYPE html>
     <span class="strength-badge">QA · 품질 관리</span>
     <span class="strength-badge">개발 커뮤니케이션</span>
     <span class="strength-badge">AI 도구 활용 프로토타이핑</span>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">기술 이해 수준 · Technical Communication Capability</div>
+  <div style="font-size: 9px; color: #334155; line-height: 1.6; margin-bottom: 6px; padding: 7px 10px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px;">
+    <strong>현재 수준:</strong> 개발 커뮤니케이션 역량은 <strong>기초적인 수준에 한정</strong>되어 있습니다. Claude Code 환경에서 TypeScript 코드의 구조와 흐름을 읽고, 데이터 스키마 정의나 API 설계 문서를 작성하여 전달하는 수준입니다. 다양한 프로그래밍 언어(Python, Go, Java 등)에 대한 이해는 아직 부족하지만, <strong>TypeScript를 첫 번째 언어로 체계적 학습을 시작</strong>하여 커뮤니케이션 품질을 점진적으로 높여가겠습니다.
+  </div>
+  <div class="skills-grid">
+    <div>
+      <div class="skill-group-title">PM 역량 (실무 수준)</div>
+      <div class="skill-tags">
+        <span class="skill-tag">요구사항 정의서</span>
+        <span class="skill-tag">데이터 스키마 정의</span>
+        <span class="skill-tag">화면 흐름 설계</span>
+        <span class="skill-tag">QA 체크리스트</span>
+        <span class="skill-tag">Blueprint 문서</span>
+      </div>
+    </div>
+    <div>
+      <div class="skill-group-title">개발 이해 (기초·학습 중)</div>
+      <div class="skill-tags">
+        <span class="skill-tag">TypeScript 읽기 (학습 중)</span>
+        <span class="skill-tag">React 구조 이해</span>
+        <span class="skill-tag">REST API 설계</span>
+        <span class="skill-tag">Git PR 리뷰</span>
+      </div>
+    </div>
+    <div>
+      <div class="skill-group-title">AI 도구 (완전 숙달)</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Claude Code Native Runtime</span>
+        <span class="skill-tag">프롬프트 엔지니어링</span>
+      </div>
+    </div>
+    <div>
+      <div class="skill-group-title">도메인</div>
+      <div class="skill-tags">
+        <span class="skill-tag">미국 주식 뉴스</span>
+        <span class="skill-tag">금융 리터러시</span>
+        <span class="skill-tag">EN→KO 번역 QA</span>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -182,7 +225,7 @@ const html = `<!DOCTYPE html>
       <li><strong>배포:</strong> Google Play Store 내부 테스트 트랙 배포 완료 (v3.5.0)</li>
     </ul>
     <div class="project-links">
-      GitHub: <a href="https://github.com/park-kyungchan/saveticker">park-kyungchan/saveticker</a> ·
+      GitHub: <a href="https://github.com/park-kyungchan/saveticker">https://github.com/park-kyungchan/saveticker</a> ·
       Play Store: 내부 테스트 배포 (io.saveticker.prototype)
     </div>
   </div>
@@ -198,9 +241,10 @@ const html = `<!DOCTYPE html>
     </div>
     <div class="exp-role">콘텐츠 기획 / QA · 사원</div>
     <ul class="exp-desc">
-      <li>중학 수학 교육 콘텐츠의 <strong>기획-촬영-편집-검수</strong> 전 과정을 주도, 기획 의도와 실제 콘텐츠 간 차이를 점검하는 QA 역할 수행</li>
-      <li><strong>복잡한 교육 과정을 구조화하고 문서로 정리</strong>하여 촬영팀·편집팀과의 협업 효율을 개선</li>
+      <li>중학 수학 교육 콘텐츠의 <strong>기획·촬영을 직접 수행</strong>하고, 편집·검수 단계에서는 미디어팀과 <strong>기획 의도를 문서로 전달·조율</strong>하는 커뮤니케이션 역할 수행</li>
+      <li>복잡한 교육 과정을 <strong>촬영 가이드·편집 지시서로 구조화</strong>하여, 비전공 편집팀도 기획 의도를 정확히 구현할 수 있도록 협업 프로세스 개선</li>
       <li>학습자 진도 데이터를 분석해 콘텐츠 <strong>우선순위를 조정</strong>하고, 성과가 낮은 단원의 교재를 재설계</li>
+      <li>산출물: <a href="https://drive.google.com/file/d/1TGw-NGtOovYrqPEjugCYKOOhXi7cko4B/view?usp=drive_link" style="color:#3b82f6;text-decoration:none;">교육 미디어 제작 샘플 (Google Drive)</a></li>
     </ul>
   </div>
 
@@ -230,7 +274,7 @@ const html = `<!DOCTYPE html>
   </div>
 </div>
 
-<div class="section">
+<div class="section page-break">
   <div class="section-title">독학 · 자기주도 개발 · Self-Directed Learning</div>
   <div class="exp-item">
     <div class="exp-header">
@@ -239,58 +283,30 @@ const html = `<!DOCTYPE html>
     </div>
     <div class="exp-role">Claude Code · TypeScript · React · Convex · Android 배포</div>
     <ul class="exp-desc">
-      <li>Claude Code(AI 코딩 에이전트)를 활용한 <strong>프로덕트 프로토타이핑 워크플로우</strong> 구축 — "기획 → 모델링 → 구현 → 배포"를 1인 주도</li>
-      <li>데이터 모델, API 스키마, 화면 흐름을 <strong>구조화된 문서(Blueprint)</strong>로 작성한 뒤 코드로 구현하는 과정 반복</li>
-      <li>금융 뉴스 도메인의 엔티티 관계, 번역 파이프라인, 사용자 맞춤 필터링 등 <strong>SAVE 서비스에 직접 적용 가능한 기획 사고</strong>를 프로토타입으로 증명</li>
-      <li>Google Play Store 내부 테스트 트랙 배포까지 완료 — 기획 의도를 <strong>실제 디바이스에서 검증</strong></li>
+      <li>Claude Code(AI 코딩 에이전트)를 활용한 <strong>프로덕트 프로토타이핑 워크플로우</strong> 구축 — "기획 → 온톨로지 모델링 → 구현 → QA → 배포"의 전 과정을 1인 주도</li>
+      <li>데이터 모델 정의, API 스키마, 화면 흐름을 <strong>구조화된 문서(Blueprint)</strong>로 작성한 뒤 코드로 구현 — PM이 기획서를 쓰고 개발팀에 전달하는 과정을 1인 체제로 시뮬레이션</li>
+      <li>금융 뉴스 도메인의 엔티티 관계(Stock↔NewsArticle↔StoryThread), 번역 파이프라인(EN→KO 직역/의역), 사용자 맞춤 필터링 등 <strong>SAVE 서비스에 직접 적용 가능한 기획 사고</strong>를 프로토타입으로 증명</li>
+      <li>Google Play Store 내부 테스트 트랙 배포까지 완료 — 기획 의도를 <strong>실제 Android 디바이스에서 검증</strong>하고, 피드백을 반영해 12번의 반복 배포 (versionCode 15→26)</li>
+      <li>교육 기획의 <strong>"사용자 수준에 맞는 콘텐츠 설계"</strong>를 금융 도메인에 적용: 원본(투자자용) → 한국어(일반 독자용) → StoryTelling(금융 초보자/노인용) 3단계 분리</li>
     </ul>
   </div>
 </div>
 
-<!-- ════════════════ PAGE 2 START: 기술 + 학력 + 지원동기 ════════════════ -->
-
 <div class="section">
-  <div class="section-title">기술 스택 · Technical Skills</div>
-  <div class="skills-grid">
-    <div>
-      <div class="skill-group-title">PM 도구</div>
-      <div class="skill-tags">
-        <span class="skill-tag">요구사항 정의서</span>
-        <span class="skill-tag">데이터 정의</span>
-        <span class="skill-tag">화면 흐름 설계</span>
-        <span class="skill-tag">QA 체크리스트</span>
-        <span class="skill-tag">Blueprint 문서</span>
-      </div>
-    </div>
-    <div>
-      <div class="skill-group-title">개발 이해</div>
-      <div class="skill-tags">
-        <span class="skill-tag">TypeScript</span>
-        <span class="skill-tag">React</span>
-        <span class="skill-tag">REST API / 서버리스</span>
-        <span class="skill-tag">Git/GitHub</span>
-        <span class="skill-tag">Android 빌드</span>
-      </div>
-    </div>
-    <div>
-      <div class="skill-group-title">AI 도구</div>
-      <div class="skill-tags">
-        <span class="skill-tag">Claude Code</span>
-        <span class="skill-tag">AI 코딩 에이전트</span>
-        <span class="skill-tag">프롬프트 엔지니어링</span>
-      </div>
-    </div>
-    <div>
-      <div class="skill-group-title">도메인</div>
-      <div class="skill-tags">
-        <span class="skill-tag">미국 주식 뉴스</span>
-        <span class="skill-tag">금융 리터러시</span>
-        <span class="skill-tag">EN→KO 번역 QA</span>
-        <span class="skill-tag">교육 콘텐츠</span>
-      </div>
-    </div>
+  <div class="section-title">온톨로지 연구 · Ontology Research (진행 중)</div>
+  <div style="font-size: 9px; color: #334155; line-height: 1.6; padding: 8px 10px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; margin-bottom: 6px;">
+    <strong>Palantir Ontology 아키텍처를 독자적으로 연구</strong>하고, 이를 프로토타입에 적용 중입니다. 온톨로지는 '데이터베이스 스키마'가 아니라 <strong>'의사결정 중심의 운영 체제'</strong>입니다 — 현실 세계의 상태(DATA), 그 상태를 해석하는 방법(LOGIC), 현실을 변화시키는 레버(ACTION)를 3개 도메인으로 분리하고, SENSE→DECIDE→ACT→LEARN 피드백 루프로 지속 개선합니다.
+  </div>
+  <ul class="exp-desc">
+    <li><strong>4-Fold 도메인 모델:</strong> DATA(현실의 상태) / LOGIC(해석·추론) / ACTION(실행·변경) / SECURITY(접근 제어 오버레이)의 의미론적 분류를 연구하고, 742개 테스트(5,208 assertion)로 검증하는 스키마 시스템을 구축</li>
+    <li><strong>Tribal Knowledge 인코딩:</strong> 전문가의 암묵적 의사결정 패턴(예: "이 데이터가 DATA인가 LOGIC인가?")을 DecisionHeuristic/HardConstraint 상수로 형식화 — 세션 간 일관성을 보장하는 K-LLM 합의 메커니즘</li>
+    <li><strong>Digital Twin 피드백 루프:</strong> "기획 → 모델링 → 구현 → 검증 → 개선"의 반복 과정 자체가 SENSE→DECIDE→ACT→LEARN 루프의 구현임을 증명</li>
+    <li><strong>TypeScript + Bun 단일 스택:</strong> 모든 코드(스키마 정의, 테스트, 빌드 도구, 배포 스크립트, PDF 생성까지)를 TypeScript/Bun으로 통일. 불가피하게 다른 언어가 필요한 경우(예: Playwright의 Python CLI) Bun에서 호출하는 래퍼 함수로 처리</li>
+  </ul>
   </div>
 </div>
+
+<!-- ════════════════ PAGE 2 START: 학력 + 지원동기 ════════════════ -->
 
 <div class="section">
   <div class="section-title">학력 · Education</div>
@@ -303,9 +319,10 @@ const html = `<!DOCTYPE html>
 
 <div class="section why-save">
   <div class="section-title">지원 동기 · Why SAVE</div>
-  <p>수학을 가르치면서 깨달은 것이 있습니다: <strong>복잡한 것을 쉽게 설명하는 능력이 가장 어렵고, 가장 가치 있다</strong>는 것입니다. SAVE가 해외 금융 뉴스를 한국 투자자에게 전달하는 과정은, 제가 수학 개념을 학생 수준에 맞게 재구성하던 과정과 본질적으로 같습니다.</p>
-  <p>SaveTicker 프로토타입은 이 확신을 코드로 증명한 결과물입니다. 원본(EN) → 한국어(직역+의역) → StoryTelling(초보자용 해설)의 3단계 콘텐츠 파이프라인, 번역 QA 프로세스, 스토리 스레드를 통한 맥락 추적 기능은 <strong>SAVE 서비스에 대한 구체적인 기능 제안</strong>입니다.</p>
-  <p>교육 기획자로서 쌓은 <strong>콘텐츠 구조화 역량</strong>과, 독학으로 검증한 <strong>개발자와의 커뮤니케이션 능력</strong>, 그리고 금융 뉴스 도메인에 대한 <strong>실사용 경험</strong>을 바탕으로, SAVE의 제품 품질을 한 단계 높이는 데 기여하고 싶습니다.</p>
+  <p>아래의 생각들은 <strong>아직 매우 초기 단계의 PM 관점</strong>입니다. 확정된 방향이 아니라, SAVE 서비스를 사용하고 프로토타입을 만들면서 느낀 가능성을 정리한 것입니다.</p>
+  <p>수학을 가르치면서 깨달은 것이 있습니다: <strong>복잡한 것을 사용자 수준에 맞게 재구성하는 능력</strong>이 가장 어렵고, 가장 가치 있다는 것입니다. 한국에서 금융 교육은 사실상 전무하고, 대부분의 한국인은 해외 금융 뉴스를 접해도 맥락을 이해하지 못합니다. SAVE가 이 간극을 메우고 있다고 생각하며, 저는 SaveTicker 프로토타입에서 3단계 콘텐츠 파이프라인(원본 → 한국어 → StoryTelling)을 설계하며 가능성을 탐색했습니다.</p>
+  <p><strong>PM으로서의 관점:</strong> 금융 문맹을 위한 상세하고 쉬운 맥락 제공이 강화되면, 현재 20~40대 중심의 사용자층이 50~70대 시니어까지 확장될 수 있다고 봅니다. 한국의 50대 이상 인구는 2,000만 명을 넘고 퇴직 후 자산 운용 수요는 급증하지만, 접근 가능한 금융 정보 서비스는 제한적입니다. 이것이 제가 StoryTelling 탭을 '금융 초보자/노인용'으로 설계한 이유입니다.</p>
+  <p>다만 이런 방향성은 SAVE 팀의 비전, 기술적 우선순위, 시장 상황에 따라 달라질 수 있습니다. <strong>SAVE 관계자분들과 지속적으로 소통하면서</strong>, 서비스의 현재 방향을 깊이 이해하고, 제 관점을 조율해가며, 팀이 가장 필요로 하는 곳에서 기여하겠습니다.</p>
 </div>
 
 
@@ -319,7 +336,7 @@ const html = `<!DOCTYPE html>
       <div class="header-contact">
         <span>+82 10-2313-4835</span>
         <span>packr0723@gmail.com</span>
-        <a href="https://github.com/park-kyungchan/saveticker">github.com/park-kyungchan/saveticker</a>
+        <a href="https://github.com/park-kyungchan/saveticker">https://github.com/park-kyungchan/saveticker</a>
       </div>
       <div class="header-summary">
         Transitioning from education content planner to AI-powered product builder. Structuring complex financial news, designing user-centric information flows, and validating product decisions through working prototypes.
@@ -357,9 +374,10 @@ const html = `<!DOCTYPE html>
         <span class="exp-period">Dec 2024 — May 2025</span>
       </div>
       <ul class="exp-desc">
-        <li>Led end-to-end content pipeline: planning, filming, editing, and QA for math education media</li>
-        <li>Structured complex curricula into documentation for cross-team collaboration</li>
-        <li>Analyzed learner data to reprioritize content and redesign underperforming modules</li>
+        <li><strong>Planned and filmed</strong> math education content directly; <strong>coordinated editing and QA with the media team</strong> through structured briefs and feedback documents</li>
+        <li>Translated complex curricula into <strong>filming guides and editing directives</strong> so non-specialist editors could faithfully execute planning intent</li>
+        <li>Analyzed learner progress data to reprioritize content and redesign underperforming modules</li>
+        <li>Output: <a href="https://drive.google.com/file/d/1TGw-NGtOovYrqPEjugCYKOOhXi7cko4B/view?usp=drive_link" style="color:#3b82f6;text-decoration:none;">Education media production sample (Google Drive)</a></li>
       </ul>
     </div>
     <div class="exp-item">
@@ -383,9 +401,11 @@ const html = `<!DOCTYPE html>
         <span class="exp-period">Jun 2025 — Present</span>
       </div>
       <ul class="exp-desc">
-        <li>Built production-grade fintech prototype solo using Claude Code — from ontology modeling to Play Store deployment</li>
-        <li>Wrote structured Blueprints (data models, API schemas, screen flows) before implementation — PM-first approach</li>
-        <li>Demonstrated domain expertise in US stock news, EN→KO translation pipelines, and filtering directly applicable to SAVE</li>
+        <li>Built fintech prototype solo using Claude Code (AI Native Runtime) — ontology modeling to Play Store deployment (12 iterative releases, versionCode 15→26)</li>
+        <li>Wrote structured Blueprints (data models, API schemas, screen flows) before code — simulating PM→Dev handoff as a solo operator</li>
+        <li>Designed 3-tier content pipeline: Original → Korean → StoryTelling (beginners/elderly) — applying education pedagogy to finance</li>
+        <li><strong>Independently researching Palantir Ontology architecture</strong> — 4-fold domain model (DATA/LOGIC/ACTION/SECURITY), SENSE→DECIDE→ACT→LEARN digital twin loop, tribal knowledge encoding as typed constants. Built 742-test schema validation system (5,208 assertions)</li>
+        <li><strong>TypeScript + Bun single-stack policy:</strong> all code (schemas, tests, build tools, deploy scripts, PDF generation) unified under TS/Bun. Non-TS dependencies invoked through Bun wrapper functions when unavoidable</li>
       </ul>
     </div>
   </div>
@@ -400,30 +420,33 @@ const html = `<!DOCTYPE html>
   </div>
 
   <div class="section">
-    <div class="section-title">Technical Skills</div>
+    <div class="section-title">Technical Communication Level</div>
+    <div style="font-size: 8.5px; color: #334155; line-height: 1.55; margin-bottom: 6px; padding: 6px 8px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 5px;">
+      <strong>Developer communication capability is currently at a foundational level.</strong> Can read TypeScript code structure and flow in the Claude Code environment, and write data schema definitions and API design docs for dev handoff. Understanding of other languages (Python, Go, Java) is still limited. <strong>Plan:</strong> Starting systematic TypeScript learning as a first language to progressively improve dev communication quality. Focused on PM-side skills: translating planning intent into dev-readable specs and verifying implementation results.
+    </div>
     <div class="skills-grid">
       <div>
-        <div class="skill-group-title">PM Tools</div>
+        <div class="skill-group-title">PM (Working Level)</div>
         <div class="skill-tags">
           <span class="skill-tag">Requirements Docs</span>
-          <span class="skill-tag">Data Definitions</span>
-          <span class="skill-tag">Screen Flow Design</span>
+          <span class="skill-tag">Data Schema Design</span>
+          <span class="skill-tag">Screen Flows</span>
           <span class="skill-tag">QA Checklists</span>
         </div>
       </div>
       <div>
-        <div class="skill-group-title">Technical</div>
+        <div class="skill-group-title">Dev Understanding (Read/Communicate)</div>
         <div class="skill-tags">
-          <span class="skill-tag">TypeScript</span>
-          <span class="skill-tag">React</span>
-          <span class="skill-tag">Git/GitHub</span>
+          <span class="skill-tag">TypeScript (read)</span>
+          <span class="skill-tag">React structure</span>
+          <span class="skill-tag">Git PR review</span>
           <span class="skill-tag">REST API</span>
         </div>
       </div>
       <div>
-        <div class="skill-group-title">AI Tools</div>
+        <div class="skill-group-title">AI Tools (Fully Proficient)</div>
         <div class="skill-tags">
-          <span class="skill-tag">Claude Code</span>
+          <span class="skill-tag">Claude Code Native Runtime</span>
           <span class="skill-tag">Prompt Engineering</span>
         </div>
       </div>
