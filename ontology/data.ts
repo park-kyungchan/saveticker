@@ -100,10 +100,11 @@ export const objectTypes = [
         apiName: "sourceName",
         type: "string",
         baseType: "string",
-        required: true,
+        required: false,
         readonly: false,
         description: { en: "Content source name (e.g., SAVE, Reuters, FinancialJuice)", ko: "콘텐츠 출처 이름 (예: SAVE, Reuters, FinancialJuice)" },
         // Replaces SourceAttribution struct — flat string sufficient for PM demo
+        // Optional: not all seed/scraped articles carry source attribution
       },
       {
         apiName: "category",
@@ -438,10 +439,10 @@ export const objectTypes = [
         apiName: "personalImpact",
         type: "string",
         baseType: "string",
-        required: true,
+        required: false,
         readonly: false,
         description: { en: "Personal impact section — 'How does this affect me?'", ko: "'나에게 어떤 영향?' 섹션" },
-        // NEW: PM Feature 2's key differentiator
+        // PM Feature 2's key differentiator — optional because not all explainers are fully generated
       },
       {
         apiName: "analogy",

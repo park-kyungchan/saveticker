@@ -143,7 +143,7 @@ export async function articlesByTag(
  */
 export async function todayMostViewed(
   ctx: QueryCtx,
-  since: number,
+  since?: number,
 ): Promise<Doc<"newsArticles"> | null> {
   // Scan recent articles and find the one with highest viewCount
   const recent = await ctx.db
@@ -152,7 +152,10 @@ export async function todayMostViewed(
     .order("desc")
     .take(MAX_SCAN_LIMIT);
 
-  const todayArticles = recent.filter((a) => a.publishedAt >= since);
+  // If since is not provided (stale client), use all recent articles
+  const todayArticles = since !== undefined
+    ? recent.filter((a) => a.publishedAt >= since)
+    : recent;
 
   // Find article with highest viewCount among today's articles
   const hero = todayArticles.reduce<Doc<"newsArticles"> | null>((best, a) => {

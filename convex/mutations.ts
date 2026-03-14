@@ -49,17 +49,17 @@ export const createStoryThread = mutation({
  */
 export const assignArticleToThread = mutation({
   args: {
-    articleId: v.id("newsArticles"),
-    threadId: v.id("storyThreads"),
+    newsArticleId: v.id("newsArticles"),
+    storyThreadId: v.id("storyThreads"),
     orderInThread: v.number(),
   },
   handler: async (ctx, args) => {
     const role = await requireRole(ctx, "NewsArticle", "update");
-    const article = await ctx.db.get(args.articleId);
+    const article = await ctx.db.get(args.newsArticleId);
     if (!article) throw new Error("Article not found");
 
-    await ctx.db.patch(args.articleId, {
-      storyThreadId: args.threadId,
+    await ctx.db.patch(args.newsArticleId, {
+      storyThreadId: args.storyThreadId,
       orderInThread: args.orderInThread,
       updatedAt: Date.now(),
       updatedBy: role,
@@ -176,7 +176,7 @@ export const updateUserProfile = mutation({
  */
 export const updateStoryThread = mutation({
   args: {
-    threadId: v.id("storyThreads"),
+    storyThreadId: v.id("storyThreads"),
     title: v.optional(v.string()),
     titleKo: v.optional(v.string()),
     description: v.optional(v.string()),
@@ -185,15 +185,15 @@ export const updateStoryThread = mutation({
   },
   handler: async (ctx, args) => {
     const role = await requireRole(ctx, "StoryThread", "update");
-    const { threadId, ...updates } = args;
-    const thread = await ctx.db.get(threadId);
+    const { storyThreadId, ...updates } = args;
+    const thread = await ctx.db.get(storyThreadId);
     if (!thread) throw new Error("StoryThread not found");
 
     const patch: Record<string, unknown> = { updatedAt: Date.now(), updatedBy: role };
     for (const [key, value] of Object.entries(updates)) {
       if (value !== undefined) patch[key] = value;
     }
-    await ctx.db.patch(threadId, patch);
+    await ctx.db.patch(storyThreadId, patch);
   },
 });
 
@@ -207,7 +207,7 @@ export const updateStoryThread = mutation({
  */
 export const updateTranslationStatus = mutation({
   args: {
-    articleId: v.id("newsArticles"),
+    newsArticleId: v.id("newsArticles"),
     translationStatus: v.union(
       v.literal("pending"),
       v.literal("reviewed"),
@@ -217,7 +217,7 @@ export const updateTranslationStatus = mutation({
   },
   handler: async (ctx, args) => {
     const role = await requireRole(ctx, "NewsArticle", "update");
-    const article = await ctx.db.get(args.articleId);
+    const article = await ctx.db.get(args.newsArticleId);
     if (!article) throw new Error("Article not found");
 
     const patch: Record<string, unknown> = {
@@ -231,7 +231,7 @@ export const updateTranslationStatus = mutation({
       patch.translationNotes = [...existing, args.translationNote];
     }
 
-    await ctx.db.patch(args.articleId, patch);
+    await ctx.db.patch(args.newsArticleId, patch);
   },
 });
 

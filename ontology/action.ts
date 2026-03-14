@@ -108,7 +108,7 @@ export const mutations = [
       { name: "simplifiedTitle", type: "string", required: true, description: { en: "Simplified headline", ko: "쉬운 제목" } },
       { name: "storyBody", type: "string", required: true, description: { en: "Plain language narrative body", ko: "쉬운 말 본문" } },
       { name: "keyTakeaways", type: "string[]", required: true, description: { en: "Key insights (3-5 items)", ko: "핵심 인사이트 (3-5개)" } },
-      { name: "personalImpact", type: "string", required: true, description: { en: "Personal impact section", ko: "'나에게 어떤 영향?' 섹션" } },
+      { name: "personalImpact", type: "string", required: false, description: { en: "Personal impact section", ko: "'나에게 어떤 영향?' 섹션" } },
       { name: "analogy", type: "string", required: false, description: { en: "Real-world analogy", ko: "실생활 비유" } },
       { name: "difficultyLevel", type: "\"beginner\" | \"intermediate\" | \"advanced\"", required: true, description: { en: "Content difficulty level", ko: "콘텐츠 난이도" } },
     ],

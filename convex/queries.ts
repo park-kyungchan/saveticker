@@ -94,7 +94,7 @@ export const getArticlesByTag = query({
  * 24시간 내 최다 조회 기사 (hero 카드용). 클라이언트가 since를 전달.
  */
 export const getTodayHero = query({
-  args: { since: v.number() },
+  args: { since: v.optional(v.number()) },
   handler: async (ctx, { since }) => {
     return await todayMostViewed(ctx, since);
   },
