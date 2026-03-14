@@ -24,11 +24,19 @@ export const seedAll = internalMutation({
   args: { force: v.optional(v.boolean()) },
   handler: async (ctx, args) => {
     // Idempotency guard — prevent duplicate seeding
-    if (!args.force) {
-      const existing = await ctx.db.query("stocks").first();
-      if (existing) {
-        console.log("Database already seeded. Pass { force: true } to re-seed.");
-        return { skipped: true, reason: "already_seeded" };
+    const existing = await ctx.db.query("stocks").first();
+    if (!args.force && existing) {
+      console.log("Database already seeded. Pass { force: true } to re-seed.");
+      return { skipped: true, reason: "already_seeded" };
+    }
+
+    // Clear all tables before re-seeding to prevent duplicates
+    if (args.force) {
+      for (const table of ["explainers", "newsArticles", "users", "stocks"] as const) {
+        const rows = await ctx.db.query(table).collect();
+        for (const row of rows) {
+          await ctx.db.delete(row._id);
+        }
       }
     }
 
