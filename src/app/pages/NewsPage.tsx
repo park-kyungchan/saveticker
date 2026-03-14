@@ -84,6 +84,22 @@ export function NewsPage() {
     };
   }, [recentArticles, todayHero, activeTab, keywords]);
 
+  // Filter threads by user's selected tags — match via articles' tags
+  const filteredThreads = useMemo(() => {
+    if (!threads || !recentArticles || keywords.length === 0) return [];
+    const lower = keywords.map((k) => k.toLowerCase());
+    const matchingIds = new Set<string>();
+    for (const article of recentArticles) {
+      if (article.storyThreadId && article.tags) {
+        const articleTags = article.tags.map((t) => t.toLowerCase());
+        if (lower.some((kw) => articleTags.includes(kw))) {
+          matchingIds.add(article.storyThreadId);
+        }
+      }
+    }
+    return threads.filter((t) => matchingIds.has(t._id));
+  }, [threads, recentArticles, keywords]);
+
   // Loading state
   if (recentArticles === undefined) {
     return (
@@ -137,9 +153,9 @@ export function NewsPage() {
         )}
       </div>
 
-      {/* Story threads — only on "all" tab */}
-      {activeTab === "all" && threads && threads.length > 0 && (
-        <StoryThreadSection threads={threads} />
+      {/* Story threads — on "feed" tab, filtered by selected tags */}
+      {activeTab === "feed" && filteredThreads.length > 0 && (
+        <StoryThreadSection threads={filteredThreads} />
       )}
 
       {/* Breaking ticker — only on "all" tab */}
