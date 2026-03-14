@@ -2,8 +2,8 @@
  * 뉴스 피드 페이지 v2 — Hero + Breaking Ticker + Tag Filter.
  * Dramatically redesigned news feed with layered visual hierarchy.
  */
-import { useState, useMemo } from "react";
-import { useNavigate } from "react-router";
+import { useMemo } from "react";
+import { useNavigate, useSearchParams } from "react-router";
 import { useRecentArticles } from "../../features/news-article/hooks/useRecentArticles";
 import { HeroNewsCard } from "../../features/news-article/components/HeroNewsCard";
 import { NewsCard } from "../../features/news-article/components/NewsCard";
@@ -12,6 +12,8 @@ import { TagFilterStrip } from "../../features/news-article/components/TagFilter
 import { FeedSettings } from "../../features/news-article/components/FeedSettings";
 import { AnimatedList } from "../../components/ui/AnimatedList";
 import { FeedSkeleton } from "../../components/ui/Skeleton";
+import { StoryThreadSection } from "../../features/story-thread/components/StoryThreadSection";
+import { useAllThreads } from "../../features/story-thread/hooks/useAllThreads";
 import { useFeedStore } from "../../stores/feedStore";
 
 type FilterTab = "all" | "analysis" | "breaking" | "feed";
@@ -26,10 +28,22 @@ const TABS: { value: FilterTab; label: string; icon?: string }[] = [
 export function NewsPage() {
   const navigate = useNavigate();
   const recentArticles = useRecentArticles(20);
+  const threads = useAllThreads();
   const { keywords } = useFeedStore();
-  const [activeTab, setActiveTab] = useState<FilterTab>("all");
-  const [activeTag, setActiveTag] = useState<string | null>(null);
-  const [feedSettingsOpen, setFeedSettingsOpen] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeTab = (searchParams.get("tab") as FilterTab) || "all";
+  const activeTag = searchParams.get("tag");
+  const feedSettingsOpen = searchParams.get("settings") === "1";
+
+  const setActiveTab = (tab: FilterTab) => {
+    setSearchParams((p) => { p.set("tab", tab); p.delete("tag"); return p; }, { replace: true });
+  };
+  const setActiveTag = (tag: string | null) => {
+    setSearchParams((p) => { if (tag) p.set("tag", tag); else p.delete("tag"); return p; }, { replace: true });
+  };
+  const setFeedSettingsOpen = (open: boolean) => {
+    setSearchParams((p) => { if (open) p.set("settings", "1"); else p.delete("settings"); return p; }, { replace: true });
+  };
 
   // Extract unique tags from articles
   const allTags = useMemo(() => {
@@ -111,7 +125,7 @@ export function NewsPage() {
                 setActiveTab(tab.value);
                 setActiveTag(null);
               }}
-              className={`shrink-0 rounded-full px-4 py-1.5 text-[12px] font-semibold transition-all min-h-[34px] ${
+              className={`shrink-0 rounded-full px-4 py-1.5 text-[12px] font-semibold transition-all min-h-[44px] ${
                 activeTab === tab.value
                   ? "bg-white/12 text-ink border border-white/15 shadow-sm"
                   : "text-ink-muted/60 hover:text-ink-muted hover:bg-white/5"
@@ -145,6 +159,11 @@ export function NewsPage() {
           activeTag={activeTag}
           onTagChange={setActiveTag}
         />
+      )}
+
+      {/* Story threads — only on "all" tab, no tag filter */}
+      {activeTab === "all" && !activeTag && threads && threads.length > 0 && (
+        <StoryThreadSection threads={threads} />
       )}
 
       {/* Breaking ticker — only on "all" tab */}

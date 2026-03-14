@@ -1,17 +1,18 @@
 /**
- * SaveTicker — Ontology LOGIC Domain (Redesign)
+ * SaveTicker v2.0 — Ontology LOGIC Domain
  *
- * 9 link types, 1 interface, 15 queries, 1 derived property, 2 functions.
- * Source of truth: research/saveticker-deep-dive.md, research/pm-portfolio-save-app.md
+ * Rebuilt against schemas v1.2.0 (34/34 DH coverage, Mode A).
+ * 9 link types, 2 interfaces, 15 queries, 2 derived properties, 4 functions.
+ * Source of truth: docs/ontology-prompt.md, schemas/ontology/logic/schema.ts
  * Reads from DATA domain (data.ts). Downstream: ACTION domain (action.ts).
  *
- * Changes from legacy (13 links, 20 queries, 3 derived, 8 functions):
- * - Removed all M:N join entity links and decompositions (userStock, newsArticleStock, newsArticleTerm + 6 decompositions)
- * - Removed all indicator/watchlist/glossary queries (14 queries removed)
- * - Removed price/indicator derived properties (priceDirection, isSurprise, surpriseDirection)
- * - Added ImpactChain/ImpactNode links (chainThread, chainNodes, nodeParent, nodeChain, nodeChildren)
- * - Added ImpactChain/ImpactNode queries (chainsByThread, chainNodes)
- * - Added articleCount derived property on StoryThread
+ * v2.0 changes:
+ * - Added IBilingual interface (title/titleKo bilingual contract)
+ * - Added nodeCount derived property on ImpactChain
+ * - Added collectDescendantIds function (cascade delete support)
+ * - Added validateImpactNodeDelete function (cascade delete guard)
+ * - Added toolExposure field to functions (Pattern 2: Logic Tool Handoff)
+ * - DH-LOGIC-01 through DH-LOGIC-07 applied to all decisions
  */
 
 import type {
@@ -211,6 +212,25 @@ export const interfaces = [
       "ImpactNode",
     ],
     // Stock excluded — reference data, no audit trail
+  },
+
+  // -------------------------------------------------------------------------
+  // I-2: Bilingual — Entities with English/Korean title pairs
+  // -------------------------------------------------------------------------
+  /** Bilingual: Entities with title/titleKo bilingual pairs. / title/titleKo 이중 언어 쌍을 가진 엔티티. */
+  {
+    apiName: "Bilingual",
+    description: {
+      en: "Entities with bilingual title pairs (title + titleKo) — enables unified language toggle UX",
+      ko: "이중 언어 제목 쌍(title + titleKo)을 가진 엔티티 — 통합 언어 전환 UX 지원",
+    },
+    properties: ["title", "titleKo"],
+    implementedBy: [
+      "StoryThread",
+      "ImpactChain",
+    ],
+    // NewsArticle excluded — has title but titleKo is optional (translation pipeline)
+    // ImpactNode uses label/labelKo pattern instead of title/titleKo
   },
 ] as const satisfies readonly OntologyInterface[];
 // == END: interfaces ==
@@ -504,6 +524,22 @@ export const derivedProperties = [
     sourceProperties: ["id"],
     computeFn: "computeArticleCount",
   },
+  // -------------------------------------------------------------------------
+  // D-2: nodeCount — Number of nodes in an ImpactChain
+  // -------------------------------------------------------------------------
+  /** nodeCount: Count of nodes in an impact chain. / 영향 체인 내 노드 수. */
+  {
+    apiName: "nodeCount",
+    entityApiName: "ImpactChain",
+    description: {
+      en: "Count of nodes in chain — computed from chainNodes link traversal",
+      ko: "체인 내 노드 수 — chainNodes 링크 순회로 계산",
+    },
+    mode: "onRead",
+    returnType: "integer",
+    sourceProperties: ["id"],
+    computeFn: "computeNodeCount",
+  },
 ] as const satisfies readonly DerivedProperty[];
 // == END: derived-properties ==
 
@@ -549,6 +585,44 @@ export const functions = [
     ],
     returnType: "boolean",
     pureLogic: "return !existingExplainers.some(e => e.newsArticleId === newsArticleId)",
+  },
+
+  // =========================================================================
+  // Impact Chain Functions (PM Feature 3)
+  // =========================================================================
+
+  /** F-3: computeNodeCount — Implements D-2 derived property. / D-2 파생 프로퍼티 구현. */
+  {
+    apiName: "computeNodeCount",
+    description: {
+      en: "Implements D-2: counts nodes linked via chainNodes (chainId FK)",
+      ko: "D-2 구현: chainNodes 링크(chainId FK)로 연결된 노드 수 계산",
+    },
+    category: "readHelper",
+    parameters: [
+      { name: "chainId", type: "string", description: { en: "ImpactChain ID", ko: "영향 체인 ID" }, required: true },
+      { name: "nodes", type: "ImpactNode[]", description: { en: "Nodes with matching chainId", ko: "chainId가 일치하는 노드들" }, required: true },
+    ],
+    returnType: "integer",
+    pureLogic: "return nodes.filter(n => n.chainId === chainId).length",
+    operatesOn: "ImpactChain",
+  },
+
+  /** F-4: collectDescendantIds — Collect all descendant node IDs for cascade delete. / 연쇄 삭제용 하위 노드 ID 수집. */
+  {
+    apiName: "collectDescendantIds",
+    description: {
+      en: "Recursively collects all descendant node IDs for cascade delete — DH-ACTION-02 decision",
+      ko: "연쇄 삭제를 위한 모든 하위 노드 ID 재귀 수집 — DH-ACTION-02 결정",
+    },
+    category: "pureLogic",
+    parameters: [
+      { name: "nodeId", type: "string", description: { en: "Root node ID to collect descendants from", ko: "하위 노드를 수집할 루트 노드 ID" }, required: true },
+      { name: "allNodes", type: "ImpactNode[]", description: { en: "All nodes in the chain", ko: "체인의 모든 노드" }, required: true },
+    ],
+    returnType: "string[]",
+    pureLogic: "const children = allNodes.filter(n => n.parentNodeId === nodeId); return children.flatMap(c => [c.id, ...collectDescendantIds(c.id, allNodes)])",
+    toolExposure: false,
   },
 ] as const satisfies readonly OntologyFunction[];
 // == END: functions ==

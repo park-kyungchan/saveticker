@@ -345,7 +345,25 @@ export interface OntologyFunction {
   returnType: string;
   pureLogic: string;
   operatesOn?: string;
+  /** Whether this function is exposed as an LLM-callable tool (Pattern 2: Logic Tool Handoff). */
+  toolExposure?: boolean;
 }
+
+// ============================================================================
+// Progressive Autonomy Levels (v1.2.0)
+// 점진적 자율성 단계
+// ============================================================================
+
+/**
+ * Progressive autonomy level for AI-driven action execution.
+ * Source: ontology-ultimate-vision.md §6, PROGRESSIVE_AUTONOMY_LEVELS in semantics.ts
+ */
+export type AutonomyLevel =
+  | "monitor"
+  | "recommend"
+  | "approve-then-act"
+  | "act-then-inform"
+  | "full-autonomy";
 
 // ============================================================================
 // Mutations (ACTION)
@@ -372,6 +390,8 @@ export interface OntologyMutation {
   validationFns?: string[];
   edits: MutationEdit[];
   sideEffects?: MutationSideEffect[];
+  /** AI action review tier — gates AI-proposed actions through human review. Source: ontology-ultimate-vision.md §6 */
+  reviewLevel?: AutonomyLevel;
 }
 
 // ============================================================================
@@ -402,6 +422,8 @@ export interface Automation {
   triggerEvent?: string;
   targetMutation: string;
   idempotent: boolean;
+  /** Progressive autonomy tier for this automation. Source: ontology-ultimate-vision.md §6 */
+  autonomyLevel?: AutonomyLevel;
 }
 
 // ============================================================================

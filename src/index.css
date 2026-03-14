@@ -16,7 +16,7 @@
 
   /* ─── Core Colors ─── */
   --color-ink: oklch(0.95 0.01 260);             /* near-white text on dark bg */
-  --color-ink-muted: oklch(0.65 0.02 260);       /* muted text for secondary content */
+  --color-ink-muted: oklch(0.70 0.02 260);       /* muted text — lightness 0.70 for WCAG AA 4.5:1 contrast */
   --color-surface: oklch(0.18 0.025 265);         /* deep navy-charcoal background */
   --color-surface-card: oklch(0.95 0.005 260 / 0.08); /* white at 8% opacity — glass panel */
 
@@ -106,6 +106,8 @@
     min-height: 100dvh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    word-break: keep-all;      /* TY-05: prevent mid-syllable Korean breaks */
+    overflow-wrap: break-word;  /* allow long English words/URLs to break */
   }
 
   /* ─── Body gradient: fixed pseudo-element avoids background-attachment:fixed
@@ -370,22 +372,51 @@
 /* === Dev Label Overlay === */
 html.show-labels [data-label] {
   position: relative;
-  outline: 1px dashed rgba(124, 58, 237, 0.5);
+  outline: 1px dashed rgba(124, 58, 237, 0.4);
+}
+
+/* Hide labels on deeply nested children — show only top-level + 1 depth */
+html.show-labels [data-label] [data-label] [data-label]::after {
+  display: none;
 }
 
 html.show-labels [data-label]::after {
   content: attr(data-label);
   position: absolute;
-  top: 0;
-  left: 0;
-  font-size: 8px;
+  top: -1px;
+  right: 0;
+  font-size: 9px;
   line-height: 1;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.9);
   color: #4ade80;
-  padding: 2px 4px;
-  border-radius: 2px;
+  padding: 2px 6px;
+  border-radius: 0 0 0 4px;
   z-index: 10000;
   pointer-events: none;
   white-space: nowrap;
   font-family: ui-monospace, monospace;
+  opacity: 0.7;
+  transition: opacity 0.15s;
+  cursor: pointer;
+}
+
+/* When labels active, make the label badges clickable */
+html.show-labels [data-label] {
+  cursor: pointer;
+}
+
+/* Highlight on hover */
+html.show-labels [data-label]:hover::after {
+  opacity: 1;
+  background: rgba(124, 58, 237, 0.95);
+  color: #fff;
+  z-index: 10001;
+  pointer-events: auto;
+}
+
+/* Copied flash */
+html.show-labels [data-label].label-copied::after {
+  background: rgba(16, 185, 129, 0.95) !important;
+  content: "✓ copied" !important;
+  opacity: 1 !important;
 }

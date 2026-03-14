@@ -173,10 +173,13 @@ export function NewsCard({ article, onClick, className, style, compact = false }
           </div>
 
           {/* Title */}
-          <p className={cn(
-            "font-medium text-ink leading-snug group-hover:text-white transition-colors duration-200",
-            compact ? "text-[13px] line-clamp-2" : "text-sm line-clamp-2",
-          )}>
+          <p
+            className={cn(
+              "font-medium text-ink leading-snug group-hover:text-white transition-colors duration-200",
+              compact ? "text-[13px] line-clamp-2" : "text-sm line-clamp-2",
+            )}
+            lang={article.titleKo ? "ko" : "en"}
+          >
             {article.titleKo || article.title}
           </p>
 
@@ -189,6 +192,16 @@ export function NewsCard({ article, onClick, className, style, compact = false }
 
           {/* Bottom: tickers + thread indicator */}
           <div className="flex items-center gap-2 pt-0.5">
+            {/* Thread indicator */}
+            {article.storyThreadId && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-brand/10 border border-brand/20 px-2 py-px text-[9px] font-medium text-brand/80">
+                <svg className="size-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m9.86-2.81a4.5 4.5 0 0 0-1.242-7.244l4.5-4.5a4.5 4.5 0 1 1 6.364 6.364l-1.757 1.757" />
+                </svg>
+                스토리
+              </span>
+            )}
+
             {/* Tickers */}
             {article.mentionedTickers && article.mentionedTickers.length > 0 && (
               <div className="flex items-center gap-1">

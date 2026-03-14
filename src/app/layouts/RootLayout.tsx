@@ -7,12 +7,36 @@ import { Outlet, NavLink, useLocation } from "react-router";
 import { Tabbar, TabbarLink } from "konsta/react";
 import { cn } from "../../lib/cn";
 
+/** Click a data-label element to copy its label to clipboard */
+function handleLabelClick(e: MouseEvent) {
+  const el = (e.target as HTMLElement).closest("[data-label]");
+  if (!el || !(el instanceof HTMLElement)) return;
+
+  const label = el.dataset.label;
+  if (!label) return;
+
+  e.preventDefault();
+  e.stopPropagation();
+
+  navigator.clipboard.writeText(label).then(() => {
+    el.classList.add("label-copied");
+    setTimeout(() => el.classList.remove("label-copied"), 800);
+  });
+}
+
 function DevLabelToggle() {
   const [on, setOn] = useState(false);
   const toggle = useCallback(() => {
     setOn((prev) => {
       const next = !prev;
       document.documentElement.classList.toggle("show-labels", next);
+
+      // Add/remove click-to-copy listener
+      if (next) {
+        document.addEventListener("click", handleLabelClick, true);
+      } else {
+        document.removeEventListener("click", handleLabelClick, true);
+      }
       return next;
     });
   }, []);

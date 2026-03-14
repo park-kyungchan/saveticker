@@ -87,7 +87,10 @@ export function HeroNewsCard({ article, onClick, className }: HeroNewsCardProps)
         </div>
 
         {/* Title — large, prominent */}
-        <h2 className="text-[17px] font-medium leading-[1.35] text-ink tracking-tight group-hover:text-white transition-colors duration-300">
+        <h2
+          className="text-[17px] font-medium leading-[1.35] text-ink tracking-tight group-hover:text-white transition-colors duration-300"
+          lang={article.titleKo ? "ko" : "en"}
+        >
           {article.titleKo || article.title}
         </h2>
 
@@ -119,7 +122,7 @@ export function HeroNewsCard({ article, onClick, className }: HeroNewsCardProps)
 
           {/* Source */}
           {article.sourceName && (
-            <span className="text-[11px] font-medium text-ink-muted/60">
+            <span className="text-[11px] font-medium text-ink-muted/60 truncate max-w-[120px]">
               {article.sourceName}
             </span>
           )}

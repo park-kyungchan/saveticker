@@ -10,6 +10,8 @@ import { query } from "./_generated/server";
 import { v } from "convex/values";
 
 import { recentArticles, articleById, articleExplainer, articlesByTicker, searchArticles, articlesByCategory, articlesBySource, articlesByTag } from "./model/article";
+import { allThreads, threadById, threadArticles, threadsByStatus } from "./model/storyThread";
+import { chainsByThread, chainNodes, chainById } from "./model/impactChain";
 import { stockById, stockByTicker } from "./model/stock";
 import { userById, allUsers } from "./model/user";
 
@@ -87,7 +89,92 @@ export const getArticlesByTag = query({
 });
 
 // ===========================================================================
-// 2. Article Detail
+// 2. Story Threads (PM Feature 1)
+// ===========================================================================
+
+/**
+ * All story threads.
+ * 전체 스토리 스레드 목록.
+ */
+export const getAllThreads = query({
+  args: {},
+  handler: async (ctx) => {
+    return await allThreads(ctx);
+  },
+});
+
+/**
+ * Single thread by ID.
+ * ID로 단일 스레드 조회.
+ */
+export const getThreadById = query({
+  args: { threadId: v.id("storyThreads") },
+  handler: async (ctx, args) => {
+    return await threadById(ctx, args.threadId);
+  },
+});
+
+/**
+ * Articles in a story thread, ordered by position.
+ * 스레드 내 기사 목록 (순서대로).
+ */
+export const getThreadArticles = query({
+  args: { threadId: v.id("storyThreads") },
+  handler: async (ctx, args) => {
+    return await threadArticles(ctx, args.threadId);
+  },
+});
+
+/**
+ * Story threads filtered by status.
+ * 상태별 스토리 스레드 필터.
+ */
+export const getThreadsByStatus = query({
+  args: { status: v.union(v.literal("active"), v.literal("completed")) },
+  handler: async (ctx, args) => {
+    return await threadsByStatus(ctx, args.status);
+  },
+});
+
+// ===========================================================================
+// 3. Impact Chains (PM Feature 3)
+// ===========================================================================
+
+/**
+ * Impact chains for a story thread.
+ * 스토리 스레드의 영향 체인 목록.
+ */
+export const getChainsByThread = query({
+  args: { storyThreadId: v.id("storyThreads") },
+  handler: async (ctx, args) => {
+    return await chainsByThread(ctx, args.storyThreadId);
+  },
+});
+
+/**
+ * Nodes in an impact chain, ordered by ordinal.
+ * 영향 체인의 노드 목록 (ordinal 순).
+ */
+export const getChainNodes = query({
+  args: { chainId: v.id("impactChains") },
+  handler: async (ctx, args) => {
+    return await chainNodes(ctx, args.chainId);
+  },
+});
+
+/**
+ * Single impact chain by ID.
+ * ID로 단일 영향 체인 조회.
+ */
+export const getChainById = query({
+  args: { chainId: v.id("impactChains") },
+  handler: async (ctx, args) => {
+    return await chainById(ctx, args.chainId);
+  },
+});
+
+// ===========================================================================
+// 4. Article Detail
 // ===========================================================================
 
 /**

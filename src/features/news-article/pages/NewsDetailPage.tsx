@@ -2,8 +2,7 @@
  * 뉴스 기사 상세 페이지 — 원본(EN) / 한국어 / StoryTelling 3탭.
  * News article detail page — 3-tab: Original, Korean, StoryTelling.
  */
-import { useState } from "react";
-import { useParams } from "react-router";
+import { useParams, useSearchParams } from "react-router";
 import { useArticleById } from "../hooks/useArticleById";
 import { useArticleExplainer } from "../../explainer/hooks/useArticleExplainer";
 import { NewsDetail } from "../components/NewsDetail";
@@ -23,7 +22,11 @@ export function NewsDetailPage() {
   const { id } = useParams<{ id: string }>();
   const article = useArticleById(id);
   const explainer = useArticleExplainer(id);
-  const [activeTab, setActiveTab] = useState("original");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeTab = searchParams.get("view") || "original";
+  const setActiveTab = (tab: string) => {
+    setSearchParams((p) => { p.set("view", tab); return p; }, { replace: true });
+  };
 
   if (article === undefined) {
     return (
