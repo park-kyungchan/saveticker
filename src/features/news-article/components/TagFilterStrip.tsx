@@ -38,7 +38,7 @@ export function TagFilterStrip({ tags, activeTag, onTagChange, className }: TagF
         aria-pressed={activeTag === null}
         onClick={() => onTagChange(null)}
         className={cn(
-          "shrink-0 rounded-full border px-3 py-1 text-[11px] font-medium transition-all min-h-[34px]",
+          "shrink-0 rounded-full border px-3 py-1 text-[11px] font-medium transition-all min-h-[44px]",
           activeTag === null
             ? "bg-brand/20 text-brand border-brand/30"
             : "bg-white/5 text-ink-muted/60 border-transparent hover:bg-white/8",
@@ -58,7 +58,7 @@ export function TagFilterStrip({ tags, activeTag, onTagChange, className }: TagF
             aria-pressed={isActive}
             onClick={() => onTagChange(isActive ? null : tag)}
             className={cn(
-              "shrink-0 rounded-full border px-3 py-1 text-[11px] font-medium transition-all min-h-[34px]",
+              "shrink-0 rounded-full border px-3 py-1 text-[11px] font-medium transition-all min-h-[44px]",
               isActive
                 ? color.activeBg
                 : cn(color.bg, color.text, "border-transparent hover:border-white/10"),

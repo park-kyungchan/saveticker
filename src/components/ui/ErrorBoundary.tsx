@@ -63,7 +63,7 @@ export class ErrorBoundary extends Component<Props, State> {
               onClick={this.handleRetry}
               className="text-sm text-brand hover:underline active:opacity-70 min-h-[44px] px-4"
             >
-              다시 시도 ({MAX_RETRIES - this.state.retryCount}회 남음)
+              페이지 새로고침 ({MAX_RETRIES - this.state.retryCount}회 남음)
             </button>
           ) : (
             <p className="text-xs text-ink-muted/60">

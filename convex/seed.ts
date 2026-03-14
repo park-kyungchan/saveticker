@@ -24,11 +24,19 @@ export const seedAll = internalMutation({
   args: { force: v.optional(v.boolean()) },
   handler: async (ctx, args) => {
     // Idempotency guard — prevent duplicate seeding
-    if (!args.force) {
-      const existing = await ctx.db.query("stocks").first();
-      if (existing) {
-        console.log("Database already seeded. Pass { force: true } to re-seed.");
-        return { skipped: true, reason: "already_seeded" };
+    const existing = await ctx.db.query("stocks").first();
+    if (!args.force && existing) {
+      console.log("Database already seeded. Pass { force: true } to re-seed.");
+      return { skipped: true, reason: "already_seeded" };
+    }
+
+    // Clear all tables before re-seeding to prevent duplicates
+    if (args.force) {
+      for (const table of ["impactNodes", "impactChains", "explainers", "newsArticles", "storyThreads", "users", "stocks"] as const) {
+        const rows = await ctx.db.query(table).collect();
+        for (const row of rows) {
+          await ctx.db.delete(row._id);
+        }
       }
     }
 
@@ -86,7 +94,29 @@ export const seedAll = internalMutation({
     });
 
     // =====================================================================
-    // 3. NEWS ARTICLES (8) — with tags, only articles that have explainers
+    // 3. STORY THREADS (2) — PM Feature 1
+    // =====================================================================
+
+    const threadHormuz = await ctx.db.insert("storyThreads", {
+      title: "Iran-US Strikes & Hormuz Strait Blockade",
+      titleKo: "미-이스라엘 이란 공습과 호르무즈 해협 봉쇄",
+      description: "US-Israel strikes on Iran triggered Hormuz closure, oil price surge, and global energy crisis",
+      descriptionKo: "미-이스라엘의 이란 공습으로 호르무즈 해협이 봉쇄되고, 유가 급등과 글로벌 에너지 위기가 촉발된 일련의 사건",
+      status: "active",
+      updatedAt: now,
+    });
+
+    const threadCredit = await ctx.db.insert("storyThreads", {
+      title: "Private Credit Market Stress",
+      titleKo: "사모신용 시장 스트레스",
+      description: "Major funds capping redemptions, $2T bubble comparison, systemic risk concerns",
+      descriptionKo: "주요 펀드 환매 제한, $2조 버블 비교, 시스템 리스크 우려가 이어지는 사모신용 시장 위기",
+      status: "active",
+      updatedAt: now,
+    });
+
+    // =====================================================================
+    // 4. NEWS ARTICLES (8) — with tags, linked to story threads
     // =====================================================================
 
     // --- Thread A: Hormuz (4 articles) ---
@@ -113,6 +143,15 @@ The US military's Central Command (CENTCOM) has disputed Iran's claim of full cl
       mentionedTickers: ["XOM", "CVX", "LMT", "010140", "329180"],
       tags: ["에너지", "지정학", "헤드라인"],
       isOfficial: true,
+      storyThreadId: threadHormuz,
+      orderInThread: 1,
+      translationStatus: "approved",
+      translationNotes: [
+        "IRGC → '혁명수비대': 정식 한국어 명칭 사용 (이란 이슬람 혁명수비대)",
+        "Strait of Hormuz → '호르무즈 해협': 외래어 표기법 준수",
+        "UKMTO/JMIC → 원문 약어 유지 + 한국어 풀네임 병기",
+        "summaryKo는 의역: '전 세계 원유 공급의 20%가 차단 위기' — 독자 관점에서 임팩트를 먼저 전달",
+      ],
 
       updatedAt: now,
     });
@@ -139,6 +178,14 @@ Argus Media에 따르면 전 세계 해상 원유 교역량의 약 1/3이 호르
       mentionedTickers: ["XOM", "010140", "329180"],
       tags: ["에너지", "헤드라인"],
       isOfficial: true,
+      storyThreadId: threadHormuz,
+      orderInThread: 2,
+      translationStatus: "approved",
+      translationNotes: [
+        "VLCC → 한국어로 '초대형원유운반선' 풀네임 병기 후 이후 VLCC 약어 사용",
+        "war risk cover → '전쟁위험 보장': 해상보험 업계 공식 용어 사용",
+        "$423,736/day → 달러 표기 유지 (원화 환산 시 환율 변동으로 오해 소지)",
+      ],
 
       updatedAt: now,
     });
@@ -165,6 +212,14 @@ Bernstein analysts outlined a worst-case scenario of $150 per barrel if the conf
       mentionedTickers: ["XOM", "CVX", "036460", "096770"],
       tags: ["에너지", "경제지표"],
       isOfficial: true,
+      storyThreadId: threadHormuz,
+      orderInThread: 3,
+      translationStatus: "approved",
+      translationNotes: [
+        "Stagflation → '스태그플레이션' + 괄호 설명 추가: '(경기침체와 물가상승이 동시에 발생하는 상황)'",
+        "Brent crude → '브렌트유': 국제유가 기준 명칭, 한국 언론 관행 따름",
+        "Goldman Sachs → '골드만삭스': 외래어 표기법, 외신 인용 시 원문 기관명 유지",
+      ],
 
       updatedAt: now,
     });
@@ -189,6 +244,14 @@ Iraq, a key supplier to Korea, has already cut daily production by approximately
       mentionedTickers: ["036460", "096770", "010140"],
       tags: ["에너지", "경제지표"],
       isOfficial: true,
+      storyThreadId: threadHormuz,
+      orderInThread: 4,
+      translationStatus: "approved",
+      translationNotes: [
+        "PwC Samil → 'PwC 삼일': 한국 법인명 사용 (삼일회계법인)",
+        "KOGAS → '한국가스공사(KOGAS)': 한국어 정식명 + 영문 약어 병기",
+        "69.3% 의존도 → 원문 수치 정확 인용, 출처(매일경제) 확인 완료",
+      ],
 
       updatedAt: now,
     });
@@ -215,6 +278,14 @@ The 5% cap is designed to prevent a "structural mismatch between investor capita
       mentionedTickers: ["BLK", "APO", "OWL"],
       tags: ["사모신용", "기업분석"],
       isOfficial: true,
+      storyThreadId: threadCredit,
+      orderInThread: 1,
+      translationStatus: "approved",
+      translationNotes: [
+        "BDC (Business Development Company) → 괄호 내 영문 원어 유지, 한국어 풀네임 없음 (미국 고유 법적 구조)",
+        "Private Credit → '사모신용': 금감원 공식 용어 채택, 첫 출현 시 영문 병기 'Private Credit (사모신용)'",
+        "quarterly share repurchases → '분기 자사주 매입': 법률 용어 정확 번역",
+      ],
 
       updatedAt: now,
     });
@@ -241,6 +312,14 @@ Unlike publicly traded corporate bonds, private credit loans are not traded on e
       mentionedTickers: ["BLK", "APO", "OWL"],
       tags: ["사모신용", "기업분석"],
       isOfficial: true,
+      storyThreadId: threadCredit,
+      orderInThread: 2,
+      translationStatus: "approved",
+      translationNotes: [
+        "'canary in the coal mine' → '탄광 속 카나리아': 직역 사용 (한국에서도 통용되는 비유)",
+        "모하메드 엘-에리안 → 인물 소개 '(전 PIMCO CEO)' 추가 — 독자 맥락 보강",
+        "syndicated loan market → '신디케이트론 시장': 금융권 공식 용어",
+      ],
 
       updatedAt: now,
     });
@@ -265,6 +344,14 @@ JPMorgan Chase CEO Jamie Dimon separately expressed concern: "All of our main co
       mentionedTickers: ["BLK", "APO"],
       tags: ["사모신용", "기업분석"],
       isOfficial: true,
+      storyThreadId: threadCredit,
+      orderInThread: 3,
+      translationStatus: "approved",
+      translationNotes: [
+        "NAV (Net Asset Value) → '순자산가치': 펀드 용어 정확 번역",
+        "Jamie Dimon 인용문 직역 유지: '어리석은 일' — 원문 뉘앙스 보존",
+        "Blackstone vs BlackRock 혼동 주의: 본문에서 'Blackstone' 명확 표기",
+      ],
 
       updatedAt: now,
     });
@@ -289,6 +376,14 @@ The concern extends beyond individual funds. If private credit defaults rise sha
       mentionedTickers: ["BLK"],
       tags: ["사모신용", "기업분석"],
       isOfficial: true,
+      storyThreadId: threadCredit,
+      orderInThread: 4,
+      translationStatus: "approved",
+      translationNotes: [
+        "'other' category → '기타': JPMorgan이 규제당국에 제출한 분류명 직역",
+        "feedback loop → '피드백 루프': IT/금융 공통 용어, 직역 유지",
+        "2008 비교 맥락: '은행과 모기지 원매자 관계' — 서브프라임 위기 설명 없이도 이해 가능하도록 의역",
+      ],
 
       updatedAt: now,
     });
@@ -484,11 +579,87 @@ The concern extends beyond individual funds. If private credit defaults rise sha
       updatedAt: now,
     });
 
+    // =====================================================================
+    // 6. IMPACT CHAINS (2) + IMPACT NODES (11) — PM Feature 3
+    // =====================================================================
+
+    // Chain 1: Hormuz thread — "Iran Strikes Domino Effect"
+    const chain1 = await ctx.db.insert("impactChains", {
+      storyThreadId: threadHormuz,
+      title: "Iran Hormuz Strait Blockade Domino Effect",
+      titleKo: "이란 호르무즈 봉쇄 도미노 효과",
+      description: "Cause-effect chain from Iran strikes to Korea energy crisis",
+      descriptionKo: "이란 공습부터 한국 에너지 위기까지의 인과 관계 체인",
+      updatedAt: now,
+    });
+
+    // Chain 1 nodes: tree structure
+    const h1 = await ctx.db.insert("impactNodes", {
+      chainId: chain1, label: "US-Israel strikes Iran nuclear sites", labelKo: "미국-이스라엘, 이란 핵시설 공습",
+      description: "Military strikes trigger geopolitical crisis", descriptionKo: "군사 공습으로 지정학적 위기 촉발",
+      newsArticleId: art1, ordinal: 1, updatedAt: now,
+    });
+    const h2 = await ctx.db.insert("impactNodes", {
+      chainId: chain1, parentNodeId: h1, label: "Iran closes Hormuz Strait", labelKo: "이란, 호르무즈 해협 봉쇄",
+      description: "20% of global oil flows through this chokepoint", descriptionKo: "세계 석유의 20%가 이 요충지를 통과",
+      newsArticleId: art1, ordinal: 1, updatedAt: now,
+    });
+    await ctx.db.insert("impactNodes", {
+      chainId: chain1, parentNodeId: h2, label: "War risk insurers cancel cover", labelKo: "전쟁 보험사, 보장 취소",
+      description: "VLCC tanker rates surge 94%", descriptionKo: "VLCC 유조선 운임 94% 급등",
+      newsArticleId: art2, ordinal: 1, updatedAt: now,
+    });
+    const h4 = await ctx.db.insert("impactNodes", {
+      chainId: chain1, parentNodeId: h2, label: "Oil supply drops 20%", labelKo: "석유 공급 20% 감소",
+      description: "Global energy market disruption", descriptionKo: "글로벌 에너지 시장 혼란",
+      newsArticleId: art3, ordinal: 2, updatedAt: now,
+    });
+    await ctx.db.insert("impactNodes", {
+      chainId: chain1, parentNodeId: h4, label: "Korea faces energy crisis", labelKo: "한국, 에너지 위기 직면",
+      description: "Korea imports 100% of crude oil, 70% from Middle East", descriptionKo: "한국 원유 100% 수입, 70% 중동 의존",
+      newsArticleId: art4, ordinal: 1, updatedAt: now,
+    });
+
+    // Chain 2: Credit thread — "Private Credit Stress Cascade"
+    const chain2 = await ctx.db.insert("impactChains", {
+      storyThreadId: threadCredit,
+      title: "Private Credit Stress Cascade",
+      titleKo: "사모신용 스트레스 연쇄",
+      description: "How redemption pressure cascades through private credit markets",
+      descriptionKo: "환매 압력이 사모신용 시장을 통해 연쇄적으로 퍼지는 과정",
+      updatedAt: now,
+    });
+
+    // Chain 2 nodes: tree structure
+    const c1 = await ctx.db.insert("impactNodes", {
+      chainId: chain2, label: "BlackRock caps BDEBT redemptions at 5%", labelKo: "블랙록, BDEBT 환매 5%로 제한",
+      description: "First major fund gate signals liquidity stress", descriptionKo: "첫 대형 펀드 게이트 — 유동성 스트레스 신호",
+      newsArticleId: art11, ordinal: 1, updatedAt: now,
+    });
+    await ctx.db.insert("impactNodes", {
+      chainId: chain2, parentNodeId: c1, label: "Blackstone faces 8% redemption requests", labelKo: "블랙스톤, 8% 환매 요청 직면",
+      description: "Executives inject personal capital to show confidence", descriptionKo: "임원진, 신뢰 과시 위해 개인 자금 투입",
+      newsArticleId: art13, ordinal: 1, updatedAt: now,
+    });
+    await ctx.db.insert("impactNodes", {
+      chainId: chain2, parentNodeId: c1, label: "$2T bubble comparison to 2008", labelKo: "2조 달러 거품, 2008년과 비교",
+      description: "Private credit grew from $500B to $2T in 5 years", descriptionKo: "사모신용 5년간 5,000억→2조 달러 성장",
+      newsArticleId: art12, ordinal: 2, updatedAt: now,
+    });
+    await ctx.db.insert("impactNodes", {
+      chainId: chain2, parentNodeId: c1, label: "JPMorgan flags $133B exposure", labelKo: "JPMorgan, 1,330억 달러 노출 경고",
+      description: "Bank-shadow bank feedback loop risk", descriptionKo: "은행-그림자금융 피드백 루프 위험",
+      newsArticleId: art14, ordinal: 3, updatedAt: now,
+    });
+
     return {
       stocks: 12,
       users: 3,
+      storyThreads: 2,
       newsArticles: 8,
       explainers: 8,
+      impactChains: 2,
+      impactNodes: 10,
     };
   },
 });

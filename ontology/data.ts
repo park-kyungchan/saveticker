@@ -1,15 +1,16 @@
 /**
- * SaveTicker — Ontology DATA Domain (Redesign)
+ * SaveTicker v2.0 — Ontology DATA Domain
  *
+ * Rebuilt against schemas v1.2.0 (34/34 DH coverage, Mode A).
  * 7 entities, 3 value types, 0 struct types, 1 shared property type.
- * Source of truth: research/saveticker-deep-dive.md, research/pm-portfolio-save-app.md
+ * Source of truth: docs/ontology-prompt.md, schemas/ontology/data/schema.ts
  * PM Portfolio 3 Features: Story Threads, Plain Language Cards, Impact Chains.
  *
- * Changes from legacy (10 entities):
- * - Removed: EconomicIndicator, WatchlistEntry, NewsStockLink, FinancialTerm, ArticleTermUsage
- * - Renamed: ArticleExplainer → Explainer (added personalImpact, removed contextBefore/contextAfter)
- * - Simplified: Stock (ticker/name/sector only), User (removed preferredLanguage), NewsArticle (flat sourceName, mentionedTickers array)
- * - Added: ImpactChain, ImpactNode (PM Feature 3: cause-effect domino visualization)
+ * v2.0 changes:
+ * - Added translationStatus enum (LEARN loop: pending → reviewed → approved)
+ * - Added translationNotes array (translation quality feedback)
+ * - DH-DATA-01 through DH-DATA-09 applied to all entity decisions
+ * - DH-DATA-05: imageUrl as string URL reference, no Attachment type (prototype scope)
  */
 
 // == SECTION: entities ==
@@ -152,6 +153,27 @@ export const objectTypes = [
         description: { en: "Whether article is from official source (false = rumor/카더라)", ko: "공식 출처 여부 (false = 카더라)" },
       },
       {
+        apiName: "translationStatus",
+        type: "string",
+        baseType: "string",
+        required: false,
+        readonly: false,
+        description: { en: "Translation pipeline status (LEARN loop feedback)", ko: "번역 파이프라인 상태 (LEARN 루프 피드백)" },
+        constraints: [{ kind: "enum", values: ["pending", "reviewed", "approved"] }],
+        indexCandidate: true,
+        // DH-DATA-06: Versioning strategy — translation status tracks content lifecycle
+      },
+      {
+        apiName: "translationNotes",
+        type: "string",
+        baseType: "string",
+        required: false,
+        readonly: false,
+        description: { en: "Translation review notes for quality feedback", ko: "번역 품질 피드백용 리뷰 노트" },
+        isArray: true,
+        // Captures reviewer comments during translation pipeline
+      },
+      {
         apiName: "publishedAt",
         type: "timestamp",
         baseType: "timestamp",
@@ -196,7 +218,7 @@ export const objectTypes = [
       },
     ],
     implements: ["Auditable"],
-    indexCandidates: ["title", "category", "publishedAt", "storyThreadId", "tags"],
+    indexCandidates: ["title", "category", "publishedAt", "storyThreadId", "tags", "translationStatus"],
   },
 
   // -------------------------------------------------------------------------

@@ -1,24 +1,24 @@
 /**
- * SaveTicker — Ontology ACTION Domain (Redesign)
+ * SaveTicker v2.0 — Ontology ACTION Domain
  *
- * 9 mutations, 0 webhooks, 0 automations.
- * Source of truth: research/saveticker-deep-dive.md, research/pm-portfolio-save-app.md
+ * Rebuilt against schemas v1.2.0 (34/34 DH coverage, Mode A).
+ * 10 mutations, 0 webhooks, 1 automation (declared-only).
+ * Source of truth: docs/ontology-prompt.md, schemas/ontology/action/schema.ts
  * Reads from DATA domain (data.ts) and LOGIC domain (logic.ts).
  *
- * Changes from legacy (13 mutations, 0 webhooks, 1 automation):
- * - Removed: addToWatchlist, removeFromWatchlist (no WatchlistEntry entity)
- * - Removed: updateStockPrice (no price tracking)
- * - Removed: updateIndicatorActual (no EconomicIndicator entity)
- * - Removed: createFinancialTerm, updateFinancialTerm, createArticleTermUsage (no glossary entities)
- * - Removed: computeTrendingStocks automation (depends on removed entities)
- * - Renamed: createArticleExplainer → createExplainer, updateArticleExplainer → updateExplainer
- * - Added: createImpactChain, addImpactNode, removeImpactNode (PM Feature 3)
+ * v2.0 changes:
+ * - removeImpactNode: explicit CASCADE DELETE (DH-ACTION-02 decision)
+ * - Added updateTranslationStatus mutation (LEARN loop)
+ * - Added reviewLevel to all mutations (PA-01 monitor for prototype)
+ * - Added ingestArticles automation (declared-only, future implementation)
+ * - DH-ACTION-01 through DH-ACTION-12 applied to all decisions
  */
 
 import type {
   OntologyMutation,
   Webhook,
   Automation,
+  AutonomyLevel,
 } from "./schema.js";
 
 // == SECTION: mutations ==
@@ -45,7 +45,8 @@ export const mutations = [
       { name: "status", type: "\"active\" | \"completed\"", required: false, description: { en: "Thread status (default: active)", ko: "스레드 상태 (기본: active)" } },
     ],
     edits: [{ type: "create", target: "StoryThread", properties: ["title", "titleKo", "description", "descriptionKo", "status", "updatedAt", "updatedBy"] }],
-    // status defaults to "active" if not provided
+    reviewLevel: "monitor" as AutonomyLevel,
+    // status defaults to "active" if not provided; DH-ACTION-01: simple CRUD
   },
 
   /** M-2: updateStoryThread — Edit title, description, or status. / 제목, 설명, 상태 수정. */
@@ -66,6 +67,7 @@ export const mutations = [
       { name: "status", type: "\"active\" | \"completed\"", required: false, description: { en: "Thread status", ko: "스레드 상태" } },
     ],
     edits: [{ type: "modify", target: "StoryThread", properties: ["title", "titleKo", "description", "descriptionKo", "status", "updatedAt", "updatedBy"] }],
+    reviewLevel: "monitor" as AutonomyLevel,
     // Partial update — only provided fields change
   },
 
@@ -84,6 +86,7 @@ export const mutations = [
       { name: "orderInThread", type: "integer", required: true, description: { en: "Position within StoryThread timeline", ko: "스토리 스레드 내 타임라인 위치" } },
     ],
     edits: [{ type: "modify", target: "NewsArticle", properties: ["storyThreadId", "orderInThread", "updatedAt", "updatedBy"] }],
+    reviewLevel: "monitor" as AutonomyLevel,
     // FK-based link assignment — sets storyThreadId FK on NewsArticle
   },
 
@@ -111,6 +114,7 @@ export const mutations = [
     ],
     validationFns: ["validateExplainerCreate"],
     edits: [{ type: "create", target: "Explainer", properties: ["newsArticleId", "simplifiedTitle", "storyBody", "keyTakeaways", "personalImpact", "analogy", "difficultyLevel", "updatedAt", "updatedBy"] }],
+    reviewLevel: "monitor" as AutonomyLevel,
     // NewsArticle must exist; no existing explainer for this article — 1:1 unique index
   },
 
@@ -133,6 +137,7 @@ export const mutations = [
       { name: "difficultyLevel", type: "\"beginner\" | \"intermediate\" | \"advanced\"", required: false, description: { en: "Difficulty level", ko: "난이도" } },
     ],
     edits: [{ type: "modify", target: "Explainer", properties: ["simplifiedTitle", "storyBody", "keyTakeaways", "personalImpact", "analogy", "difficultyLevel", "updatedAt", "updatedBy"] }],
+    reviewLevel: "monitor" as AutonomyLevel,
     // Partial update — newsArticleId is FK (readonly), never modified
   },
 
@@ -157,6 +162,7 @@ export const mutations = [
       { name: "descriptionKo", type: "string", required: false, description: { en: "Korean description", ko: "한국어 설명" } },
     ],
     edits: [{ type: "create", target: "ImpactChain", properties: ["storyThreadId", "title", "titleKo", "description", "descriptionKo", "updatedAt", "updatedBy"] }],
+    reviewLevel: "monitor" as AutonomyLevel,
     // StoryThread must exist — adapter validates FK at runtime
   },
 
@@ -180,23 +186,29 @@ export const mutations = [
       { name: "ordinal", type: "integer", required: true, description: { en: "Sibling ordering", ko: "형제 노드 간 정렬 순서" } },
     ],
     edits: [{ type: "create", target: "ImpactNode", properties: ["chainId", "parentNodeId", "newsArticleId", "label", "labelKo", "description", "descriptionKo", "ordinal", "updatedAt", "updatedBy"] }],
+    reviewLevel: "monitor" as AutonomyLevel,
     // ImpactChain must exist; parentNodeId must reference existing node if provided
   },
 
-  /** M-8: removeImpactNode — Remove a node from a chain. / 체인에서 노드 제거. */
+  /** M-8: removeImpactNode — CASCADE DELETE: remove node + all descendants. / 연쇄 삭제: 노드 + 모든 하위 노드 제거. */
   {
     apiName: "removeImpactNode",
     description: {
-      en: "Remove a node from an impact chain — cascading child handling is adapter responsibility",
-      ko: "영향 체인에서 노드 제거 — 자식 노드 연쇄 처리는 어댑터 책임",
+      en: "CASCADE DELETE — removes the target node and ALL descendant nodes in the tree. Uses collectDescendantIds (F-4) to find all children recursively.",
+      ko: "연쇄 삭제 — 대상 노드와 트리의 모든 하위 노드를 삭제. collectDescendantIds(F-4)로 모든 자식을 재귀적으로 탐색.",
     },
-    mutationType: "delete",
+    mutationType: "batch",
     entityApiName: "ImpactNode",
     parameters: [
-      { name: "impactNodeId", type: "string", required: true, description: { en: "ImpactNode ID to remove", ko: "제거할 ImpactNode ID" } },
+      { name: "impactNodeId", type: "string", required: true, description: { en: "Root ImpactNode ID to remove (cascades to descendants)", ko: "제거할 루트 ImpactNode ID (하위 노드로 연쇄)" } },
     ],
-    edits: [{ type: "delete", target: "ImpactNode" }],
-    // Entry must exist. Adapter handles orphaned children (re-parent or cascade delete).
+    validationFns: ["collectDescendantIds"],
+    edits: [
+      { type: "delete", target: "ImpactNode" },
+      { type: "delete", target: "ImpactNode", properties: ["descendantIds"] },
+    ],
+    reviewLevel: "monitor" as AutonomyLevel,
+    // DH-ACTION-02: batch atomicity — deletes root + all descendants in one transaction
   },
 
   // =========================================================================
@@ -217,7 +229,31 @@ export const mutations = [
       { name: "displayName", type: "string", required: false, description: { en: "New display name", ko: "새 표시 이름" } },
     ],
     edits: [{ type: "modify", target: "User", properties: ["displayName", "updatedAt", "updatedBy"] }],
+    reviewLevel: "monitor" as AutonomyLevel,
     // Partial update — updatedAt/updatedBy auto-set via Auditable
+  },
+
+  // =========================================================================
+  // Translation Pipeline (LEARN loop)
+  // =========================================================================
+
+  /** M-10: updateTranslationStatus — Update article translation status. / 기사 번역 상태 업데이트. */
+  {
+    apiName: "updateTranslationStatus",
+    description: {
+      en: "Update translation pipeline status — LEARN loop feedback (pending → reviewed → approved)",
+      ko: "번역 파이프라인 상태 업데이트 — LEARN 루프 피드백 (pending → reviewed → approved)",
+    },
+    mutationType: "modify",
+    entityApiName: "NewsArticle",
+    parameters: [
+      { name: "newsArticleId", type: "string", required: true, description: { en: "NewsArticle ID", ko: "뉴스 기사 ID" } },
+      { name: "translationStatus", type: "\"pending\" | \"reviewed\" | \"approved\"", required: true, description: { en: "New translation status", ko: "새 번역 상태" } },
+      { name: "translationNote", type: "string", required: false, description: { en: "Review note to append", ko: "추가할 리뷰 노트" } },
+    ],
+    edits: [{ type: "modify", target: "NewsArticle", properties: ["translationStatus", "translationNotes", "updatedAt", "updatedBy"] }],
+    reviewLevel: "monitor" as AutonomyLevel,
+    // DH-ACTION-01: simple status update, no complex validation needed
   },
 ] as const satisfies readonly OntologyMutation[];
 // == END: mutations ==
@@ -229,5 +265,23 @@ export const webhooks = [] as const satisfies readonly Webhook[];
 
 // == SECTION: automations ==
 /** Automations (scheduled and event-driven triggers) / 자동화 (스케줄 및 이벤트 기반 트리거) */
-export const automations = [] as const satisfies readonly Automation[];
+export const automations = [
+  // -------------------------------------------------------------------------
+  // A-1: ingestArticles — DECLARED ONLY, future implementation
+  // -------------------------------------------------------------------------
+  /** ingestArticles: Periodic article ingestion from news APIs. / 뉴스 API에서 주기적 기사 수집. */
+  {
+    apiName: "ingestArticles",
+    description: {
+      en: "DECLARED ONLY — periodic article ingestion from external news APIs. Not implemented in prototype.",
+      ko: "선언만 — 외부 뉴스 API에서 주기적 기사 수집. 프로토타입에서 미구현.",
+    },
+    kind: "cron",
+    schedule: "*/30 * * * *",
+    targetMutation: "createNewsArticle",
+    idempotent: true,
+    autonomyLevel: "monitor" as AutonomyLevel,
+    // DH-ACTION-12: declared for future; currently using manual seed data
+  },
+] as const satisfies readonly Automation[];
 // == END: automations ==

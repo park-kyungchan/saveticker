@@ -43,6 +43,9 @@ export function FeedSettings({ open, onClose }: FeedSettingsProps) {
           {/* Panel */}
           <motion.div
             data-label="feedSettings.modal"
+            role="dialog"
+            aria-label="피드 키워드 설정"
+            aria-modal="true"
             className={cn(recipes.card.base, "glass-panel relative w-full max-w-md space-y-4 rounded-t-2xl rounded-b-none p-5")}
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
@@ -93,8 +96,9 @@ export function FeedSettings({ open, onClose }: FeedSettingsProps) {
                     {kw}
                     <button
                       type="button"
+                      aria-label={`${kw} 삭제`}
                       onClick={() => removeKeyword(kw)}
-                      className="ml-1 text-ink-muted hover:text-danger"
+                      className="ml-1 text-ink-muted hover:text-danger min-h-[44px] min-w-[44px] flex items-center justify-center -mr-2"
                     >
                       <svg className="size-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />

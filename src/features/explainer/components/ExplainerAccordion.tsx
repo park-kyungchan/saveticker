@@ -27,9 +27,9 @@ export function ExplainerAccordion({ title, children, defaultOpen = false, class
         aria-expanded={open}
         aria-controls={contentId}
         onClick={() => setOpen((v) => !v)}
-        className="flex w-full items-center justify-between p-4 text-left min-h-[44px] hover:bg-white/[0.03] transition-colors"
+        className="flex w-full items-center justify-between p-4 text-left min-h-[48px] hover:bg-white/[0.03] transition-colors"
       >
-        <span className="text-sm font-medium text-ink">{title}</span>
+        <span className="text-[15px] font-medium text-ink">{title}</span>
         <motion.svg
           animate={{ rotate: open ? 180 : 0 }}
           transition={{ duration: 0.2 }}
@@ -55,7 +55,7 @@ export function ExplainerAccordion({ title, children, defaultOpen = false, class
             transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
             className="overflow-hidden"
           >
-            <div className="px-4 pb-4 text-sm leading-relaxed text-ink/85">
+            <div className="px-4 pb-4 text-base leading-[1.75] text-ink/85">
               {children}
             </div>
           </motion.div>

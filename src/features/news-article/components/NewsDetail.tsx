@@ -57,6 +57,7 @@ export function NewsDetail({ article, className }: NewsDetailProps) {
         <h1
           data-label="news.detail.title"
           className="text-lg font-medium leading-snug text-ink"
+          lang="en"
         >
           {article.title}
         </h1>
@@ -104,6 +105,7 @@ export function NewsDetail({ article, className }: NewsDetailProps) {
       <div
         data-label="news.detail.body"
         className="whitespace-pre-wrap text-sm leading-relaxed text-ink/90"
+        lang="en"
       >
         {article.body}
       </div>

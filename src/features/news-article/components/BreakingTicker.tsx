@@ -83,7 +83,7 @@ export function BreakingTicker({ articles, onArticleClick, className }: Breaking
               </div>
 
               {/* Title */}
-              <p className="text-[13px] font-medium leading-snug text-ink line-clamp-2">
+              <p className="text-[13px] font-medium leading-snug text-ink line-clamp-2" lang={article.titleKo ? "ko" : "en"}>
                 {article.titleKo || article.title}
               </p>
 
