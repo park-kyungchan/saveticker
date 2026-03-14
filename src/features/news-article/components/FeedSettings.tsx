@@ -173,6 +173,16 @@ export function FeedSettings({ open, onClose }: FeedSettingsProps) {
             {keywords.length === 0 && (
               <p data-label="feedSettings.empty" className="text-xs text-ink-muted/50 text-center py-2">태그를 선택하거나 키워드를 입력하면 맞춤 피드가 구성됩니다.</p>
             )}
+
+            {/* Story thread auto-link hint */}
+            <div data-label="feedSettings.threadHint" className="flex items-start gap-2 rounded-lg bg-brand/5 border border-brand/10 px-3 py-2.5">
+              <svg className="size-3.5 text-brand/60 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m9.86-2.81a4.5 4.5 0 0 0-1.242-7.244l4.5-4.5a4.5 4.5 0 1 1 6.364 6.364l-1.757 1.757" />
+              </svg>
+              <p className="text-[11px] text-ink-muted/60 leading-relaxed">
+                관심 태그를 추가하면 관련 <span className="text-brand/80 font-medium">스토리 흐름</span>도 맞춤 피드에 자동으로 표시됩니다.
+              </p>
+            </div>
           </motion.div>
         </motion.div>
       )}

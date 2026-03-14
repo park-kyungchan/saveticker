@@ -392,8 +392,172 @@ The concern extends beyond individual funds. If private credit defaults rise sha
       updatedAt: now,
     });
 
+    // --- Thread A: Hormuz (2 NEW articles — art5, art6) ---
+
+    const art5 = await ctx.db.insert("newsArticles", {
+      title: "IEA agrees to release record 400 million barrels from strategic reserves",
+      titleKo: "IEA, 사상 최대 4억 배럴 비축유 방출 합의",
+      summary: "32 IEA member states unanimously agreed to release 400M barrels — largest coordinated drawdown since the agency's 1974 founding. But analysts warn it covers only a fraction of the 15M bbl/day supply loss.",
+      summaryKo: "32개 IEA 회원국이 만장일치로 4억 배럴 방출에 합의 — 1974년 설립 이래 최대 규모입니다. 그러나 일일 1,500만 배럴 공급 손실의 일부만 충당할 수 있어 유가 하락 효과는 제한적입니다.",
+      viewCount: 55,
+      body: `The International Energy Agency's 32 member states unanimously agreed on Wednesday to release 400 million barrels of crude from strategic reserves — the largest coordinated drawdown since the agency was created in 1974.
+
+The record amount far surpasses the 182 million barrels that countries released in two tranches in 2022 when Russia launched its full-scale invasion of Ukraine. The IEA said the release was necessary because Gulf Arab states had already cut production by at least 10 million barrels per day, and warned that unless shipping through the Strait of Hormuz rapidly resumes, further cuts are inevitable.
+
+However, traders are doing the math: at roughly 15 million barrels per day of net supply loss from the Hormuz closure, 400 million barrels covers only about 26 days of the deficit. Saudi Arabia further compounded the picture by cutting its own production by 20% after shutting two offshore fields, including the massive Safaniya field.
+
+The U.S. also enacted an unprecedented suspension of its embargo on Russian oil, temporarily clearing 19 million barrels of Russian crude for sale in Asia from 30 sanctioned tankers — a dramatic policy reversal aimed at preventing oil prices from spiraling further.`,
+      bodyKo: `국제에너지기구(IEA) 32개 회원국이 수요일 전략 비축유 4억 배럴 방출에 만장일치로 합의했습니다 — 1974년 기구 설립 이래 최대 규모의 조율된 방출입니다.
+
+이 규모는 2022년 러시아의 우크라이나 전면 침공 당시 2차에 걸쳐 방출된 1억 8,200만 배럴을 크게 능가합니다. IEA는 걸프 아랍 산유국들이 이미 일일 최소 1,000만 배럴의 생산을 감축했으며, 호르무즈 해협 통행이 빠르게 재개되지 않으면 추가 감축은 불가피하다고 경고했습니다.
+
+그러나 시장은 냉정합니다: 호르무즈 봉쇄로 인한 일일 순 공급 손실 약 1,500만 배럴 기준으로, 4억 배럴은 약 26일치에 불과합니다. 사우디아라비아는 사파니야 유전 등 해양 유전 2곳을 폐쇄하며 자체 생산도 20% 감축했습니다.
+
+미국은 러시아 원유 수입 금지를 일시 유예해, 제재 대상 유조선 30척에서 1,900만 배럴의 러시아 원유를 아시아 시장에 매각하도록 허용하는 전례 없는 정책 전환을 단행했습니다.`,
+      sourceUrl: "https://www.cnbc.com/2026/03/11/iea-oil-reserves-crude-prices-iran-g7-energy.html",
+      sourceName: "CNBC / IEA",
+      publishedAt: ts("2026-03-11T18:00:00Z"),
+      category: "breaking",
+      mentionedTickers: ["XOM", "CVX", "036460"],
+      tags: ["에너지", "지정학", "경제지표"],
+      isOfficial: true,
+      storyThreadId: threadHormuz,
+      orderInThread: 5,
+      translationStatus: "approved",
+      translationNotes: [
+        "IEA → '국제에너지기구(IEA)': 한국어 정식명 + 영문 약어 병기",
+        "strategic reserves → '전략 비축유': 에너지 분야 공식 번역",
+        "Safaniya field → '사파니야 유전': 세계 최대 해상 유전, 한국어 음역",
+        "26일치 계산 → 원문 implicit, 번역에서 명시화하여 독자 이해 강화",
+      ],
+      updatedAt: now,
+    });
+
+    const art6 = await ctx.db.insert("newsArticles", {
+      title: "Iran's new supreme leader Mojtaba Khamenei vows to keep Strait of Hormuz closed",
+      titleKo: "이란 신임 최고지도자 모지타바 하메네이, 호르무즈 봉쇄 유지 선언",
+      summary: "Mojtaba Khamenei, succeeding his father killed in Feb 28 strikes, declared Hormuz closure must continue as 'tool to pressure the enemy.' Brent hits $100. Iran begins laying naval mines; US destroys 16 minelayers.",
+      summaryKo: "2월 28일 공습으로 사망한 부친을 승계한 모지타바 하메네이가 호르무즈 봉쇄를 '적에 대한 압박 도구'로 계속 유지하겠다고 선언했습니다. 브렌트유 $100 돌파. 이란이 기뢰를 부설하자 미군이 기뢰부설함 16척을 격침했습니다.",
+      viewCount: 73,
+      body: `Iran's new supreme leader, Mojtaba Khamenei, said Thursday that the closure of the Strait of Hormuz maritime passage should be continued as a "tool to pressure the enemy," in his first public statement since being appointed on March 9.
+
+The 56-year-old Mojtaba Khamenei succeeded his father Ali Khamenei, who was killed in the US-Israeli strikes on Tehran on February 28 after ruling Iran for 37 years. He demanded the immediate closure of all US military bases in the Middle East and warned of further attacks.
+
+The statement came as oil prices surpassed $100 per barrel for the first time in four years. At its peak, Brent crude hit $126 per barrel. As of mid-March, prices have been gyrating between $80 and $100, with the IEA's record 400 million barrel release doing little to calm markets.
+
+In a dramatic escalation, US military intelligence reported on March 10 that Iran had begun planting naval mines in the Strait of Hormuz. President Trump demanded Iran immediately remove any mines, and the US military said it destroyed 16 Iranian minelayers. Since the war began on February 28, at least 21 ships have been attacked in and around the strait, with 10 seafarers killed or missing.
+
+The conflict has also spread beyond the strait itself. Iran launched drone attacks on the UAE's Fujairah port and Abu Dhabi's Ruwais industrial complex, key energy bypass infrastructure that was being used to circumvent the Hormuz blockade via the Abu Dhabi Crude Oil Pipeline. As of March 15, fires from drone interceptions continue in Fujairah, though authorities report no casualties.`,
+      bodyKo: `이란의 신임 최고지도자 모지타바 하메네이가 목요일, 3월 9일 취임 이후 첫 공개 성명에서 호르무즈 해협 봉쇄를 "적에 대한 압박 도구"로 계속 유지해야 한다고 밝혔습니다.
+
+56세의 모지타바 하메네이는 2월 28일 미-이스라엘의 테헤란 공습으로 사망한 부친 알리 하메네이(37년 집권)를 승계했습니다. 그는 중동 내 모든 미군 기지의 즉각 폐쇄를 요구하고 추가 공격을 경고했습니다.
+
+이 성명이 나온 시점에 유가는 4년 만에 처음으로 배럴당 $100을 돌파했습니다. 브렌트유는 최고 $126까지 치솟았으며, 3월 중순 현재 $80~$100 사이를 등락하고 있습니다. IEA의 사상 최대 4억 배럴 방출도 시장을 진정시키지 못했습니다.
+
+극적인 에스컬레이션으로, 미 군사정보부는 3월 10일 이란이 호르무즈 해협에 기뢰(바다에 떠다니는 폭탄) 부설을 시작했다고 보고했습니다. 트럼프 대통령은 즉각 철거를 요구했고, 미군은 이란 기뢰부설함 16척을 격침했다고 발표했습니다. 2월 28일 전쟁 개시 이래 해협 내외에서 최소 21척이 공격받았으며, 10명의 선원이 사망하거나 실종되었습니다.
+
+분쟁은 해협 밖으로도 확산되었습니다. 이란은 호르무즈 우회 에너지 인프라인 UAE 푸자이라 항구와 아부다비 루와이스 산업단지에 드론 공격을 감행했습니다. 3월 15일 현재 푸자이라에서 드론 요격 후 화재 진압이 계속되고 있으나, 사상자는 없는 것으로 보도됩니다.`,
+      sourceUrl: "https://www.cnbc.com/2026/03/12/strait-of-hormuz-closure-iran-oil-prices-mojtaba-khamenei.html",
+      sourceName: "CNBC / CBS / NPR",
+      publishedAt: ts("2026-03-12T14:00:00Z"),
+      category: "breaking",
+      mentionedTickers: ["XOM", "CVX", "LMT"],
+      tags: ["에너지", "지정학", "헤드라인"],
+      isOfficial: true,
+      storyThreadId: threadHormuz,
+      orderInThread: 6,
+      translationStatus: "approved",
+      translationNotes: [
+        "Mojtaba Khamenei → '모지타바 하메네이': 외래어 표기법 준수",
+        "naval mines → '기뢰(바다에 떠다니는 폭탄)': bodyKo에서 초보자용 괄호 설명 추가",
+        "minelayers → '기뢰부설함': 군사 용어 정식 번역",
+        "$126 peak → 최고가 수치는 Wikipedia 인용, 원문 CNBC와 교차 확인",
+      ],
+      updatedAt: now,
+    });
+
+    // --- Thread B: Private Credit (2 NEW articles — art15, art16) ---
+
+    const art15 = await ctx.db.insert("newsArticles", {
+      title: "Morgan Stanley caps redemptions at private credit fund as withdrawals spike to 11%",
+      titleKo: "Morgan Stanley, 사모신용 펀드 환매 제한 — 요청 11%, 충족 5%만",
+      summary: "Morgan Stanley's North Haven Private Income Fund received 11% redemption requests but honored only 5%. Only $169M of requests fulfilled. Follows BlackRock and Blackstone in capping withdrawals.",
+      summaryKo: "Morgan Stanley의 North Haven Private Income Fund에 11% 환매 요청이 접수되었으나 5%만 충족되었습니다. 약 $1.69억만 지급. 블랙록·블랙스톤에 이어 대형 금융사의 연쇄적 환매 제한입니다.",
+      viewCount: 41,
+      body: `Morgan Stanley disclosed that it imposed redemption restrictions on its North Haven Private Income Fund after investors attempted to withdraw nearly 11% of outstanding shares — more than double the fund's 5% quarterly repurchase limit.
+
+Approximately $169 million was returned to investors, representing just 45.8% of the total redemption requests. "As marketed and consistent with the disclosure in our private placement memorandum, we will be fulfilling tender requests for 5% of units outstanding," the bank's investment management arm said.
+
+Morgan Stanley added that limiting withdrawals will help avoid asset sales during "periods of market dislocation" and maximize risk-adjusted returns for investors over time.
+
+The move follows similar restrictions by BlackRock on its $26 billion HPS Lending Fund and Blackstone's $48 billion BCRED fund, signaling that the redemption pressure is spreading across the $1.9 trillion private credit market. According to analysts, private lenders have entered a "prolonged" cycle of negative net outflows that could last up to two years.`,
+      bodyKo: `Morgan Stanley가 North Haven Private Income Fund에서 투자자들의 환매 요청이 발행 주식의 11%에 달하자 — 분기 5% 환매 한도의 2배 이상 — 환매 제한을 시행했다고 밝혔습니다.
+
+약 $1.69억이 투자자에게 반환되어 전체 환매 요청의 45.8%만 충족되었습니다. 은행 투자운용 부문은 "마케팅 시 공시하고 사모투자설명서에 기재된 대로 발행 주식의 5% 한도로 환매 요청을 이행한다"고 밝혔습니다.
+
+Morgan Stanley는 환매 제한이 "시장 혼란 기간" 동안 자산 매각을 방지하고 장기적으로 투자자의 위험조정수익률을 극대화하는 데 도움이 될 것이라고 덧붙였습니다.
+
+이 조치는 블랙록($260억 HPS Lending Fund)과 블랙스톤($480억 BCRED 펀드)의 유사한 환매 제한에 이은 것으로, $1.9조 규모 사모신용 시장 전반에 환매 압력이 확산되고 있음을 보여줍니다. 애널리스트들은 사모대출기관이 최대 2년간 지속될 수 있는 "장기적" 순 자금 유출 사이클에 진입했다고 분석합니다.`,
+      sourceUrl: "https://www.bloomberg.com/news/articles/2026-03-11/morgan-stanley-limits-redemptions-on-private-credit-fund",
+      sourceName: "Bloomberg / Reuters",
+      publishedAt: ts("2026-03-11T15:00:00Z"),
+      category: "breaking",
+      mentionedTickers: ["BLK", "APO", "OWL"],
+      tags: ["사모신용", "기업분석"],
+      isOfficial: true,
+      storyThreadId: threadCredit,
+      orderInThread: 5,
+      translationStatus: "approved",
+      translationNotes: [
+        "private placement memorandum → '사모투자설명서': 금감원 공식 용어",
+        "risk-adjusted returns → '위험조정수익률': 재무학 표준 용어",
+        "negative net outflows → '순 자금 유출': 펀드 흐름 분석 용어",
+        "45.8% 충족률 → 원문 수치 계산: $169M / 전체 요청 ≈ 45.8%",
+      ],
+      updatedAt: now,
+    });
+
+    const art16 = await ctx.db.insert("newsArticles", {
+      title: "The $265 billion private credit meltdown: Wall Street's hottest craze turned into panic",
+      titleKo: "사모신용 $2,650억 멜트다운: 월스트리트 최대 열풍에서 패닉으로",
+      summary: "Private equity stocks lost $265B in market cap. Blue Owl down 66% from peak. Blackstone -46%, KKR -48%, Apollo -41%. Software loan exposure to AI disruption is a key trigger.",
+      summaryKo: "사모신용 관련 기업 시총 $2,650억이 증발했습니다. Blue Owl -66%, Blackstone -46%, KKR -48%, Apollo -41%. AI 위협에 노출된 소프트웨어 기업 대출이 핵심 촉발 요인입니다.",
+      viewCount: 92,
+      body: `The wipeout has erased over $265 billion in market capitalization from the five largest private credit firms — Blackstone, KKR, Apollo, Ares, and Blue Owl Capital — in a dramatic reversal from the sector's historic bull run.
+
+From mid-2023 to January 2025, these firms staged what may rank as the single biggest surge in the annals of financial services: Blackstone gained 58.2%, Ares 68.1%, Apollo 77.9%, Blue Owl 80.6%, and KKR led at 103.4%. But starting last September, an historic selloff sent Apollo down 41%, Blackstone 46%, Ares and KKR 48% each, while Blue Owl dropped by two-thirds.
+
+The trigger wasn't just rising interest rates or economic uncertainty. High-profile blowups rattled investors — most notably, heavy exposure to software companies now vulnerable to AI disruption. Retail clients that firms had spent years courting began yanking money from the industry's largest funds, straining redemption limits designed to prevent fire sales of illiquid loans.
+
+According to Goldberg at Morgan Stanley, private lenders have already entered a "prolonged" cycle of negative net outflows, which could last up to two years as fund managers sort through the fallout of high redemptions, deteriorating loan quality, and the structural challenge of marking illiquid assets to market.`,
+      bodyKo: `$2,650억 이상의 시가총액이 5대 사모신용 기업 — 블랙스톤, KKR, 아폴로, Ares, Blue Owl Capital — 에서 증발했습니다. 이 섹터의 역사적 상승장에서 극적으로 반전된 것입니다.
+
+2023년 중반부터 2025년 1월까지, 이들 기업은 금융서비스 역사상 가장 큰 급등을 기록했습니다: 블랙스톤 +58.2%, Ares +68.1%, 아폴로 +77.9%, Blue Owl +80.6%, KKR은 +103.4%로 선두였습니다. 그러나 지난 9월부터 역사적 매도세가 시작되어 아폴로 -41%, 블랙스톤 -46%, Ares와 KKR 각 -48%, Blue Owl은 고점 대비 2/3가 하락했습니다.
+
+촉발 요인은 금리 상승이나 경제 불확실성만이 아닙니다. 대형 부실 사건이 투자자를 공포에 빠뜨렸고 — 특히 AI 디스럽션에 취약한 소프트웨어 기업에 대한 과도한 대출 노출이 문제였습니다. 기업들이 수년간 유치해 온 개인 투자자들이 업계 최대 펀드에서 자금을 빼기 시작하면서, 비유동 대출의 투매를 막기 위해 설계된 환매 한도가 압박을 받고 있습니다.
+
+Morgan Stanley의 골드버그에 따르면, 사모대출기관은 이미 "장기적" 순 유출 사이클에 진입했으며, 높은 환매, 대출 품질 악화, 비유동 자산의 시가평가라는 구조적 과제로 최대 2년간 지속될 수 있습니다.`,
+      sourceUrl: "https://fortune.com/2026/03/14/private-credit-meltdown-how-wall-streets-blackstone-kkr-apollo-ares-blue-owl-investment-craze-panic/",
+      sourceName: "Fortune",
+      publishedAt: ts("2026-03-14T08:00:00Z"),
+      category: "analysis",
+      mentionedTickers: ["BLK", "APO", "OWL"],
+      tags: ["사모신용", "기업분석"],
+      isOfficial: true,
+      storyThreadId: threadCredit,
+      orderInThread: 6,
+      translationStatus: "approved",
+      translationNotes: [
+        "market capitalization → '시가총액': 금융 표준 용어",
+        "AI disruption → 'AI 디스럽션': 기술 분야 음역 관행",
+        "illiquid → '비유동': 자산 유동성 분류 용어",
+        "fire sales → '투매': 강제 매각을 의미, 한국 금융 언론 표준",
+      ],
+      updatedAt: now,
+    });
+
     // =====================================================================
-    // 5. EXPLAINERS (8) — ALL in Korean, deep-dive storytelling for financial beginners
+    // 5. EXPLAINERS (12) — ALL in Korean, deep-dive storytelling for financial beginners
     // =====================================================================
 
     // Explainer for art1: US-Israel strikes
@@ -583,8 +747,101 @@ The concern extends beyond individual funds. If private credit defaults rise sha
       updatedAt: now,
     });
 
+    // Explainer for art5: IEA record reserve release
+    await ctx.db.insert("explainers", {
+      newsArticleId: art5,
+      simplifiedTitle: "세계가 '비상 기름통'을 열었다 — 그런데 왜 유가는 안 내릴까?",
+      storyBody: `전 세계 32개 나라가 모여서 "우리가 비상시를 대비해 저장해둔 석유를 풀자"고 결정했습니다. 이것을 '전략 비축유 방출'이라고 하는데, 4억 배럴 — 역사상 가장 큰 규모입니다. 2022년 러시아-우크라이나 전쟁 때 풀었던 1억 8천만 배럴의 두 배가 넘습니다.
+
+그런데 왜 유가가 안 내릴까요? 문제는 산수입니다. 호르무즈 해협이 막혀서 매일 약 1,500만 배럴의 석유가 공급되지 못하고 있습니다. 4억 배럴을 이 속도로 쓰면 겨우 26일 만에 바닥이 납니다. 비가 새는 양동이에 물을 부어봤자 금방 비는 것과 같습니다.
+
+설상가상으로, 사우디아라비아마저 자체 생산을 20% 줄였습니다. 세계 최대 해상 유전인 사파니야 유전을 포함한 두 곳을 폐쇄했기 때문입니다. 석유를 사는 나라들은 점점 살 곳이 줄어들고 있습니다.
+
+미국은 급해서 전례 없는 결정을 내렸습니다: 러시아에 대한 석유 제재를 일시적으로 풀어서 러시아 원유 1,900만 배럴을 아시아 시장에 판매하도록 허용한 것입니다. 적(敵)의 석유까지 풀어야 할 만큼 상황이 심각하다는 뜻입니다.`,
+      keyTakeaways: [
+        "32개 나라가 비상 비축유 4억 배럴을 방출했지만, 매일 1,500만 배럴 부족분의 26일치에 불과합니다",
+        "사우디아라비아가 생산을 20% 감축하면서 전 세계 공급이 더 줄었습니다",
+        "미국은 러시아 원유 제재를 임시 해제할 만큼 상황이 급박합니다",
+        "비축유는 '시간을 사는 것'이지 '문제를 해결하는 것'이 아닙니다 — 해협이 열려야 근본 해결",
+      ],
+      personalImpact: "나에게 어떤 영향이 있을까? 비축유 방출은 유가 급등 속도를 늦추지만 내리게 하지는 못합니다. 주유비와 난방비는 여전히 높고, 26일 뒤에는 비축유마저 바닥나기 시작합니다. 장을 볼 때 식품 가격이 이미 오르고 있다면 — 석유값이 원인입니다.",
+      analogy: "집에 비상 식량이 한 달치 있다고 상상해보세요. 슈퍼마켓이 문을 닫아서 그 비상식량을 꺼내 먹기 시작합니다. 한 달치로 한 달은 버틸 수 있지만, 슈퍼마켓이 다시 열리지 않으면 결국 바닥이 납니다. 전략 비축유가 바로 그 '비상식량'이고, 호르무즈 해협이 그 '슈퍼마켓'입니다.",
+      difficultyLevel: "beginner",
+      updatedAt: now,
+    });
+
+    // Explainer for art6: Mojtaba Khamenei + mines
+    await ctx.db.insert("explainers", {
+      newsArticleId: art6,
+      simplifiedTitle: "새로운 이란 지도자는 누구이고, 왜 석유길을 계속 막을까?",
+      storyBody: `2월 28일 미국과 이스라엘이 이란을 공습했을 때, 37년간 이란을 이끌어온 최고지도자 알리 하메네이가 사망했습니다. 불과 9일 뒤인 3월 9일, 그의 아들 모지타바 하메네이(56세)가 새 최고지도자로 취임했습니다.
+
+모지타바 하메네이는 취임 첫 공개 성명에서 호르무즈 해협 봉쇄를 "적에 대한 압박 도구"로 계속 유지하겠다고 선언했습니다. 쉽게 말하면, 새 지도자도 '석유 고속도로를 계속 막겠다'는 것입니다. 이 말이 나오자 유가가 4년 만에 처음으로 배럴당 $100을 넘었고, 최고 $126까지 치솟았습니다.
+
+더 무서운 소식이 있습니다. 3월 10일, 이란이 호르무즈 해협에 '기뢰'를 설치하기 시작했다는 미군 정보가 나왔습니다. 기뢰는 바다에 떠 있는 폭탄으로, 배가 지나가면 터집니다. 미국은 이란 기뢰부설함 16척을 격침했지만, 이미 깔린 기뢰를 모두 제거하려면 수주에서 수개월이 걸립니다.
+
+2월 28일 전쟁 시작 이후 해협 안팎에서 최소 21척의 선박이 공격받았고, 10명의 선원이 사망하거나 행방불명되었습니다. 유조선 선장들은 이제 단순히 '위험하다'가 아니라 '죽을 수 있다'고 판단하고 있어서, 봉쇄 해제 후에도 정상화에는 시간이 걸릴 것입니다.`,
+      keyTakeaways: [
+        "이란 신임 최고지도자 모지타바 하메네이(사망한 지도자의 아들)가 호르무즈 봉쇄 유지를 선언했습니다",
+        "유가가 배럴당 $126까지 치솟았고 $80~$100 사이를 등락하고 있습니다",
+        "이란이 바다에 기뢰(수중 폭탄)를 설치하기 시작해 봉쇄가 더 장기화될 수 있습니다",
+        "전쟁 시작 2주 만에 21척 공격, 10명 사망/실종 — 선박 운항 재개가 어려워지고 있습니다",
+      ],
+      personalImpact: "나에게 어떤 영향이 있을까? 새 지도자가 봉쇄를 유지하겠다고 선언하면서 유가 하락 기대가 무너졌습니다. 기뢰 제거에는 수주~수개월이 걸리므로, 높은 유가가 오래 지속될 가능성이 높습니다. 휘발유, 가스, 항공료, 식품 가격 모두 당분간 내려올 기미가 보이지 않습니다.",
+      analogy: "집 앞 유일한 다리를 막은 사람이 죽었는데, 그 아들이 와서 '아버지가 막은 이 다리, 나도 계속 막겠다'고 선언한 것과 같습니다. 게다가 다리 위에 못(기뢰)까지 박아놓아서, 바리케이드를 치워도 바로 건널 수가 없게 되었습니다.",
+      difficultyLevel: "beginner",
+      updatedAt: now,
+    });
+
+    // Explainer for art15: Morgan Stanley caps
+    await ctx.db.insert("explainers", {
+      newsArticleId: art15,
+      simplifiedTitle: "세 번째 대형 금융사도 '돈 못 빼요' — 사모신용 도미노 시작?",
+      storyBody: `블랙록에 이어 블랙스톤, 그리고 이제 Morgan Stanley까지 — 월스트리트 3대 대형 금융사가 연달아 "투자자의 돈 인출을 제한합니다"라고 발표했습니다. 무슨 일이 벌어지고 있는 걸까요?
+
+Morgan Stanley의 North Haven Private Income Fund에서 투자자들이 전체 자산의 11%를 빼달라고 요청했습니다. 하지만 펀드 규칙에는 '분기당 최대 5%만 돌려줄 수 있다'고 적혀 있습니다. 결과적으로 약 $1.69억만 지급되었고, 돈을 빼고 싶었던 사람 중 절반 이상이 못 빼게 되었습니다.
+
+Morgan Stanley는 "시장이 혼란할 때 자산을 급하게 팔면(투매) 모든 투자자가 손해를 보기 때문에 환매를 제한한다"고 설명합니다. 논리적으로는 맞지만, 정작 돈이 묶인 투자자 입장에서는 불안할 수밖에 없습니다.
+
+이제 전문가들은 '사모신용 시장의 자금 유출이 최대 2년간 계속될 수 있다'고 경고합니다. 블랙록($260억), 블랙스톤($480억), Morgan Stanley에 이어 더 많은 펀드가 환매를 제한하면, 투자자들의 불안이 더 커져서 '빼려는 사람은 더 많아지고, 돌려주는 돈은 더 적어지는' 악순환이 시작될 수 있습니다.`,
+      keyTakeaways: [
+        "블랙록, 블랙스톤에 이어 Morgan Stanley도 사모신용 펀드 환매를 5%로 제한했습니다",
+        "11% 환매 요청 중 절반 이상이 거절 — 돈을 빼고 싶어도 못 빼는 상황",
+        "전문가들은 자금 유출이 최대 2년간 이어질 수 있다고 경고합니다",
+        "한 곳이 제한하면 다른 곳에서도 불안이 퍼져 더 많은 환매 요청이 발생합니다 (도미노 효과)",
+      ],
+      personalImpact: "나에게 어떤 영향이 있을까? '대체투자' 또는 '사모신용' 펀드에 가입했다면, 환매 조건을 지금 바로 확인하세요. 3대 대형사 모두 제한을 시행 중이며, 소형 운용사는 더 심할 수 있습니다. 핵심 질문: '내 돈을 빼는 데 얼마나 걸리고, 분기별 한도는 몇 %인가?'",
+      analogy: "극장에서 영화 관람 중 화재 경보가 울렸다고 생각해보세요. 출구가 있긴 하지만 한 번에 5%의 관객만 나갈 수 있습니다. 처음에는 '출구가 있으니 괜찮다'고 생각하지만, 옆 극장에서도, 그 옆 극장에서도 똑같은 일이 벌어지면 — 모든 사람이 더 빨리 나가려고 합니다. 사모신용 시장이 지금 그 상황입니다.",
+      difficultyLevel: "beginner",
+      updatedAt: now,
+    });
+
+    // Explainer for art16: $265B meltdown
+    await ctx.db.insert("explainers", {
+      newsArticleId: art16,
+      simplifiedTitle: "사모신용 기업들의 주가가 357조 원 증발한 이유",
+      storyBody: `월스트리트에서 가장 '핫한' 투자 분야였던 사모신용(Private Credit)이 무너지고 있습니다. 이 분야를 이끄는 5개 대형 기업 — 블랙스톤, KKR, 아폴로, Ares, Blue Owl — 의 주식 가치가 합쳐서 $2,650억(약 357조 원)이 날아갔습니다.
+
+불과 1~2년 전까지 이 회사들의 주가는 로켓처럼 올랐습니다: KKR은 +103%, Blue Owl +80%, 아폴로 +77%. 투자자들은 "사모신용은 안전하면서도 높은 수익을 준다"며 열광했죠. 그런데 지난 9월부터 갑자기 폭락이 시작되었습니다. Blue Owl은 최고점 대비 3분의 2가 빠졌고, 블랙스톤과 KKR도 거의 반토막이 났습니다.
+
+왜 갑자기 무너졌을까요? 핵심 원인은 두 가지입니다. 첫째, AI(인공지능)의 등장으로 소프트웨어 기업들의 가치가 흔들렸습니다. 사모신용 펀드들이 이런 소프트웨어 기업에 대출을 많이 해줬는데, AI가 이 기업들의 사업 모델을 위협하자 대출 부실 위험이 높아진 것입니다. 둘째, 개인 투자자들이 한꺼번에 돈을 빼기 시작했습니다. 수년간 '부자들만 하는 안전한 투자'로 마케팅했지만, 정작 위기가 오자 돈을 빼기 어렵다는 사실을 알게 된 거죠.
+
+전문가들은 이 위기가 최소 2년은 더 이어질 수 있다고 봅니다. 이유는 세 가지: ① 환매 요청이 계속 늘고, ② 대출 품질이 악화되고 있으며, ③ 사모대출은 주식시장처럼 가격이 매일 매겨지지 않아서 진짜 손실이 아직 드러나지 않았을 수 있기 때문입니다.`,
+      keyTakeaways: [
+        "사모신용 5대 기업의 주가가 합쳐서 약 357조 원($2,650억) 하락했습니다",
+        "1~2년 전 최고 +103%에서 현재 최대 -66%까지 — 극적인 반전입니다",
+        "AI가 소프트웨어 기업을 위협하면서 사모신용 대출의 부실 위험이 높아졌습니다",
+        "'안전한 투자'로 팔았지만 정작 위기 시 돈을 빼기 어렵다는 것이 드러났습니다",
+        "전문가들은 2년간 지속될 '장기 유출 사이클'에 진입했다고 봅니다",
+      ],
+      personalImpact: "나에게 어떤 영향이 있을까? 직접 사모신용에 투자하지 않더라도, 국민연금이나 퇴직연금이 '대체투자' 비중을 늘려왔습니다. 한국 국민연금의 대체투자 비중은 약 15%이며, 사모신용도 포함됩니다. 내 노후자금이 어디에 투자되어 있는지 확인하는 것이 중요합니다.",
+      analogy: "동네에서 가장 인기 있던 빵집 5곳이 동시에 적자를 냈다고 생각해보세요. '이 빵집들은 절대 안 망해'라며 투자한 사람들이 놀라서 투자금을 빼려 하지만, 빵집은 '지금은 돌려줄 수 없다'고 합니다. 빵집 주인도 자기 돈을 넣어가며 버텨보지만, 손님(환매 요청)이 계속 줄어들면 결국 더 큰 문제가 됩니다.",
+      difficultyLevel: "beginner",
+      updatedAt: now,
+    });
+
     // =====================================================================
-    // 6. IMPACT CHAINS (2) + IMPACT NODES (11) — PM Feature 3
+    // 6. IMPACT CHAINS (2) + IMPACT NODES — PM Feature 3
     // =====================================================================
 
     // Chain 1: Hormuz thread — "Iran Strikes Domino Effect"
@@ -656,14 +913,38 @@ The concern extends beyond individual funds. If private credit defaults rise sha
       newsArticleId: art14, ordinal: 3, updatedAt: now,
     });
 
+    // New impact nodes for art5 and art6
+    await ctx.db.insert("impactNodes", {
+      chainId: chain1, parentNodeId: h4, label: "IEA releases record 400M barrels", labelKo: "IEA, 사상 최대 4억 배럴 방출",
+      description: "Largest coordinated reserve release since IEA's 1974 founding — covers only 26 days of deficit", descriptionKo: "1974년 설립 이래 최대 비축유 방출 — 일일 적자분의 26일치에 불과",
+      newsArticleId: art5, ordinal: 2, updatedAt: now,
+    });
+    await ctx.db.insert("impactNodes", {
+      chainId: chain1, parentNodeId: h2, label: "New supreme leader vows continued blockade", labelKo: "신임 최고지도자, 봉쇄 유지 선언",
+      description: "Mojtaba Khamenei keeps Hormuz closed; Iran begins laying naval mines", descriptionKo: "모지타바 하메네이 호르무즈 봉쇄 유지; 이란 기뢰 부설 시작",
+      newsArticleId: art6, ordinal: 3, updatedAt: now,
+    });
+
+    // New impact nodes for art15 and art16
+    await ctx.db.insert("impactNodes", {
+      chainId: chain2, parentNodeId: c1, label: "Morgan Stanley caps redemptions at 5%", labelKo: "Morgan Stanley, 환매 5% 제한",
+      description: "Third major firm restricts withdrawals — 11% requested, 45.8% fulfilled", descriptionKo: "세 번째 대형사 환매 제한 — 요청 11%중 45.8%만 충족",
+      newsArticleId: art15, ordinal: 4, updatedAt: now,
+    });
+    await ctx.db.insert("impactNodes", {
+      chainId: chain2, parentNodeId: c1, label: "$265B market cap wiped from private credit firms", labelKo: "사모신용 기업 시총 $2,650억 증발",
+      description: "Blue Owl -66%, Blackstone -46%, KKR -48% from peaks", descriptionKo: "Blue Owl -66%, 블랙스톤 -46%, KKR -48% 고점 대비",
+      newsArticleId: art16, ordinal: 5, updatedAt: now,
+    });
+
     return {
       stocks: 12,
       users: 3,
       storyThreads: 2,
-      newsArticles: 8,
-      explainers: 8,
+      newsArticles: 12,
+      explainers: 12,
       impactChains: 2,
-      impactNodes: 10,
+      impactNodes: 14,
     };
   },
 });

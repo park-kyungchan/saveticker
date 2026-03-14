@@ -49,7 +49,17 @@ export function KoreanTab({ article, className }: KoreanTabProps) {
   return (
     <div data-label="korean.tab" className={cn("space-y-4 animate-in", className)}>
       {/* ─── Translation Pipeline Indicator ─── */}
-      <div data-label="korean.tab.pipeline" className="rounded-xl border glass-panel p-4 space-y-3">
+      <div data-label="korean.tab.pipeline" className="rounded-xl border glass-panel p-4 space-y-3 relative">
+        {/* Internal-only badge */}
+        <span
+          data-label="korean.tab.pipeline.internalBadge"
+          className="absolute top-2.5 right-3 inline-flex items-center gap-1 rounded-full bg-accent-3/10 border border-accent-3/20 px-2 py-0.5 text-[9px] font-medium text-accent-3/70 uppercase tracking-wide"
+        >
+          <svg className="size-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+          </svg>
+          PM 내부 기능
+        </span>
         <div className="flex items-center gap-2 text-[11px] font-medium text-ink-muted/70 uppercase tracking-wide">
           번역 파이프라인
         </div>
@@ -124,6 +134,7 @@ export function KoreanTab({ article, className }: KoreanTabProps) {
               <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Z" />
             </svg>
             검수 노트 ({article.translationNotes?.length ?? 0})
+            <span className="ml-0.5 text-[8px] text-accent-3/50 uppercase">내부</span>
           </button>
         )}
       </div>
